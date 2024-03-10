@@ -3,8 +3,8 @@ from . import models, schemas
 import asyncio
 
 
-async def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
+async def get_user_by_email(db: Session, email: str, password: str):
+    return db.query(models.User).filter(models.User.email == email and models.User.hashed_password == password).first()
 
 
 async def create_user(db: Session, user: schemas.User):
