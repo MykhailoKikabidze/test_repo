@@ -4,31 +4,26 @@ from fastapi import Depends, FastAPI, HTTPException
 import asyncio
 
 from . import crud, models, schemas
-from .database import SessionLocal, engine
-
-models.Base.metadata.create_all(bind=engine)
+from .database import AsyncSessionLocal, engine
 
 
 app = FastAPI()
 
 
+@app.get("/")
+async def root():
+    return {"message": "Success connection!"}
+
+
 # Dependency
 async def get_db_session() -> AsyncSession:
-    async with SessionLocal() as session:
+    async with AsyncSessionLocal() as session:
         yield session
-
-
-@app.get("/users/{user_email}", response_model=schemas.User)
-async def read_user(user_email: str, db: AsyncSession = Depends(get_db_session)):
-    db_user = crud.get_user_by_email(db, email=user_email)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
 
 
 @app.get("/users/", response_model=schemas.User)
 async def authorization_user(user: schemas.User, db: AsyncSession = Depends(get_db_session)):
-    db_user = crud.get_user_by_email(db, email=user.email, password=user.password)
+    db_user = await crud.get_user(db, email=user.email, password=user.password)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found. Invalid email or password")
 
@@ -37,7 +32,7 @@ async def authorization_user(user: schemas.User, db: AsyncSession = Depends(get_
 
 @app.post("/users/", response_model=schemas.User)
 async def create_user(user: schemas.User, db: AsyncSession = Depends(get_db_session)):
-    db_user = await crud.get_user_by_email(db, email=user.email)
+    db_user = await crud.get_user(db, email=user.email, password=user.password)
     if db_user:
         raise HTTPException(status_code=400, detail="Email already registered")
-    return await crud.create_user(db=db, user=user)
+    return await crud.create_user_db(db=db, user=user)

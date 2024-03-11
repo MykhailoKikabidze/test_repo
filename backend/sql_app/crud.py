@@ -1,16 +1,24 @@
 from sqlalchemy.orm import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 from . import models, schemas
 import asyncio
+from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 
 
-async def get_user_by_email(db: Session, email: str, password: str):
-    return db.query(models.User).filter(models.User.email == email and models.User.hashed_password == password).first()
+async def get_user(db: AsyncSession, email: str, password: str):
+    async with db as session:
+        result = await session.execute(
+            select(models.User).filter(models.User.email == email, models.User.hashed_password == password)
+        )
+        return result.scalars().first()
 
 
-async def create_user(db: Session, user: schemas.User):
+async def create_user_db(db: AsyncSession, user: schemas.User):
     password = user.password
     db_user = models.User(login=user.login, email=user.email, hashed_password=password)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
+    async with db as session:
+        session.add(db_user)
+        await session.commit()
+        await session.refresh(db_user)
     return db_user
