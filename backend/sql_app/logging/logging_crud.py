@@ -1,8 +1,6 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from . import models, schemas
-import asyncio
+from backend.sql_app.logging import logging_models
 from sqlalchemy import select
-from sqlalchemy.orm import selectinload
 from passlib.context import CryptContext
 
 
@@ -20,7 +18,7 @@ def hash_password(password: str) -> str:
 async def get_user(db: AsyncSession, email: str, password: str):
     async with db as session:
         result = await session.execute(
-            select(models.User).filter(models.User.email == email, models.User.password == password)
+            select(logging_models.User).filter(logging_models.User.email == email, logging_models.User.password == password)
         )
         return result.scalars().first()
 
@@ -28,14 +26,14 @@ async def get_user(db: AsyncSession, email: str, password: str):
 async def get_user_by_email(db: AsyncSession, email: str):
     async with db as session:
         result = await session.execute(
-            select(models.User).filter(models.User.email == email)
+            select(logging_models.User).filter(logging_models.User.email == email)
         )
         return result.scalars().first()
 
 
-async def create_user_db(db: AsyncSession, user: schemas.User):
+async def create_user_db(db: AsyncSession, user: logging_models.User):
     password = hash_password(user.password)
-    db_user = models.User(login=user.login, email=user.email, password=password)
+    db_user = logging_models.User(login=user.login, email=user.email, password=password)
     async with db as session:
         session.add(db_user)
         await session.commit()

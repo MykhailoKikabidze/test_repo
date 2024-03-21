@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import json
 
-with open(r'C:\Users\HP\Desktop\Progs\Test_repo\backend\sql_app\settings.json', 'r') as file:
+with open(r'C:\Users\HP\MYFILES\Progs\Focus_time\backend\sql_app\settings.json', 'r') as file:
     data = json.load(file)
 
 SQLALCHEMY_DATABASE_URL = data["credentials"]
