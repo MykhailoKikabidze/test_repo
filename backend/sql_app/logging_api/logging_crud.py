@@ -1,5 +1,5 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.sql_app.logging import logging_models
+from backend.sql_app.logging_api import logging_models
 from sqlalchemy import select
 from passlib.context import CryptContext
 
