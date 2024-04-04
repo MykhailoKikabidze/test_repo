@@ -15,11 +15,13 @@ async def get_categories(db: AsyncSession):
 
 async def get_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
     async with db as session:
+        # Separate function
         cat_query = await session.execute(
             select(category_models.Category.id).where(category_models.Category.name == cat_name)
         )
         cat_id = cat_query.scalar_one_or_none()
 
+        # Separate function
         user_query = await session.execute(
             select(logging_models.User.id).where(logging_models.User.email == user_email)
         )
@@ -42,22 +44,59 @@ async def get_activity(db: AsyncSession, cat_name: str, user_email: str, activit
 
 async def add_activity_by_category(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
     async with db as session:
+        # Separate function
         cat_query = await session.execute(
             select(category_models.Category.id).where(category_models.Category.name == cat_name)
         )
         cat_id = cat_query.scalars().first()
 
+        # Separate function
         user_query = await session.execute(
             select(logging_models.User.id).where(logging_models.User.email == user_email)
         )
         user_id = user_query.scalars().first()
 
-        if cat_id is not None and user_id is not None:
-            new_activity = category_models.Activity(id_user=user_id, id_category=cat_id, name=activity_name)
-            session.add(new_activity)
-            await session.commit()
-            await session.refresh(new_activity)
-            return new_activity
+        if cat_id is None or user_id is None:
+            return {"status": "error", "message": "Category or user is not found."}
 
-        return None
+        new_activity = category_models.Activity(id_user=user_id, id_category=cat_id, name=activity_name)
+        session.add(new_activity)
+        await session.commit()
+        await session.refresh(new_activity)
+        return {"status": "success", "message": "Activity added successfully."}
 
+
+
+async def delete_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
+    async with db as session:
+        # Separate function
+        cat_query = await session.execute(
+            select(category_models.Category.id).where(category_models.Category.name == cat_name)
+        )
+        cat_id = cat_query.scalars().first()
+
+        # Separate function
+        user_query = await session.execute(
+            select(logging_models.User.id).where(logging_models.User.email == user_email)
+        )
+        user_id = user_query.scalars().first()
+
+        if cat_id is None or user_id is None:
+            return {"status": "error", "message": "Category or user is not found."}
+
+        activity = await session.execute(
+            select(category_models.Activity).filter(
+                category_models.Activity.id_category == cat_id,
+                category_models.Activity.id_user == user_id,
+                category_models.Activity.name == activity_name)
+            )
+
+        activity_to_delete = activity.scalars().first()
+
+        if activity_to_delete is None:
+            return {"status": "error", "message": "Activity is not found."}
+
+        await session.delete(activity_to_delete)
+        await session.commit()
+
+        return {"status": "success", "message": "Activity deleted successfully."}

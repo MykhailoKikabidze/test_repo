@@ -14,11 +14,6 @@ class ActivityLogs(BaseModel):
     time_spent: float
 
 
-class ActivError(BaseModel):
-    num: int
-    description: str
-
-
-class ActivLogError(BaseModel):
-    num: int
-    description: str
+class Status(BaseModel):
+    status: str
+    message: str
