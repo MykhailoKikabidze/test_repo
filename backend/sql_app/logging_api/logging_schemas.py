@@ -7,6 +7,6 @@ class User(BaseModel):
     password: str
 
 
-class Error(BaseModel):
+class LogError(BaseModel):
     num: int
     description: str
