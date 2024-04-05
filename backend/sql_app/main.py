@@ -23,7 +23,7 @@ async def get_db_session() -> AsyncSession:
         yield session
 
 
-@app.get("/users/email/", response_model=Union[logging_schemas.User, logging_schemas.LogError])
+@app.post("/users/email/", response_model=Union[logging_schemas.User, logging_schemas.LogError])
 async def authorization_user(user: logging_schemas.User, db: AsyncSession = Depends(get_db_session)):
     db_user = await logging_crud.get_user_by_email(db, email=user.email)
     if db_user is None or not logging_crud.verify_password(user.password, db_user.password):
@@ -61,3 +61,16 @@ async def delete_activity(activity: category_schemas.Activity, cat_name: str, us
     res_status = category_schemas.Status(status=result["status"], message=result["message"])
     return res_status
 
+
+@app.put("/activities/name/", response_model=category_schemas.Status)
+async def update_activity(activity: category_schemas.Activity, cat_name: str, user_email: str, new_activity_name: str, db: AsyncSession = Depends(get_db_session)):
+    result = await category_crud.update_activity(db=db, cat_name=cat_name, user_email=user_email, activity_name=activity.name, new_activity_name=new_activity_name)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.post("/activity_log/",  response_model=category_schemas.Status)
+async def add_activity_log(activity_log: category_schemas.ActivityLogs, cat_name: str, user_email: str, activity_name: str, db: AsyncSession = Depends(get_db_session)):
+    result = await category_crud.add_activity_log(db=db, cat_name=cat_name, user_email=user_email, activity_name=activity_name, activity_log=activity_log)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status

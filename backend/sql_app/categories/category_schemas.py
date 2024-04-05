@@ -11,7 +11,7 @@ class Activity(BaseModel):
 
 class ActivityLogs(BaseModel):
     date: str
-    time_spent: float
+    time_spent: int
 
 
 class Status(BaseModel):

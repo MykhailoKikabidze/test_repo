@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Date, Interval
+from sqlalchemy import Column, Integer, String, Date
+from sqlalchemy.dialects.postgresql import INTERVAL
 from backend.sql_app.database import Base
 
 
@@ -24,4 +25,4 @@ class ActivityLogs(Base):
     id = Column(Integer, primary_key=True, index=True)
     id_activity = Column(Integer, index=True)
     date = Column(Date, index=True)
-    time_spent = Column(Interval, index=True)
+    time_spent = Column(INTERVAL, index=True)
