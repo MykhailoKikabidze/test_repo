@@ -14,27 +14,28 @@ async def get_categories(db: AsyncSession):
         return result.scalars().all()
 
 
-async def get_user(db: AsyncSession, user_email: str):
-    pass
-
-
-async def get_cat(db: AsyncSession, cat_name: str):
-    pass
-
-
-async def get_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
+async def get_user_id(db: AsyncSession, user_email: str):
     async with db as session:
-        # Separate function
-        cat_query = await session.execute(
-            select(category_models.Category.id).where(category_models.Category.name == cat_name)
-        )
-        cat_id = cat_query.scalar_one_or_none()
-
-        # Separate function
         user_query = await session.execute(
             select(logging_models.User.id).where(logging_models.User.email == user_email)
         )
         user_id = user_query.scalar_one_or_none()
+        return user_id
+
+
+async def get_category_id(db: AsyncSession, cat_name: str):
+    async with db as session:
+        cat_query = await session.execute(
+            select(category_models.Category.id).where(category_models.Category.name == cat_name)
+        )
+        cat_id = cat_query.scalar_one_or_none()
+        return cat_id
+
+
+async def get_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
+    async with db as session:
+        cat_id = await get_category_id(db=db, cat_name=cat_name)
+        user_id = await get_user_id(db=db, user_email=user_email)
 
         if cat_id is not None and user_id is not None:
 
@@ -53,17 +54,8 @@ async def get_activity(db: AsyncSession, cat_name: str, user_email: str, activit
 
 async def add_activity_by_category(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
     async with db as session:
-        # Separate function
-        cat_query = await session.execute(
-            select(category_models.Category.id).where(category_models.Category.name == cat_name)
-        )
-        cat_id = cat_query.scalars().first()
-
-        # Separate function
-        user_query = await session.execute(
-            select(logging_models.User.id).where(logging_models.User.email == user_email)
-        )
-        user_id = user_query.scalars().first()
+        cat_id = await get_category_id(db=db, cat_name=cat_name)
+        user_id = await get_user_id(db=db, user_email=user_email)
 
         if cat_id is None or user_id is None:
             return {"status": "error", "message": "Category or user is not found."}
@@ -78,17 +70,8 @@ async def add_activity_by_category(db: AsyncSession, cat_name: str, user_email: 
 
 async def delete_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
     async with db as session:
-        # Separate function
-        cat_query = await session.execute(
-            select(category_models.Category.id).where(category_models.Category.name == cat_name)
-        )
-        cat_id = cat_query.scalars().first()
-
-        # Separate function
-        user_query = await session.execute(
-            select(logging_models.User.id).where(logging_models.User.email == user_email)
-        )
-        user_id = user_query.scalars().first()
+        cat_id = await get_category_id(db=db, cat_name=cat_name)
+        user_id = await get_user_id(db=db, user_email=user_email)
 
         if cat_id is None or user_id is None:
             return {"status": "error", "message": "Category or user is not found."}
@@ -113,17 +96,8 @@ async def delete_activity(db: AsyncSession, cat_name: str, user_email: str, acti
 
 async def update_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str, new_activity_name: str):
     async with db as session:
-        # Separate function
-        cat_query = await session.execute(
-            select(category_models.Category.id).where(category_models.Category.name == cat_name)
-        )
-        cat_id = cat_query.scalars().first()
-
-        # Separate function
-        user_query = await session.execute(
-            select(logging_models.User.id).where(logging_models.User.email == user_email)
-        )
-        user_id = user_query.scalars().first()
+        cat_id = await get_category_id(db=db, cat_name=cat_name)
+        user_id = await get_user_id(db=db, user_email=user_email)
 
         if cat_id is None or user_id is None:
             return {"status": "error", "message": "Category or user is not found."}
@@ -161,17 +135,8 @@ async def update_activity(db: AsyncSession, cat_name: str, user_email: str, acti
 
 async def add_activity_log(db: AsyncSession, cat_name: str, user_email: str, activity_name: str, activity_log: category_schemas.ActivityLogs):
     async with db as session:
-        # Separate function
-        cat_query = await session.execute(
-            select(category_models.Category.id).where(category_models.Category.name == cat_name)
-        )
-        cat_id = cat_query.scalars().first()
-
-        # Separate function
-        user_query = await session.execute(
-            select(logging_models.User.id).where(logging_models.User.email == user_email)
-        )
-        user_id = user_query.scalars().first()
+        cat_id = await get_category_id(db=db, cat_name=cat_name)
+        user_id = await get_user_id(db=db, user_email=user_email)
 
         if cat_id is None or user_id is None:
             return {"status": "error", "message": "Category or user is not found."}
@@ -198,6 +163,3 @@ async def add_activity_log(db: AsyncSession, cat_name: str, user_email: str, act
         await session.commit()
         await session.refresh(new_activity_log)
         return {"status": "success", "message": "Activity log added successfully."}
-
-
-
