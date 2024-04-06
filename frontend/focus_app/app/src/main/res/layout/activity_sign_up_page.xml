@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/log_img"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_name_login"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="230dp"
+        android:background="@drawable/ic_strokepanel_login"
+        android:backgroundTint="#90b8c8ff"
+        android:hint="Name"
+        android:textColorHint="#90b8c8ff"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end_login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/guideline_start_login"
+        app:layout_constraintTop_toTopOf="parent"
+        app:startIconTint="@color/white">>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/textInputEditText"
+            android:layout_width="350dp"
+            android:layout_height="55dp"
+            android:background="@drawable/ic_strokepanel_login"
+            android:backgroundTint="#00DCDCDC"
+            android:inputType="textPassword"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_email_id_login"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_strokepanel_login"
+        android:backgroundTint="#90b8c8ff"
+        android:hint="Email-Id"
+        android:textColorHint="#90b8c8ff"
+        app:endIconMode="clear_text"
+        app:errorEnabled="true"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_login"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_login"
+        app:layout_constraintTop_toBottomOf="@+id/et_name_login"
+        app:startIconTint="@color/white">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_strokepanel_login"
+            android:backgroundTint="#00DCDCDC"
+            android:inputType="textEmailAddress"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_repassword_login"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_strokepanel_login"
+        android:backgroundTint="#90b8c8ff"
+        android:hint="Re-enter Password"
+        android:textColorHint="#90b8c8ff"
+        app:counterEnabled="true"
+        app:counterMaxLength="12"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true"
+        app:hintTextColor="#ffffff"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end_login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/guideline_start_login"
+        app:layout_constraintTop_toBottomOf="@+id/et_password_login"
+        app:startIconTint="#ffffff">
+
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_strokepanel_login"
+            android:backgroundTint="#00DCDCDC"
+            android:inputType="textPassword"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="30dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="30dp" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_password_login"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/ic_strokepanel_login"
+        android:backgroundTint="#90b8c8ff"
+        android:hint="Password"
+        android:textColorHint="#90b8c8ff"
+        app:counterEnabled="true"
+        app:counterMaxLength="12"
+        app:endIconMode="password_toggle"
+        app:errorEnabled="true"
+        app:hintTextColor="#ffffff"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end_login"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@id/guideline_start_login"
+        app:layout_constraintTop_toBottomOf="@+id/et_email_id_login"
+        app:startIconTint="#ffffff">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_strokepanel_login"
+            android:backgroundTint="#00DCDCDC"
+            android:inputType="textPassword"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_login"
+        style="@style/Widget.MaterialComponents.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#EACE96"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="Sign Up"
+        app:backgroundTint="#E9D189"
+
+        app:layout_constraintBottom_toBottomOf="@+id/textview_refer_sign_up"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_login"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_login"
+        app:layout_constraintTop_toBottomOf="@+id/et_repassword_login" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textview_refer_sign_up"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:clickable="true"
+        android:drawablePadding="6dp"
+        android:focusable="true"
+        android:text="Already have a account?  Login then."
+        android:textColor="#E8D088"
+        android:textStyle="bold"
+        app:drawableTint="#C82323"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end_login"
+        app:layout_constraintStart_toEndOf="@id/guideline_start_login" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
