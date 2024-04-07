@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="blaWhite">#90b8c8ff</color>
+    <color name="text_clr_timer_page">#2264AF</color>
 </resources>

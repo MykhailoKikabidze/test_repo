@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/timer_page_img"
+    tools:context="TimerPage.TimerPage">
+
+    <TextView
+        android:id="@+id/seconds"
+        android:layout_width="wrap_content"
+        android:layout_height="105dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="00"
+        android:textColor="@color/text_clr_timer_page"
+        android:textSize="96sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/semicolon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.147" />
+
+    <Button
+        android:id="@+id/StartFocusBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="66dp"
+        android:backgroundTint="#488AD6"
+        android:fontFamily="sans-serif-medium"
+        android:text="Start Focus"
+        android:textColor="@color/text_clr_timer_page"
+        android:textSize="34sp"
+        android:textStyle="normal|bold"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.556"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.481" />
+
+    <TextView
+        android:id="@+id/semicolon"
+        android:layout_width="wrap_content"
+        android:layout_height="105dp"
+        android:fontFamily="sans-serif-black"
+        android:text=":"
+        android:textColor="@color/text_clr_timer_page"
+        android:textSize="96sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.147" />
+
+    <TextView
+        android:id="@+id/minutes"
+        android:layout_width="wrap_content"
+        android:layout_height="105dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="00"
+        android:textColor="#2264AF"
+        android:textSize="96sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/semicolon"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.147" />
+
+    <TextView
+        android:id="@+id/select_Tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="Select Tag>"
+        android:textColor="#1365C1"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/StartFocusBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/semicolon"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text=" Select Tag>" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
