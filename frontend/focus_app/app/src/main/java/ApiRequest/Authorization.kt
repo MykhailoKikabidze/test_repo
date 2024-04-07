@@ -13,7 +13,7 @@ import retrofit2.Response
 val rightAutorization="Congratulation?!!!"
 val wrongAutorization="You need to log in first"
 
-fun Authorization (requestBody: Map<String, String>, messageTextView: TextView) {
+fun Authorization (requestBody: Map<String, String>,context :Context) {
     RetrofitClient.instance.authorization(requestBody).enqueue(object : Callback<Any> {
         private val handler = Handler(Looper.getMainLooper())
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
@@ -23,23 +23,23 @@ fun Authorization (requestBody: Map<String, String>, messageTextView: TextView) 
                 val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
 
                 if (jsonObj.has("login")) {
-                    messageTextView.text = rightAutorization
+                    Toast.makeText(context, "Congratulations", Toast.LENGTH_SHORT).show()
                 } else if (jsonObj.has("num")) {
-                    messageTextView.text = wrongAutorization
+                    Toast.makeText(context, "You haven't account first sing in", Toast.LENGTH_SHORT).show()
                 } else {
-                    messageTextView.text = "UNKNOWN"
+                    Toast.makeText(context, "Unknown error", Toast.LENGTH_SHORT).show()
                 }
             } else {
                 val errorMessage = response.errorBody()?.string() ?: "Unknown error"
                 handler.post {
-                    messageTextView.text = "Error: $errorMessage"
+                    Toast.makeText(context, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
         override fun onFailure(call: Call<Any>, t: Throwable) {
             handler.post {
-                messageTextView.text = "Failure: ${t.message}"
+                Toast.makeText(context, "Failure: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         }
     })

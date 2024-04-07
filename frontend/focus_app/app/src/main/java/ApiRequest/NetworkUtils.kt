@@ -1,5 +1,6 @@
 package ApiRequest
 
+import android.content.Context
 import android.widget.TextView
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -8,6 +9,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 
 val connectionProblem="You don't have internet"
 fun HandleError(handler:Handler, response: Response<ResponseMessage>, messageTextView: TextView)
@@ -18,38 +20,38 @@ fun HandleError(handler:Handler, response: Response<ResponseMessage>, messageTex
     }
 }
 
-fun CreateUser(requestBody: Map<String,String>, messageTextView: TextView)
+fun CreateUser(requestBody: Map<String,String>,context: Context)
 {
     RetrofitClient.instance.createUser(requestBody).enqueue(object : Callback<Any> {
         private val handler = Handler(Looper.getMainLooper())
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
-            handleResponse(response,messageTextView,handler)
+            handleResponse(response,handler,context)
         }
 
         override fun onFailure(call: Call<Any>, t: Throwable) {
             handler.post {
-                messageTextView.text = "Failure: ${t.message}"
+                Toast.makeText(context, "Failure: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         }
     })
 }
-fun handleResponse(response: Response<Any>, messageTextView: TextView,handler: Handler) {
+fun handleResponse(response: Response<Any>,handler: Handler,context: Context) {
     if (response.isSuccessful) {
         val gson = Gson()
         val jsonObject = gson.toJson(response.body())
         val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
 
         if (jsonObj.has("login")) {
-            messageTextView.text = "USER"
+            Toast.makeText(context, "Congratulations", Toast.LENGTH_SHORT).show()
         } else if (jsonObj.has("num")) {
-            messageTextView.text = "ERROR"
+            Toast.makeText(context, "You already have account", Toast.LENGTH_SHORT).show()
         } else {
-            messageTextView.text = "UNKNOWN"
+            Toast.makeText(context, "Unknown error", Toast.LENGTH_SHORT).show()
         }
     } else {
         val errorMessage = response.errorBody()?.string() ?: "Unknown error"
         handler.post {
-            messageTextView.text = "Error: $errorMessage"
+            Toast.makeText(context, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
         }
     }
 }

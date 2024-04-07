@@ -2,12 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
+    android:id="@+id/main_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/log_img"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context="LoginPage.LoginPage">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_start_login"
@@ -24,14 +24,14 @@
         app:layout_constraintGuide_end="30dp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_email_id_login"
+        android:id="@+id/email_view_login"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="240dp"
-        android:hint="Email-Id"
+        android:hint="Email"
         android:textColorHint="#90b8c8ff"
-        android:background="@drawable/ic_strokepanel_login"
+        android:background="@drawable/login_view_sing_up"
         android:backgroundTint="#90b8c8ff"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
@@ -44,7 +44,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_strokepanel_login"
+            android:id="@+id/et_email_login"
+            android:background="@drawable/login_view_sing_up"
             android:backgroundTint="#00DCDCDC"
             android:inputType="textEmailAddress"
             android:textSize="18sp"
@@ -53,11 +54,11 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/et_password_login"
+        android:id="@+id/password_view_login"
         android:layout_width="0dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/ic_strokepanel_login"
+        android:background="@drawable/login_view_sing_up"
         android:backgroundTint="#90b8c8ff"
         android:hint="Password"
         android:textColorHint="#90b8c8ff"
@@ -69,13 +70,14 @@
         app:layout_constraintEnd_toStartOf="@id/guideline_end_login"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/guideline_start_login"
-        app:layout_constraintTop_toBottomOf="@id/et_email_id_login"
+        app:layout_constraintTop_toBottomOf="@id/email_view_login"
         app:startIconTint="#ffffff">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_strokepanel_login"
+            android:id="@+id/password_login"
+            android:background="@drawable/login_view_sing_up"
             android:backgroundTint="#00DCDCDC"
             android:inputType="textPassword"
             android:textSize="18sp"
@@ -94,15 +96,15 @@
         android:text="Login"
         app:backgroundTint="#E9D189"
 
-        app:layout_constraintBottom_toBottomOf="@+id/textview_refer_sign_up"
+        app:layout_constraintBottom_toBottomOf="@+id/textview_refer_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_password_login"
+        app:layout_constraintTop_toBottomOf="@+id/password_view_login"
         app:layout_constraintVertical_bias="0.192" />
 
     <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/textview_refer_sign_up"
+        android:id="@+id/textview_refer_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -118,7 +120,7 @@
         app:layout_constraintStart_toEndOf="@id/guideline_start_login" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/welcomeText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"

@@ -12,9 +12,9 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.Locale
 
-fun CreateActivity(requestBody: Map<String, String>,messageTextView: TextView)
+fun CreateActivity(requestBody: Map<String,String>,cat_name:String,user_email:String,messageTextView: TextView)
 {
-    RetrofitClient.instance.createActivity(requestBody).enqueue(object : Callback<Any> {
+    RetrofitClient.instance.createActivity(requestBody,cat_name, user_email).enqueue(object : Callback<Any> {
         private val handler = Handler(Looper.getMainLooper())
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
             if (response.isSuccessful) {
@@ -22,12 +22,11 @@ fun CreateActivity(requestBody: Map<String, String>,messageTextView: TextView)
                 val jsonObject = gson.toJson(response.body())
                 val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
 
-                if (jsonObj.has("name")) {
-                    messageTextView.text = "kat"
-                } else if (jsonObj.has("num")) {
-                    messageTextView.text = "ERROR"
+
+                if (jsonObj.has("status")) {
+                    messageTextView.text = "Already exists"
                 } else {
-                    messageTextView.text = "UNKNOWN"
+                    messageTextView.text = "Some Error"
                 }
             } else {
                 val errorMessage = response.errorBody()?.string() ?: "Unknown error"

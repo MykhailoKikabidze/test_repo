@@ -7,6 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.Query
 import java.util.Locale
 
 
@@ -24,7 +25,10 @@ interface ApiService {
     @GET("/categories/")
     fun getCategories(): Call<List<Category>>
 
-    @POST("/aktivities/name/")
-    fun createActivity(@Body requestBody: Map<String, String>): Call<Any>
-
+    @POST("/activities/name/")
+    fun createActivity(
+        @Body requestBody: Map<String, String>,
+        @Query("cat_name") cat_name:String,
+        @Query("user_email") user_email:String,
+    ): Call<Any>
 }
