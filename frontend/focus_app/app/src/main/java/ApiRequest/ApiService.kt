@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -31,4 +32,12 @@ interface ApiService {
         @Query("cat_name") cat_name:String,
         @Query("user_email") user_email:String,
     ): Call<Any>
+
+    @HTTP(method = "DELETE", path = "/activities/name/", hasBody = true)
+    fun deleteActivity(
+        @Body requestBody: Map<String, String>,
+        @Query("cat_name") cat_name:String,
+        @Query("user_email") user_email:String,
+    ): Call<Any>
+
 }
