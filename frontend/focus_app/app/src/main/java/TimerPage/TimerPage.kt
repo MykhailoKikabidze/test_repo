@@ -1,6 +1,7 @@
 package TimerPage
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,27 +12,34 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.focus_app.R
 
-class TimerPage : Fragment() {
+class TimerPage : AppCompatActivity() {
     private var isRunning=true
 
     @SuppressLint("MissingInflatedId")
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val inflater=LayoutInflater.from(requireContext())
-        val view = inflater.inflate(R.layout.fragment_timer_page, container, false) //this interface is from fragment_home
-        val seconds: TextView = view.findViewById(R.id.seconds) //to count seconds
-        val minutes: TextView =view.findViewById(R.id.minutes) //to count minutes
-        val startFocus: Button =view.findViewById(R.id.StartFocusBtn) //Start Focus button
-        val selectCategoryView: TextView =view.findViewById(R.id.select_Tag)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.fragment_timer_page)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main_timer)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
+        val seconds: TextView = findViewById(R.id.seconds) //to count seconds
+        val minutes: TextView =findViewById(R.id.minutes) //to count minutes
+        val startFocus: Button =findViewById(R.id.StartFocusBtn) //Start Focus button
+        val selectCategoryView: TextView =findViewById(R.id.select_Tag)
 
 
         selectCategoryView.setOnClickListener {
-            val newLayout = inflater.inflate(R.layout.category_view_timer, container, false)
-            container?.addView(newLayout)
+            intent= Intent(this,CategoryView::class.java)
+            startActivity(intent)
         }
 
         val handler = Handler(Looper.getMainLooper())
@@ -65,7 +73,7 @@ class TimerPage : Fragment() {
         {
             updateButtonText() //update button to Stop Focus
             isRunning=!isRunning
-            Toast.makeText(requireContext(), "WOW", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "WOW", Toast.LENGTH_SHORT).show()
             // Start the timer initially
             if(isRunning)
                 handler.removeCallbacks(runnable)
@@ -73,12 +81,11 @@ class TimerPage : Fragment() {
                 handler.post(runnable)
 
         }
-        return view
     }
 
     private fun updateButtonText()
     {
         val buttonText=if(isRunning)"Stop Focus" else "Start Focus"
-        view?.findViewById<Button>(R.id.StartFocusBtn)?.text=buttonText
+        findViewById<Button>(R.id.StartFocusBtn)?.text=buttonText
     }
 }

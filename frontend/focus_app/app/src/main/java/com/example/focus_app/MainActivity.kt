@@ -1,6 +1,7 @@
 package com.example.focus_app
 
 import SignUpPage.SignUpPage
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,7 +25,8 @@ class MainActivity : AppCompatActivity() {
 
         if(savedInstanceState==null)
         {
-            replaceFragment(SignUpPage())
+            intent= Intent(this,SignUpPage::class.java)
+            startActivity(intent)
         }
     }
     private fun replaceFragment(fragment: Fragment){
