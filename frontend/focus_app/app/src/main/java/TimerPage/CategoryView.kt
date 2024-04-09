@@ -1,7 +1,9 @@
 package TimerPage
 
+import ApiRequest.GetCategory
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.ListView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,8 +21,8 @@ class CategoryView : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-
-
+        val listOfCategories=findViewById<ListView>(R.id.list_of_category)
+        GetCategory(this,listOfCategories)
 
     }
 }

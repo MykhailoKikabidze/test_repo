@@ -1,8 +1,13 @@
 package ApiRequest
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.TextView
+import android.widget.Toast
+import com.example.focus_app.R
 import kotlin.collections.map
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -44,7 +49,8 @@ fun CreateActivity(requestBody: Map<String,String>,cat_name:String,user_email:St
     })
 }
 
-fun GetCategory(messageTextView: TextView) {
+
+fun GetCategory(context: Context, listView: ListView) {
     RetrofitClient.instance.getCategories().enqueue(object : Callback<List<Category>> {
         private val handler = Handler(Looper.getMainLooper())
 
@@ -55,17 +61,16 @@ fun GetCategory(messageTextView: TextView) {
 
                 // Display category names
                 val categoryNamesText = categoryNames.joinToString(", ")
-                handler.post {
-                    messageTextView.text = categoryNamesText
-                }
+                val adapter = ArrayAdapter(listView.context, R.layout.category_view_timer, categoryNames)
+                listView.adapter = adapter
             } else {
-                messageTextView.text="ERROR"
+                Toast.makeText(context, "Unknown error", Toast.LENGTH_SHORT).show()
             }
         }
 
         override fun onFailure(call: Call<List<Category>>, t: Throwable) {
             handler.post {
-                messageTextView.text = "Failure: ${t.message}"
+                Toast.makeText(context, "Failure: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         }
     })
