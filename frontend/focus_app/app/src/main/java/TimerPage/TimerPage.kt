@@ -5,10 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -21,7 +17,6 @@ import com.example.focus_app.R
 class TimerPage : AppCompatActivity() {
     private var isRunning=true
 
-    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -73,8 +68,6 @@ class TimerPage : AppCompatActivity() {
         {
             updateButtonText() //update button to Stop Focus
             isRunning=!isRunning
-            Toast.makeText(this, "WOW", Toast.LENGTH_SHORT).show()
-            // Start the timer initially
             if(isRunning)
                 handler.removeCallbacks(runnable)
             else

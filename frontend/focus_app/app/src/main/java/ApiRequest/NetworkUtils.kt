@@ -12,51 +12,51 @@ import android.os.Looper
 import android.widget.Toast
 
 val connectionProblem="You don't have internet"
-fun HandleError(handler:Handler, response: Response<ResponseMessage>, messageTextView: TextView)
+fun HandleError(handler:Handler, response: Response<ResponseMessage>, callback: (String) -> Unit)
 {
     val errorMessage = response.errorBody()?.string() ?: "Unknown error"
     handler.post {
-        messageTextView.text = "Error: $errorMessage"
+        callback("Error: $errorMessage")
     }
 }
 
-fun CreateUser(requestBody: Map<String,String>,context: Context)
+fun CreateUser(requestBody: Map<String,String>, callback: (String) -> Unit)
 {
     RetrofitClient.instance.createUser(requestBody).enqueue(object : Callback<Any> {
         private val handler = Handler(Looper.getMainLooper())
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
-            handleResponse(response,handler,context)
+            handleResponse(response,handler,callback)
         }
 
         override fun onFailure(call: Call<Any>, t: Throwable) {
             handler.post {
-                Toast.makeText(context, "Failure: ${t.message}", Toast.LENGTH_SHORT).show()
+                callback ("Failure: ${t.message}")
             }
         }
     })
 }
-fun handleResponse(response: Response<Any>,handler: Handler,context: Context) {
+fun handleResponse(response: Response<Any>,handler: Handler,callback: (String) -> Unit) {
     if (response.isSuccessful) {
         val gson = Gson()
         val jsonObject = gson.toJson(response.body())
         val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
 
         if (jsonObj.has("login")) {
-            Toast.makeText(context, "Congratulations", Toast.LENGTH_SHORT).show()
+            callback ("Congratulations")
         } else if (jsonObj.has("num")) {
-            Toast.makeText(context, "You already have account", Toast.LENGTH_SHORT).show()
+            callback ("You already have account")
         } else {
-            Toast.makeText(context, "Unknown error", Toast.LENGTH_SHORT).show()
+            callback ("Unknown error")
         }
     } else {
         val errorMessage = response.errorBody()?.string() ?: "Unknown error"
         handler.post {
-            Toast.makeText(context, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
+            callback("Error: $errorMessage")
         }
     }
 }
 
-fun ConnectServer(messageTextView: TextView)
+fun ConnectServer(callback: (String) -> Unit)
 {
     RetrofitClient.instance.getMessage().enqueue(object : Callback<ResponseMessage> {
         private val handler = Handler(Looper.getMainLooper())
@@ -65,13 +65,13 @@ fun ConnectServer(messageTextView: TextView)
             if (response.isSuccessful) {
                 val message = response.body()?.message ?: connectionProblem
             } else {
-                HandleError(handler,response ,messageTextView)
+                HandleError(handler,response ,callback)
             }
         }
 
         override fun onFailure(call: Call<ResponseMessage>, t: Throwable) {
             handler.post {
-                messageTextView.text = "Failure: ${t.message}"
+                callback("Failure: ${t.message}")
             }
         }
     })

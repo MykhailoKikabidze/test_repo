@@ -29,9 +29,4 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-    private fun replaceFragment(fragment: Fragment){
-        val transaction: FragmentTransaction =supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.main_activity,fragment)
-        transaction.commit()
-    }
 }

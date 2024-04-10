@@ -1,7 +1,9 @@
 package LoginPage
 
+import ApiRequest.Authorization
 import ApiRequest.CreateUser
 import SignUpPage.SignUpPage
+import TimerPage.TimerPage
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,12 +14,14 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.focus_app.MainActivity
 import com.google.android.material.textfield.TextInputEditText
 
 class LoginPage : AppCompatActivity() {
@@ -43,18 +47,18 @@ class LoginPage : AppCompatActivity() {
                 "password" to "$password"
             )
 
-            CreateUser(user,this)
+            Authorization(user) { result ->
+
+                   Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+//                    val intent = Intent(this, TimerPage::class.java)
+//                    startActivity(intent)
+
+            }
         }
 
-        changeToSingUp.setOnClickListener{
-            val intent= Intent(this,SignUpPage::class.java)
-            startActivity(intent)
-        }
-    }
-    private fun switchToFragment(fragment: Fragment, fragmentManager: FragmentManager, containerId: Int) {
-        // Perform a fragment transaction to replace the current fragment with the new one
-        val transaction: FragmentTransaction = fragmentManager.beginTransaction()
-        transaction.replace(containerId, fragment)
-        transaction.commit()
+//        changeToSingUp.setOnClickListener{
+//            val intent= Intent(this,SignUpPage::class.java)
+//            startActivity(intent)
+//        }
     }
 }

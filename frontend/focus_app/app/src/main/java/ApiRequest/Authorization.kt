@@ -13,9 +13,10 @@ import retrofit2.Response
 val rightAutorization="Congratulation?!!!"
 val wrongAutorization="You need to log in first"
 
-fun Authorization (requestBody: Map<String, String>,context :Context) {
+
+
+fun Authorization(requestBody: Map<String, String>, callback: (String) -> Unit) {
     RetrofitClient.instance.authorization(requestBody).enqueue(object : Callback<Any> {
-        private val handler = Handler(Looper.getMainLooper())
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
             if (response.isSuccessful) {
                 val gson = Gson()
@@ -23,25 +24,29 @@ fun Authorization (requestBody: Map<String, String>,context :Context) {
                 val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
 
                 if (jsonObj.has("login")) {
-                    Toast.makeText(context, "Congratulations", Toast.LENGTH_SHORT).show()
+                    //  showToast(context, "Congratulations")
+                    callback(rightAutorization) // Authorization successful
                 } else if (jsonObj.has("num")) {
-                    Toast.makeText(context, "You haven't account first sing in", Toast.LENGTH_SHORT).show()
+                    //  showToast(context, "You haven't account first sign in")
+                    callback(wrongAutorization) // Authorization failed
                 } else {
-                    Toast.makeText(context, "Unknown error", Toast.LENGTH_SHORT).show()
+                    //  showToast(context, "Unknown error")
+                    callback("Unknown error") // Authorization failed
                 }
             } else {
                 val errorMessage = response.errorBody()?.string() ?: "Unknown error"
-                handler.post {
-                    Toast.makeText(context, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
-                }
+                // showToast(context, "Error: $errorMessage")
+                callback("Error: $errorMessage") // Authorization failed
             }
         }
 
         override fun onFailure(call: Call<Any>, t: Throwable) {
-            handler.post {
-                Toast.makeText(context, "Failure: ${t.message}", Toast.LENGTH_SHORT).show()
-            }
+            // showToast(context, "Failure: ${t.message}")
+            callback("Failure: ${t.message}") // Authorization failed
         }
     })
 }
+
+
+
 
