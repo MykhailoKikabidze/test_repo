@@ -8,6 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Headers
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Query
 import java.util.Locale
 
@@ -38,6 +39,14 @@ interface ApiService {
         @Body requestBody: Map<String, String>,
         @Query("cat_name") cat_name:String,
         @Query("user_email") user_email:String,
+    ): Call<Any>
+
+    @PUT("/activities/name/")
+    fun updateActivity(
+        @Body requestBody: Map<String, String>,
+        @Query("cat_name") catName: String,
+        @Query("user_email") userEmail: String,
+        @Query("new_activity_name") newActivityName: String
     ): Call<Any>
 
 }

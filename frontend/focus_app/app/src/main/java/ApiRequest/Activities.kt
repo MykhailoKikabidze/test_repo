@@ -106,5 +106,34 @@ fun GetCategory(context: Context, listView: ListView) {
                 }
             })
     }
+    fun UpdateActivity(requestBody: Map<String,String>, cat_name:String, user_email:String,new_activity_name:String, messageTextView: TextView) {
+        RetrofitClient.instance.updateActivity(requestBody, cat_name, user_email,new_activity_name).enqueue(object : Callback<Any> {
+            private val handler = Handler(Looper.getMainLooper())
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                if (response.isSuccessful) {
+                    val gson = Gson()
+                    val jsonObject = gson.toJson(response.body())
+                    val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
+
+                    if (jsonObj.has("status")) {
+                        messageTextView.text = "Updated successfully"
+                    } else {
+                        messageTextView.text = "Some Error"
+                    }
+                } else {
+                    val errorMessage = response.errorBody()?.string() ?: "Unknown error"
+                    handler.post {
+                        messageTextView.text = "Error: $errorMessage"
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                handler.post {
+                    messageTextView.text = "Failure: ${t.message}"
+                }
+            }
+        })
+    }
 
 }
