@@ -12,6 +12,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import com.example.focus_app.R
 
 class TimerPage : AppCompatActivity() {
@@ -33,8 +35,7 @@ class TimerPage : AppCompatActivity() {
 
 
         selectCategoryView.setOnClickListener {
-            intent= Intent(this,CategoryView::class.java)
-            startActivity(intent)
+            replaceFragment(CategoryView())
         }
 
         val handler = Handler(Looper.getMainLooper())
@@ -76,6 +77,11 @@ class TimerPage : AppCompatActivity() {
         }
     }
 
+    private fun replaceFragment(fragment: Fragment){
+        val transaction: FragmentTransaction =supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.main_timer,fragment)
+        transaction.commit()
+    }
     private fun updateButtonText()
     {
         val buttonText=if(isRunning)"Stop Focus" else "Start Focus"

@@ -50,32 +50,38 @@ fun CreateActivity(requestBody: Map<String,String>,cat_name:String,user_email:St
 }
 
 
-fun GetCategory(context: Context, listView: ListView) {
+fun GetCategory(listView: ListView, callback: (String) -> Unit) {
     RetrofitClient.instance.getCategories().enqueue(object : Callback<List<Category>> {
         private val handler = Handler(Looper.getMainLooper())
 
         override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
             if (response.isSuccessful) {
-                val listCategories = response.body()?:  emptyList()
+                val listCategories = response.body() ?: emptyList()
                 val categoryNames = listCategories.map { category -> category.name }
 
-                // Display category names
-                val categoryNamesText = categoryNames.joinToString(", ")
-                val adapter = ArrayAdapter(listView.context, R.layout.category_view_timer, categoryNames)
+                // Create an ArrayAdapter with category names
+                val adapter = ArrayAdapter(listView.context, android.R.layout.simple_list_item_1, categoryNames)
+
+                // Set the adapter to the ListView
                 listView.adapter = adapter
+
+                // Notify the callback that categories have been loaded
+                callback("Categories loaded successfully")
             } else {
-                Toast.makeText(context, "Unknown error", Toast.LENGTH_SHORT).show()
+                callback("Unknown error")
             }
         }
 
         override fun onFailure(call: Call<List<Category>>, t: Throwable) {
             handler.post {
-                Toast.makeText(context, "Failure: ${t.message}", Toast.LENGTH_SHORT).show()
+                callback("Failure: ${t.message}")
             }
         }
     })
+}
 
-    fun DeleteActivity(requestBody: Map<String, String>, cat_name: String, user_email: String, messageTextView: TextView) {
+
+fun DeleteActivity(requestBody: Map<String, String>, cat_name: String, user_email: String, messageTextView: TextView) {
         RetrofitClient.instance.deleteActivity(requestBody, cat_name, user_email)
             .enqueue(object : Callback<Any> {
                 private val handler = Handler(Looper.getMainLooper())
@@ -135,5 +141,3 @@ fun GetCategory(context: Context, listView: ListView) {
             }
         })
     }
-
-}
