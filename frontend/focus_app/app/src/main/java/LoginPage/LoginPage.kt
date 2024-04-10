@@ -50,8 +50,8 @@ class LoginPage : AppCompatActivity() {
             Authorization(user) { result ->
 
                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-//                    val intent = Intent(this, TimerPage::class.java)
-//                    startActivity(intent)
+                    val intent = Intent(this, TimerPage::class.java)
+                    startActivity(intent)
 
             }
         }
