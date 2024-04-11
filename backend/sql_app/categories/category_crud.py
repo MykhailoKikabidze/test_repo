@@ -52,6 +52,23 @@ async def get_activity(db: AsyncSession, cat_name: str, user_email: str, activit
         return False
 
 
+async def get_activities(db: AsyncSession, cat_name: str, user_email: str):
+    async with db as session:
+        cat_id = await get_category_id(db=db, cat_name=cat_name)
+        user_id = await get_user_id(db=db, user_email=user_email)
+
+        if cat_id is not None and user_id is not None:
+
+            result = await session.execute(
+                select(category_models.Activity).filter(
+                    category_models.Activity.id_category == cat_id,
+                    category_models.Activity.id_user == user_id)
+            )
+
+            return result.scalars().all()
+
+        return None
+
 async def add_activity_by_category(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
     async with db as session:
         cat_id = await get_category_id(db=db, cat_name=cat_name)

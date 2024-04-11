@@ -74,3 +74,11 @@ async def add_activity_log(activity_log: category_schemas.ActivityLogs, cat_name
     result = await category_crud.add_activity_log(db=db, cat_name=cat_name, user_email=user_email, activity_name=activity_name, activity_log=activity_log)
     res_status = category_schemas.Status(status=result["status"], message=result["message"])
     return res_status
+
+
+@app.get("/activities/", response_model=Union[List[category_schemas.Activity], category_schemas.Status])
+async def show_activities(cat_name: str, user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await category_crud.get_activities(db=db, cat_name=cat_name, user_email=user_email)
+    if result is not None:
+        return result
+    return category_schemas.Status(status="error", message="Category or user is not found.")
