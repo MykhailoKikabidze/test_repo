@@ -4,6 +4,7 @@ from fastapi import Depends, FastAPI
 
 from .logging_api import logging_crud, logging_schemas
 from .categories import category_crud, category_schemas
+from .profile import profile_crud, profile_schemas
 from .database import AsyncSessionLocal
 
 from pydantic.types import Union, List
@@ -82,3 +83,31 @@ async def show_activities(cat_name: str, user_email: str, db: AsyncSession = Dep
     if result is not None:
         return result
     return category_schemas.Status(status="error", message="Category or user is not found.")
+
+
+@app.put("/profile/update/login/", response_model=category_schemas.Status)
+async def update_user_login(new_login: str, user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.change_login(db=db, email=user_email, new_login=new_login)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.put("/profile/update/email/", response_model=category_schemas.Status)
+async def update_user_email(new_email: str, user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.change_email(db=db, email=user_email, new_email=new_email)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.put("/profile/update/password/", response_model=category_schemas.Status)
+async def update_user_password(new_password: str, user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.change_password(db=db, email=user_email, new_password=new_password)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.post("/profile/", response_model=category_schemas.Status)
+async def add_profile(user_email: str, last_log: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.add_default_profile(db=db, email=user_email, last_log=last_log)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
