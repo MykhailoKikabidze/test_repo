@@ -44,9 +44,9 @@ class SignUpPage : AppCompatActivity() {
         val singUpButton : Button =findViewById(R.id.btn_sign_up)
         singUpButton.setOnClickListener{
             val user= mapOf(
-                "login" to "$login",
-                "email" to "$email",
-                "password" to "$password"
+                "login" to "${login.text}",
+                "email" to "${email.text}",
+                "password" to "${password.text}"
             )
 
             CreateUser(user){ result ->

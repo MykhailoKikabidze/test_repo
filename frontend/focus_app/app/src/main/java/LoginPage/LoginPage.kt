@@ -43,8 +43,8 @@ class LoginPage : AppCompatActivity() {
         logInButton.setOnClickListener{
             val user= mapOf(
                 "login" to "",
-                "email" to "$email",
-                "password" to "$password"
+                "email" to "${email.text}",
+                "password" to "${password.text}"
             )
 
             Authorization(user) { result ->
