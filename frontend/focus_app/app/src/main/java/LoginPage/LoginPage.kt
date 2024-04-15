@@ -1,16 +1,13 @@
 package LoginPage
 
 import ApiRequest.Authorization
-import ApiRequest.CreateUser
-import SignUpPage.SignUpPage
+import ApiRequest.rightAutorization
+import CheckUserData.isEmailValid
+import CheckUserData.isPasswordValid
 import TimerPage.TimerPage
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import com.example.focus_app.R
 import android.annotation.SuppressLint
+import android.os.Bundle
+import com.example.focus_app.R
 import android.content.Intent
 import android.widget.Button
 import android.widget.TextView
@@ -19,13 +16,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.example.focus_app.MainActivity
 import com.google.android.material.textfield.TextInputEditText
 
 class LoginPage : AppCompatActivity() {
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -47,13 +42,17 @@ class LoginPage : AppCompatActivity() {
                 "password" to "${password.text}"
             )
 
-            Authorization(user) { result ->
-
-                   Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, TimerPage::class.java)
-                    startActivity(intent)
-
+//            if(isEmailValid(email.text.toString()) && isPasswordValid(password.text.toString()))
+//            {
+                Authorization(user) { result ->
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                    if(result== rightAutorization) {
+                        val intent = Intent(this, TimerPage::class.java)
+                        startActivity(intent)
+                    }
+//                }
             }
+
         }
 
 //        changeToSingUp.setOnClickListener{
@@ -61,4 +60,5 @@ class LoginPage : AppCompatActivity() {
 //            startActivity(intent)
 //        }
     }
+
 }

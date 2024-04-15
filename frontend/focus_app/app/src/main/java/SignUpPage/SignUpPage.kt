@@ -1,8 +1,13 @@
 package SignUpPage
 
 import ApiRequest.CreateUser
+import ApiRequest.rightAutorization
+import CheckUserData.isEmailValid
+import CheckUserData.isPasswordValid
+import CheckUserData.isUserNameValid
 import LoginPage.LoginPage
 import TimerPage.TimerPage
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +30,7 @@ import com.google.android.material.textfield.TextInputEditText
 
 
 class SignUpPage : AppCompatActivity() {
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -49,15 +55,17 @@ class SignUpPage : AppCompatActivity() {
                 "password" to "${password.text}"
             )
 
-            CreateUser(user){ result ->
-
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, TimerPage::class.java)
-                startActivity(intent)
-
-            }
-            val intent=Intent(this, TimerPage::class.java)
-            startActivity(intent)
+//            if(isEmailValid(email.text.toString()) && isPasswordValid(password.text.toString())
+//                && isUserNameValid(login.text.toString()))
+//            {
+                CreateUser(user){ result ->
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                    if(result!=rightAutorization){
+                        val intent = Intent(this, TimerPage::class.java)
+                        startActivity(intent)
+                    }
+                }
+//            }
         }
 
         changeToLogin.setOnClickListener{

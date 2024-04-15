@@ -11,6 +11,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 
+
 val connectionProblem="You don't have internet"
 fun HandleError(handler:Handler, response: Response<ResponseMessage>, callback: (String) -> Unit)
 {
@@ -42,7 +43,7 @@ fun handleResponse(response: Response<Any>,handler: Handler,callback: (String) -
         val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
 
         if (jsonObj.has("login")) {
-            callback ("Congratulations")
+            callback (rightAutorization)
         } else if (jsonObj.has("num")) {
             callback ("You already have account")
         } else {
