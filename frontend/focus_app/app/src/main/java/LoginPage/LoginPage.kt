@@ -2,13 +2,11 @@ package LoginPage
 
 import ApiRequest.Authorization
 import ApiRequest.rightAutorization
-import CheckUserData.isEmailValid
-import CheckUserData.isPasswordValid
+import SignUpPage.SignUpPage
 import TimerPage.TimerPage
 import android.annotation.SuppressLint
-import android.os.Bundle
-import com.example.focus_app.R
 import android.content.Intent
+import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.focus_app.R
 import com.google.android.material.textfield.TextInputEditText
 
 class LoginPage : AppCompatActivity() {
@@ -56,10 +55,10 @@ class LoginPage : AppCompatActivity() {
 
         }
 
-//        changeToSingUp.setOnClickListener{
-//            val intent= Intent(this,SignUpPage::class.java)
-//            startActivity(intent)
-//        }
+        changeToSingUp.setOnClickListener{
+            val intent= Intent(this,SignUpPage::class.java)
+            startActivity(intent)
+        }
     }
 
 }

@@ -9,6 +9,9 @@ data class ResponseList(
 data class Category(
     val name: String // И другие возможные поля
 )
+data class Activity(
+    val name: String // И другие возможные поля
+)
 
 data class User(
     val login: String,

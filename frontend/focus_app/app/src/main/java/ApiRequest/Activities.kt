@@ -1,21 +1,14 @@
 package ApiRequest
 
-import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.widget.ArrayAdapter
 import android.widget.ListView
-import android.widget.TextView
-import android.widget.Toast
-import com.example.focus_app.R
-import kotlin.collections.map
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Locale
 
 fun GetCategory(listView: ListView, callback: (String) -> Unit) {
     RetrofitClient.instance.getCategories().enqueue(object : Callback<List<Category>> {
@@ -26,13 +19,10 @@ fun GetCategory(listView: ListView, callback: (String) -> Unit) {
                 val listCategories = response.body() ?: emptyList()
                 val categoryNames = listCategories.map { category -> category.name }
 
-                // Create an ArrayAdapter with category names
                 val adapter = ArrayAdapter(listView.context, android.R.layout.simple_list_item_1, categoryNames)
 
-                // Set the adapter to the ListView
                 listView.adapter = adapter
 
-                // Notify the callback that categories have been loaded
                 callback("Categories loaded successfully")
             } else {
                 callback("Unknown error")
@@ -46,6 +36,36 @@ fun GetCategory(listView: ListView, callback: (String) -> Unit) {
         }
     })
 }
+
+fun GetActivities(listView: ListView,cat_name: String, user_email: String, callback: (String) -> Unit) {
+    RetrofitClient.instance.getActivities(cat_name,user_email).enqueue(object : Callback<List<Activity>> {
+        private val handler = Handler(Looper.getMainLooper())
+
+        override fun onResponse(call: Call<List<Activity>>, response: Response<List<Activity>>) {
+            if (response.isSuccessful) {
+                val listCategories = response.body() ?: emptyList()
+                val activityNames = listCategories.map { activity -> activity.name }
+
+                val adapter = ArrayAdapter(listView.context, android.R.layout.simple_list_item_1, activityNames)
+
+                listView.adapter = adapter
+
+                callback("Categories loaded successfully")
+            } else {
+                callback("Unknown error")
+            }
+        }
+
+        override fun onFailure(call: Call<List<Activity>>, t: Throwable) {
+            handler.post {
+                callback("Failure: ${t.message}")
+            }
+        }
+    })
+}
+
+
+
 
 
 fun CreateActivity(requestBody: Map<String,String>, cat_name:String, user_email:String, callback: (String) -> Unit) {

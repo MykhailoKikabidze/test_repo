@@ -1,28 +1,22 @@
 package TimerPage
 
-import ApiRequest.GetCategory
-import android.annotation.SuppressLint
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.example.focus_app.R
 import ApiRequest.CreateActivity
-import ApiRequest.UpdateActivity
 import ApiRequest.DeleteActivity
-import android.widget.ArrayAdapter
+import ApiRequest.GetActivities
+import ApiRequest.UpdateActivity
+import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
+import android.widget.ListView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.example.focus_app.R
+
 
 class ActivityView : AppCompatActivity() {
+    private var selectedActivity: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_activity_view)
@@ -37,47 +31,60 @@ class ActivityView : AppCompatActivity() {
         val listViewActivities = findViewById<ListView>(R.id.listViewActivities)
 
         val category = intent.getStringExtra("category") ?: ""
+        val cat_name = "sport"
+        val user_email = "test"
+        GetActivities(listViewActivities, cat_name, user_email) { result ->
+            val resultString = result.toString()
+            Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show()
+        }
+
+        // Обработчик нажатия на элемент списка
+        listViewActivities.setOnItemClickListener { parent, view, position, id ->
+            // Получаем выбранный элемент списка
+            selectedActivity = listViewActivities.getItemAtPosition(position) as String
+            // Опционально: отобразить выбранный элемент пользователю или выполнить другие действия
+        }
 
         // Button Add click
         buttonAdd.setOnClickListener {
             val activityName = editTextActivityName.text.toString()
             val requestBody = mapOf("name" to activityName)
 
-
-
             val cat_name = "sport"
             val user_email = "test"
+
             CreateActivity(requestBody, cat_name, user_email) { result ->
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
 
-                val currentActivityList = mutableListOf<String>()
-                for (i in 0 until listViewActivities.count) {
-                    currentActivityList.add(listViewActivities.getItemAtPosition(i).toString())
+                // Получаем список активностей после добавления новой активности
+                GetActivities(listViewActivities, cat_name, user_email) { result ->
+                    val resultString = result.toString()
+                    Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show()
                 }
-
-                currentActivityList.add(activityName)
-
-                val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, currentActivityList)
-                
-                listViewActivities.adapter = adapter
             }
-
         }
 
         // Button Delete click
         buttonDelete.setOnClickListener {
-            val selectedItem = listViewActivities.selectedItem.toString()
-            val activity_name = selectedItem.toString()
+            // Проверяем, что есть выбранный элемент для удаления
+            selectedActivity?.let { activity ->
+                val cat_name = "sport"
+                val user_email = "test"
 
-            val cat_name = "sport"
-            val user_email = "test"
-
-            DeleteActivity(activity_name, cat_name, user_email) { result ->
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                // Выполняем удаление выбранного элемента
+                DeleteActivity(activity, cat_name, user_email) { result ->
+                    Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                    // Обновление списка активностей после удаления
+                    GetActivities(listViewActivities, cat_name, user_email) { result ->
+                        val resultString = result.toString()
+                        Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } ?: run {
+                Toast.makeText(this, "Выберите активность для удаления", Toast.LENGTH_SHORT).show()
             }
         }
-
-        //Buton Update click
+        // Button Update click
         buttonUpdate.setOnClickListener {
             val selectedActivity = listViewActivities.selectedItem.toString()
             val newActivityName = editTextActivityName.text.toString()
@@ -88,14 +95,12 @@ class ActivityView : AppCompatActivity() {
 
             UpdateActivity(requestBody, catName, userEmail, selectedActivity) { result ->
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                // Обновление списка активностей после обновления
+                GetActivities(listViewActivities, catName, userEmail) { result ->
+                    val resultString = result.toString()
+                    Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show()
+                }
             }
         }
-
-
     }
 }
-
-
-
-
-
