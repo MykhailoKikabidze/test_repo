@@ -4,6 +4,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.Headers
@@ -34,9 +35,9 @@ interface ApiService {
         @Query("user_email") user_email:String,
     ): Call<Any>
 
-    @HTTP(method = "DELETE", path = "/activities/name/", hasBody = true)
+    @DELETE("/activities/name/")
     fun deleteActivity(
-        @Body requestBody: Map<String, String>,
+        @Query("activity_name") activity_name: String,
         @Query("cat_name") cat_name:String,
         @Query("user_email") user_email:String,
     ): Call<Any>

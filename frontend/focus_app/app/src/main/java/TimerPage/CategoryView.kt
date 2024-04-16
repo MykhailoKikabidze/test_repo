@@ -30,8 +30,16 @@ class CategoryView : Fragment() {
         GetCategory(listOfCategories){result->
             Toast.makeText(requireContext(), result, Toast.LENGTH_SHORT).show()
         }
+
+        listOfCategories.setOnItemClickListener { parent, view, position, id ->
+            val selectedCategory = parent.getItemAtPosition(position) as String
+            val intent = Intent(requireContext(), ActivityView::class.java)
+            intent.putExtra("category", selectedCategory)
+            startActivity(intent)
+        }
+
         return view
     }
-
 }
+
 

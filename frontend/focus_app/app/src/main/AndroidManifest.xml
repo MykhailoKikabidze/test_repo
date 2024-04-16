@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Focus_app"
         tools:targetApi="31">
         <activity
+            android:name="TimerPage.ActivityView"
+            android:exported="true"/>
+        <activity
             android:name="TimerPage.TimerPage"
             android:exported="true" />
         <activity
