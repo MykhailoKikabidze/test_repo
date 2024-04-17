@@ -1,9 +1,11 @@
 package ApiRequest
 
+import ActivitiesAdapter
 import android.os.Handler
 import android.os.Looper
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -37,20 +39,17 @@ fun GetCategory(listView: ListView, callback: (String) -> Unit) {
     })
 }
 
-fun GetActivities(listView: ListView,cat_name: String, user_email: String, callback: (String) -> Unit) {
-    RetrofitClient.instance.getActivities(cat_name,user_email).enqueue(object : Callback<List<Activity>> {
+fun GetActivities(recyclerView: RecyclerView, cat_name: String, user_email: String, callback: (String) -> Unit) {
+    RetrofitClient.instance.getActivities(cat_name, user_email).enqueue(object : Callback<List<Activity>> {
         private val handler = Handler(Looper.getMainLooper())
 
         override fun onResponse(call: Call<List<Activity>>, response: Response<List<Activity>>) {
             if (response.isSuccessful) {
-                val listCategories = response.body() ?: emptyList()
-                val activityNames = listCategories.map { activity -> activity.name }
-
-                val adapter = ArrayAdapter(listView.context, android.R.layout.simple_list_item_1, activityNames)
-
-                listView.adapter = adapter
-
-                callback("Categories loaded successfully")
+                val listActivities = response.body() ?: emptyList()
+                val activityNames = listActivities.map { it.name }
+                val adapter = recyclerView.adapter as ActivitiesAdapter
+                adapter.updateActivities(activityNames)
+                callback("Activities loaded successfully")
             } else {
                 callback("Unknown error")
             }
@@ -63,7 +62,6 @@ fun GetActivities(listView: ListView,cat_name: String, user_email: String, callb
         }
     })
 }
-
 
 
 

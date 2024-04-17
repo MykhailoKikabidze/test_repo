@@ -1,5 +1,6 @@
 package TimerPage
 
+import ActivitiesAdapter
 import ApiRequest.CreateActivity
 import ApiRequest.DeleteActivity
 import ApiRequest.GetActivities
@@ -8,14 +9,17 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.focus_app.R
 
-
 class ActivityView : AppCompatActivity() {
-    private var selectedActivity: String? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: ActivitiesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,82 +29,78 @@ class ActivityView : AppCompatActivity() {
         rootView.setBackgroundResource(R.drawable.timer_img)
 
         val buttonAdd = findViewById<Button>(R.id.buttonAdd)
-        val buttonDelete = findViewById<Button>(R.id.buttonDelete)
-        val buttonUpdate = findViewById<Button>(R.id.buttonUpdate)
         val editTextActivityName = findViewById<EditText>(R.id.editTextActivityName)
-        val listViewActivities = findViewById<ListView>(R.id.listViewActivities)
 
-        val category = intent.getStringExtra("category") ?: ""
-        val cat_name = "sport"
-        val user_email = "test"
-        GetActivities(listViewActivities, cat_name, user_email) { result ->
-            val resultString = result.toString()
-            Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show()
-        }
+        recyclerView = findViewById(R.id.recyclerViewActivities)
+        adapter = ActivitiesAdapter(mutableListOf())
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Обработчик нажатия на элемент списка
-        listViewActivities.setOnItemClickListener { parent, view, position, id ->
-            // Получаем выбранный элемент списка
-            selectedActivity = listViewActivities.getItemAtPosition(position) as String
-            // Опционально: отобразить выбранный элемент пользователю или выполнить другие действия
-        }
+        setupSwipeToDelete()
+        setupLongClick()
 
-        // Button Add click
         buttonAdd.setOnClickListener {
-            val activityName = editTextActivityName.text.toString()
-            val requestBody = mapOf("name" to activityName)
-
-            val cat_name = "sport"
-            val user_email = "test"
-
-            CreateActivity(requestBody, cat_name, user_email) { result ->
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-
-                // Получаем список активностей после добавления новой активности
-                GetActivities(listViewActivities, cat_name, user_email) { result ->
-                    val resultString = result.toString()
-                    Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
-
-        // Button Delete click
-        buttonDelete.setOnClickListener {
-            // Проверяем, что есть выбранный элемент для удаления
-            selectedActivity?.let { activity ->
-                val cat_name = "sport"
-                val user_email = "test"
-
-                // Выполняем удаление выбранного элемента
-                DeleteActivity(activity, cat_name, user_email) { result ->
+            val activityName = editTextActivityName.text.toString().trim()
+            if (activityName.isNotEmpty()) {
+                CreateActivity(mapOf("name" to activityName), "sport", "test") { result ->
                     Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-                    // Обновление списка активностей после удаления
-                    GetActivities(listViewActivities, cat_name, user_email) { result ->
-                        val resultString = result.toString()
-                        Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show()
-                    }
+                    adapter.addActivity(activityName)
                 }
-            } ?: run {
-                Toast.makeText(this, "Выберите активность для удаления", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Please enter a valid activity name.", Toast.LENGTH_SHORT).show()
             }
         }
-        // Button Update click
-        buttonUpdate.setOnClickListener {
-            val selectedActivity = listViewActivities.selectedItem.toString()
-            val newActivityName = editTextActivityName.text.toString()
-            val requestBody = mapOf("new_activity_name" to newActivityName)
 
-            val catName = "sport"
-            val userEmail = "test"
-
-            UpdateActivity(requestBody, catName, userEmail, selectedActivity) { result ->
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-                // Обновление списка активностей после обновления
-                GetActivities(listViewActivities, catName, userEmail) { result ->
-                    val resultString = result.toString()
-                    Toast.makeText(this, resultString, Toast.LENGTH_SHORT).show()
-                }
-            }
+        GetActivities(recyclerView, "sport", "test") { activities ->
+            adapter.activities
         }
     }
+
+    private fun setupSwipeToDelete() {
+        val itemTouchHelperCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+                val activityName = adapter.getActivityAtPosition(position)
+                DeleteActivity(activityName, "sport", "test") { result ->
+                    Toast.makeText(this@ActivityView, result, Toast.LENGTH_SHORT).show()
+                    adapter.removeItem(position)
+                }
+            }
+        }
+
+        ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView)
+    }
+
+    private fun setupLongClick() {
+        adapter.onItemLongClicked = { activityName ->
+            val editText = EditText(this)
+            editText.setText(activityName)
+            editText.selectAll()
+
+            AlertDialog.Builder(this)
+                .setTitle("Edit Activity")
+                .setView(editText)
+                .setPositiveButton("Save") { dialog, which ->
+                    val newName = editText.text.toString().trim()
+                    if (newName.isNotEmpty()) {
+                        val position = adapter.activities.indexOf(activityName)
+                        if (position != -1) {
+                            UpdateActivity(mapOf("new_activity_name" to newName), "sport", "test", activityName) { result ->
+                                Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
+                                adapter.updateActivity(position, newName)
+                            }
+                        }
+                    } else {
+                        Toast.makeText(this, "Activity name cannot be empty.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .setNegativeButton("Cancel", null)
+                .show()
+        }
+    }
+
 }
