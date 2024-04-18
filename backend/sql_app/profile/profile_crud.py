@@ -21,6 +21,11 @@ async def change_login(db: AsyncSession, email: str, new_login: str):
 
 async def change_email(db: AsyncSession, email: str, new_email: str):
     user = await logging_crud.get_user_by_email(db=db, email=email)
+    check_user = await logging_crud.get_user_by_email(db=db, email=new_email)
+
+    if check_user is not None:
+        return {"status": "error", "message": "User with new email already exists."}
+
     if user is not None:
         async with db as session:
             user.email = new_email
