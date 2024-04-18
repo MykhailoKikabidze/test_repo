@@ -57,8 +57,8 @@ async def create_activity(activity: category_schemas.Activity, cat_name: str, us
 
 
 @app.delete("/activities/name/", response_model=category_schemas.Status)
-async def delete_activity(activity: category_schemas.Activity, cat_name: str, user_email: str, db: AsyncSession = Depends(get_db_session)):
-    result = await category_crud.delete_activity(db=db, cat_name=cat_name, user_email=user_email, activity_name=activity.name)
+async def delete_activity(activity_name: str, cat_name: str, user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await category_crud.delete_activity(db=db, cat_name=cat_name, user_email=user_email, activity_name=activity_name)
     res_status = category_schemas.Status(status=result["status"], message=result["message"])
     return res_status
 
@@ -109,5 +109,28 @@ async def update_user_password(new_password: str, user_email: str, db: AsyncSess
 @app.post("/profile/", response_model=category_schemas.Status)
 async def add_profile(user_email: str, last_log: str, db: AsyncSession = Depends(get_db_session)):
     result = await profile_crud.add_default_profile(db=db, email=user_email, last_log=last_log)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.get("/profile/points/", response_model=Union[int, category_schemas.Status])
+async def get_profile_points(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.get_points(db=db, email=user_email)
+    if result is not None:
+        return result
+    else:
+        return category_schemas.Status(status="error", message="User profile is not found.")
+
+
+@app.put("/profile/points/", response_model=category_schemas.Status)
+async def update_profile_points(user_email: str, points: int, action: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.update_profile_points(db=db, email=user_email, points=points, action=action)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.put("/profile/last_log/", response_model=category_schemas.Status)
+async def update_profile_last_log(user_email: str, new_date_log: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.update_profile_last_log(db=db, email=user_email, new_date_log=new_date_log)
     res_status = category_schemas.Status(status=result["status"], message=result["message"])
     return res_status

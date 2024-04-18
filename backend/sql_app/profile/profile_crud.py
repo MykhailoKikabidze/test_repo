@@ -3,6 +3,8 @@ from backend.sql_app.profile import profile_models, profile_schemas
 from backend.sql_app.logging_api import logging_models, logging_crud
 from sqlalchemy import select
 from datetime import date
+from datetime import datetime
+import math
 
 
 async def change_login(db: AsyncSession, email: str, new_login: str):
@@ -65,7 +67,9 @@ async def add_default_profile(db: AsyncSession, email: str, last_log: str):
         if check_profile is None:
 
             date_last_log = list(map(int, last_log.split("/")))
-            profile = profile_models.Profile(id_user=user.id, bonus=0, points=0, last_log=date(date_last_log[0], date_last_log[1], date_last_log[2]))
+            profile = profile_models.Profile(id_user=user.id, bonus=1, points=0, last_log=date(date_last_log[0],
+                                                                                               date_last_log[1],
+                                                                                               date_last_log[2]))
 
             async with db as session:
                 session.add(profile)
@@ -78,12 +82,74 @@ async def add_default_profile(db: AsyncSession, email: str, last_log: str):
 
 
 async def update_profile_last_log(db: AsyncSession, email: str, new_date_log: str):
-    pass
+    profile = await get_profile(db=db, email=email)
+    if profile is not None:
+
+        new_date = datetime.strptime(new_date_log, "%Y/%m/%d")
+
+        if isinstance(profile.last_log, datetime):
+            last_log_date = profile.last_log
+        else:
+            last_log_date = datetime.combine(profile.last_log, datetime.min.time())
+
+        difference = (new_date - last_log_date).days
+
+        bonus = profile.bonus
+        points = profile.points
+
+        if difference > 1:
+            bonus = 1
+            points += 2
+        elif difference == 1:
+            bonus += 0.3
+            points += math.floor(2 * bonus)
+
+        date_last_log = list(map(int, new_date_log.split("/")))
+        new_profile = profile_models.Profile(id_user=profile.id_user, bonus=bonus,
+                                             points=points,
+                                             last_log=date(date_last_log[0],
+                                                           date_last_log[1],
+                                                           date_last_log[2]))
+
+        async with db as session:
+            await session.delete(profile)
+            session.add(new_profile)
+            await session.commit()
+            await session.refresh(new_profile)
+
+        return {"status": "success", "message": "Profile last date are changed successfully."}
+
+    return {"status": "error", "message": "User profile is not found."}
 
 
-async def update_profile_points(db: AsyncSession, email: str, new_points: int):
-    pass
+async def update_profile_points(db: AsyncSession, email: str, points: int, action: str):
+    profile = await get_profile(db=db, email=email)
+    if profile is not None:
+        if action == "add":
+            new_profile = profile_models.Profile(id_user=profile.id_user, bonus=profile.bonus,
+                                                 points=profile.points + math.floor(points * profile.bonus),
+                                                 last_log=profile.last_log)
+        elif action == "divide":
+            new_profile = profile_models.Profile(id_user=profile.id_user, bonus=profile.bonus,
+                                                 points=profile.points - points,
+                                                 last_log=profile.last_log)
+        else:
+            return {"status": "error", "message": f"Action [{action}] is undefined."}
+
+
+        async with db as session:
+            await session.delete(profile)
+            session.add(new_profile)
+            await session.commit()
+            await session.refresh(new_profile)
+
+        return {"status": "success", "message": "Profile points are changed successfully."}
+
+    return {"status": "error", "message": "User profile is not found."}
 
 
 async def get_points(db: AsyncSession, email: str):
-    pass
+    profile = await get_profile(db=db, email=email)
+    if profile is not None:
+        return profile.points
+    return None

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Date, Numeric
+from sqlalchemy import Column, Integer, Date, REAL
 from backend.sql_app.database import Base
 
 class Profile(Base):
@@ -6,5 +6,5 @@ class Profile(Base):
 
     id_user = Column(Integer, primary_key=True, index=True)
     last_log = Column(Date, index=True)
-    bonus = Column(Numeric, index=True)
+    bonus = Column(REAL, index=True)
     points = Column(Integer, index=True)
