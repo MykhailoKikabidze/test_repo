@@ -119,8 +119,12 @@ fun DeleteActivity(activity_name:String , cat_name: String, user_email: String, 
     })
 }
 
-fun UpdateActivity(requestBody: Map<String,String>, cat_name:String, user_email:String,new_activity_name:String, callback: (String) -> Unit) {
-    RetrofitClient.instance.updateActivity(requestBody, cat_name, user_email, new_activity_name).enqueue(object : Callback<Any> {
+fun UpdateActivity(requestBody: Map<String, String>, cat_name: String, user_email: String, new_activity_name: String, callback: (String) -> Unit) {
+    // Удостоверяемся, что requestBody содержит необходимые ключи
+    val updatedRequestBody = requestBody.toMutableMap()
+    updatedRequestBody["name"] = new_activity_name // Добавляем или обновляем ключ name
+
+    RetrofitClient.instance.updateActivity(updatedRequestBody, cat_name, user_email, new_activity_name).enqueue(object : Callback<Any> {
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
             if (response.isSuccessful) {
                 val gson = Gson()
@@ -143,3 +147,4 @@ fun UpdateActivity(requestBody: Map<String,String>, cat_name:String, user_email:
         }
     })
 }
+

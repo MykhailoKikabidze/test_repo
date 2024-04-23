@@ -7,6 +7,7 @@ import ApiRequest.GetActivities
 import ApiRequest.UpdateActivity
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -45,9 +46,19 @@ class ActivityView : AppCompatActivity() {
                 CreateActivity(mapOf("name" to activityName), "sport", "test") { result ->
                     Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
                     adapter.addActivity(activityName)
+                    editTextActivityName.setText("")  // Очистка поля после добавления
                 }
             } else {
                 Toast.makeText(this, "Please enter a valid activity name.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        editTextActivityName.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                buttonAdd.performClick()
+                true
+            } else {
+                false
             }
         }
 
@@ -102,5 +113,4 @@ class ActivityView : AppCompatActivity() {
                 .show()
         }
     }
-
 }
