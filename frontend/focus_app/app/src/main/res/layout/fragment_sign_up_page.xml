@@ -9,6 +9,8 @@
     android:orientation="vertical"
     tools:context="SignUpPage.SignUpPage">
 
+    <include layout="@layout/toolbar"/>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/login_view_sign_up"
@@ -178,5 +180,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline_end_sign_up"
         app:layout_constraintStart_toEndOf="@id/guideline_start_sign_up" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

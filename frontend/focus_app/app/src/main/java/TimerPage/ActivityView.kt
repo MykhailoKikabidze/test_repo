@@ -5,6 +5,8 @@ import ApiRequest.CreateActivity
 import ApiRequest.DeleteActivity
 import ApiRequest.GetActivities
 import ApiRequest.UpdateActivity
+import Data.activityName
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -18,7 +20,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.focus_app.R
 
+
+
 class ActivityView : AppCompatActivity() {
+    private var selectedActivity: String? = null
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ActivitiesAdapter
 
@@ -37,6 +42,8 @@ class ActivityView : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+
+
         setupSwipeToDelete()
         setupLongClick()
 
@@ -51,6 +58,10 @@ class ActivityView : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please enter a valid activity name.", Toast.LENGTH_SHORT).show()
             }
+            var intent=Intent(this,TimerPage::class.java)
+            startActivity(intent)
+            intent.putExtra("category", intent.extras?.getString("category"))
+
         }
 
         editTextActivityName.setOnEditorActionListener { _, actionId, _ ->

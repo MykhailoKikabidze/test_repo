@@ -46,6 +46,11 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("de.hdodenhof:circleimageview:3.0.0")
+
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
     implementation("com.google.code.gson:gson:2.8.9")

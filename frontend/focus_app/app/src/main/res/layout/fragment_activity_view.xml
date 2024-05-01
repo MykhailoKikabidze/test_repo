@@ -27,13 +27,14 @@
 
         <Button
             android:id="@+id/buttonDelete"
-            android:layout_width="80dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginLeft="275dp"
+            android:textStyle="bold"
             android:layout_marginTop="260dp"
             android:backgroundTint="@color/blaWhite"
             android:text="Delete"
-            android:textSize="10sp" />
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/buttonAdd"
@@ -41,8 +42,9 @@
             android:layout_height="48dp"
             android:layout_marginLeft="25dp"
             android:layout_marginTop="260dp"
+            android:textStyle="bold"
             android:backgroundTint="@color/blaWhite"
-            android:textSize="10sp"
+            android:textSize="15sp"
             android:text="Add"
             android:onClick="onAddButtonClick" />
 
@@ -67,13 +69,14 @@
 
         <Button
             android:id="@+id/buttonUpdate"
-            android:layout_width="85dp"
+            android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_marginStart="155dp"
             android:layout_marginTop="260dp"
             android:backgroundTint="@color/blaWhite"
             android:text="Update"
-            android:textSize="10sp"
+            android:textSize="15sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerViewActivities" />
 

@@ -2,24 +2,20 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="ActivityView">
+      <entry key="LoginPage">
+        <State />
+      </entry>
+      <entry key="PieChart">
+        <State />
+      </entry>
+      <entry key="SignUpPage">
+        <State />
+      </entry>
+      <entry key="TimerPage">
         <State />
       </entry>
       <entry key="app">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="D:\.android\.android\avd\Pixel_6a_API_34.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-17T17:16:11.723953800Z" />
-        </State>
+        <State />
       </entry>
     </value>
   </component>

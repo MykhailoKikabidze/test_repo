@@ -24,12 +24,24 @@
         @GET("/categories/")
         fun getCategories(): Call<List<Category>>
 
+        @GET("/profile/points/")
+        fun getPoints(
+            @Query("user_email") user_email:String
+        ):Call<Any>
+
         @GET("/activities/")
         fun getActivities(
             @Query("cat_name") cat_name:String,
             @Query("user_email") user_email:String
         ): Call<List<Activity>>
 
+        @POST("/activity_log/")
+        fun createActivityLog(
+            @Query("cat_name") cat_name: String,
+            @Query("user_email") user_email: String,
+            @Query("activity_name") activity_name: String,
+            @Body requestBody: Any
+        ):Call<Any>
 
         @POST("/activities/name/")
         fun createActivity(
@@ -52,5 +64,12 @@
             @Query("user_email") userEmail: String,
             @Query("new_activity_name") newActivityName: String
         ): Call<Any>
+
+        @PUT("/profile/points/")
+        fun updatePoints(
+            @Query("user_email") user_email:String,
+            @Query("points") points:Int,
+            @Query("action")action:String
+        ):Call<Any>
 
     }

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/pie_chart_main_activity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="StatisticCharts.PieChart">
+
+    <include layout="@layout/toolbar"/>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.779"/>
+
+    <LinearLayout
+        android:layout_width="360dp"
+        android:layout_height="300dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/img"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.737"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.037" >
+
+        <CalendarView
+            android:id="@+id/calendar"
+            style="@android:style/Widget.Material.CalendarView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00910404"
+            android:backgroundTint="#00CD1212"
+            android:focusedMonthDateColor="#004B8125"
+            android:foregroundTint="#006C0C0C"
+            android:selectedWeekBackgroundColor="#D7B0FF"
+            android:textDirection="firstStrong"
+            android:unfocusedMonthDateColor="#B93AEBF1"
+            android:weekNumberColor="#09294C"
+            android:weekSeparatorLineColor="#0D714646"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

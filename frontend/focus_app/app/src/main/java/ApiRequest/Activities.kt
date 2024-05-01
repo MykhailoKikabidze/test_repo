@@ -12,32 +12,31 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun GetCategory(listView: ListView, callback: (String) -> Unit) {
-    RetrofitClient.instance.getCategories().enqueue(object : Callback<List<Category>> {
-        private val handler = Handler(Looper.getMainLooper())
-
-        override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
-            if (response.isSuccessful) {
-                val listCategories = response.body() ?: emptyList()
-                val categoryNames = listCategories.map { category -> category.name }
-
-                val adapter = ArrayAdapter(listView.context, android.R.layout.simple_list_item_1, categoryNames)
-
-                listView.adapter = adapter
-
-                callback("Categories loaded successfully")
-            } else {
-                callback("Unknown error")
+fun CreateActivityLog(requestBody: Map<String, Any>, cat_name: String, user_email: String, activity_name: String,callback: (String) -> Unit) {
+    val handler = Handler(Looper.getMainLooper())
+    RetrofitClient.instance.createActivityLog(cat_name, user_email, activity_name, requestBody)
+        .enqueue(object : Callback<Any> {
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                if (response.isSuccessful) {
+                    handler.post {
+                        callback("Activity log creation successful")
+                    }
+                } else {
+                    val errorMessage = response.errorBody()?.string() ?: "Unknown error"
+                    handler.post {
+                        callback("Error: $errorMessage")
+                    }
+                }
             }
-        }
 
-        override fun onFailure(call: Call<List<Category>>, t: Throwable) {
-            handler.post {
-                callback("Failure: ${t.message}")
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                handler.post {
+                    callback("Failure: ${t.message}")
+                }
             }
-        }
-    })
+        })
 }
+
 
 fun GetActivities(recyclerView: RecyclerView, cat_name: String, user_email: String, callback: (String) -> Unit) {
     RetrofitClient.instance.getActivities(cat_name, user_email).enqueue(object : Callback<List<Activity>> {

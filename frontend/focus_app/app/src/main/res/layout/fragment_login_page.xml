@@ -7,7 +7,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/timer_page_img"
     android:orientation="vertical"
+    tools:openDrawer="start"
     tools:context="LoginPage.LoginPage">
+
+    <include layout="@layout/toolbar"/>
+
+
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_start_login"
@@ -59,7 +64,7 @@
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/login_view_sing_up"
-        android:backgroundTint="#B4A8A5A5"
+        android:backgroundTint="#90b8c8ff"
         android:hint="Password"
         android:textColorHint="#90E6E5D9"
         app:counterEnabled="true"
@@ -133,5 +138,6 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="110dp"
         tools:ignore="MissingConstraints" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

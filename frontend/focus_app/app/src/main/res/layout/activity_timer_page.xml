@@ -8,6 +8,8 @@
     android:background="@drawable/timer_img"
     tools:context="TimerPage.TimerPage">
 
+    <include layout="@layout/toolbar"/>
+
     <TextView
         android:id="@+id/seconds"
         android:layout_width="wrap_content"
@@ -41,6 +43,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.481" />
 
+
     <TextView
         android:id="@+id/semicolon"
         android:layout_width="wrap_content"
@@ -60,7 +63,7 @@
         android:layout_width="wrap_content"
         android:layout_height="105dp"
         android:fontFamily="sans-serif-medium"
-        android:text="00"
+        android:text="25"
         android:textColor="#2264AF"
         android:textSize="96sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -85,6 +88,47 @@
         app:layout_constraintTop_toBottomOf="@+id/semicolon"
         app:layout_constraintVertical_bias="0.0"
         tools:text=" Select Tag>" />
+
+
+    <ImageView
+        android:id="@+id/points"
+        android:layout_width="20dp"
+        android:layout_height="22dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="5dp"
+        android:src="@drawable/img_1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.984"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.008" />
+
+    <ImageView
+        android:id="@+id/changeTimer"
+        android:layout_width="37dp"
+        android:layout_height="35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.983"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.995"
+        app:srcCompat="@drawable/baseline_access_time_24" />
+
+    <TextView
+        android:id="@+id/points_timer"
+        android:layout_width="30dp"
+        android:textStyle="bold"
+        android:textColor="#072649"
+        android:layout_height="21dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.981"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

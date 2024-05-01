@@ -13,24 +13,32 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.focus_app.MainActivity
 import com.example.focus_app.R
+import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 
 
-class SignUpPage : AppCompatActivity() {
-    @SuppressLint("SuspiciousIndentation")
+class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener{
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toolbar: Toolbar
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -40,6 +48,9 @@ class SignUpPage : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+
+
         val email = findViewById<TextInputEditText>(R.id.email_sign_up)
 
         val login = findViewById<TextInputEditText>(R.id.login_sign_up)
@@ -68,9 +79,52 @@ class SignUpPage : AppCompatActivity() {
 //            }
         }
 
+
+
+        drawerLayout=findViewById(R.id.toolbar_main)
+
+        val navigationView=findViewById<NavigationView>(R.id.nav_view)
+        navigationView.setNavigationItemSelectedListener(this)
+
+        toolbar = findViewById(R.id.toolbar)
+        val toggle= ActionBarDrawerToggle(this,drawerLayout, toolbar ,R.string.open_nav,R.string.close_nav)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
         changeToLogin.setOnClickListener{
             val intent= Intent(this,LoginPage::class.java)
             startActivity(intent)
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.language_menu -> {
+                Toast.makeText(this, "wowo", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            R.id.settings_menu -> {
+                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            R.id.statistics_menu -> {
+                Toast.makeText(this, "static", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+
+    override fun onBackPressed(){
+        super.onBackPressed()
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawer(GravityCompat.START)
+        }else{
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 }
