@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship
 from backend.sql_app.database import Base
 
 
@@ -9,3 +10,8 @@ class User(Base):
     login = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     password = Column(String)
+
+    activity = relationship("Activity", back_populates="user", cascade="all, delete-orphan")
+    profile = relationship("Profile", back_populates="user", cascade="all, delete-orphan")
+
+
