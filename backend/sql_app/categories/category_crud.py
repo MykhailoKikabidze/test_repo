@@ -3,9 +3,10 @@ from backend.sql_app.categories import category_models, category_schemas
 from backend.sql_app.logging_api import logging_models
 from sqlalchemy import select
 from datetime import date, timedelta
+from typing import Sequence, Optional
 
 
-async def get_categories(db: AsyncSession):
+async def get_categories(db: AsyncSession) -> Sequence[category_models.Category]:
     async with db as session:
         result = await session.execute(
             select(category_models.Category)
@@ -14,7 +15,7 @@ async def get_categories(db: AsyncSession):
         return result.scalars().all()
 
 
-async def get_user_id(db: AsyncSession, user_email: str):
+async def get_user_id(db: AsyncSession, user_email: str) -> int:
     async with db as session:
         user_query = await session.execute(
             select(logging_models.User.id).where(logging_models.User.email == user_email)
@@ -23,7 +24,7 @@ async def get_user_id(db: AsyncSession, user_email: str):
         return user_id
 
 
-async def get_category_id(db: AsyncSession, cat_name: str):
+async def get_category_id(db: AsyncSession, cat_name: str) -> int:
     async with db as session:
         cat_query = await session.execute(
             select(category_models.Category.id).where(category_models.Category.name == cat_name)
@@ -32,13 +33,12 @@ async def get_category_id(db: AsyncSession, cat_name: str):
         return cat_id
 
 
-async def get_activity_id(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
+async def get_activity_id(db: AsyncSession, cat_name: str, user_email: str, activity_name: str) -> Optional[int]:
     async with db as session:
         cat_id = await get_category_id(db=db, cat_name=cat_name)
         user_id = await get_user_id(db=db, user_email=user_email)
 
         if cat_id is not None and user_id is not None:
-
             result = await session.execute(
                 select(category_models.Activity.id).filter(
                     category_models.Activity.id_category == cat_id,
@@ -51,13 +51,12 @@ async def get_activity_id(db: AsyncSession, cat_name: str, user_email: str, acti
         return None
 
 
-async def get_activities(db: AsyncSession, cat_name: str, user_email: str):
+async def get_activities(db: AsyncSession, cat_name: str, user_email: str) -> Optional[Sequence[category_models.Activity]]:
     async with db as session:
         cat_id = await get_category_id(db=db, cat_name=cat_name)
         user_id = await get_user_id(db=db, user_email=user_email)
 
         if cat_id is not None and user_id is not None:
-
             result = await session.execute(
                 select(category_models.Activity).filter(
                     category_models.Activity.id_category == cat_id,
@@ -68,7 +67,8 @@ async def get_activities(db: AsyncSession, cat_name: str, user_email: str):
 
         return None
 
-async def add_activity_by_category(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
+
+async def add_activity_by_category(db: AsyncSession, cat_name: str, user_email: str, activity_name: str) -> dict:
     async with db as session:
         cat_id = await get_category_id(db=db, cat_name=cat_name)
         user_id = await get_user_id(db=db, user_email=user_email)
@@ -83,8 +83,7 @@ async def add_activity_by_category(db: AsyncSession, cat_name: str, user_email: 
         return {"status": "success", "message": "Activity added successfully."}
 
 
-
-async def delete_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str):
+async def delete_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str) -> dict:
     async with db as session:
         cat_id = await get_category_id(db=db, cat_name=cat_name)
         user_id = await get_user_id(db=db, user_email=user_email)
@@ -97,7 +96,7 @@ async def delete_activity(db: AsyncSession, cat_name: str, user_email: str, acti
                 category_models.Activity.id_category == cat_id,
                 category_models.Activity.id_user == user_id,
                 category_models.Activity.name == activity_name)
-            )
+        )
 
         activity_to_delete = activity.scalars().first()
 
@@ -110,7 +109,8 @@ async def delete_activity(db: AsyncSession, cat_name: str, user_email: str, acti
         return {"status": "success", "message": "Activity deleted successfully."}
 
 
-async def update_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str, new_activity_name: str):
+async def update_activity(db: AsyncSession, cat_name: str, user_email: str, activity_name: str,
+                          new_activity_name: str) -> dict:
     async with db as session:
         cat_id = await get_category_id(db=db, cat_name=cat_name)
         user_id = await get_user_id(db=db, user_email=user_email)
@@ -123,7 +123,7 @@ async def update_activity(db: AsyncSession, cat_name: str, user_email: str, acti
                 category_models.Activity.id_category == cat_id,
                 category_models.Activity.id_user == user_id,
                 category_models.Activity.name == activity_name)
-            )
+        )
 
         activity_to_update = activity.scalars().first()
 
@@ -149,7 +149,8 @@ async def update_activity(db: AsyncSession, cat_name: str, user_email: str, acti
         return {"status": "success", "message": "Activity name updated successfully."}
 
 
-async def add_activity_log(db: AsyncSession, cat_name: str, user_email: str, activity_name: str, activity_log: category_schemas.ActivityLogs):
+async def add_activity_log(db: AsyncSession, cat_name: str, user_email: str, activity_name: str,
+                           activity_log: category_schemas.ActivityLogs) -> dict:
     async with db as session:
         cat_id = await get_category_id(db=db, cat_name=cat_name)
         user_id = await get_user_id(db=db, user_email=user_email)
@@ -162,7 +163,7 @@ async def add_activity_log(db: AsyncSession, cat_name: str, user_email: str, act
                 category_models.Activity.id_category == cat_id,
                 category_models.Activity.id_user == user_id,
                 category_models.Activity.name == activity_name)
-            )
+        )
 
         activity_id = activity_id.scalars().first()
 
@@ -174,7 +175,9 @@ async def add_activity_log(db: AsyncSession, cat_name: str, user_email: str, act
         except:
             return {"status": "error", "message": "Incorrect parameters in activity log."}
 
-        new_activity_log = category_models.ActivityLogs(id_activity=activity_id, date=date(date_log[0], date_log[1], date_log[2]), time_spent=timedelta(seconds=activity_log.time_spent))
+        new_activity_log = category_models.ActivityLogs(id_activity=activity_id,
+                                                        date=date(date_log[0], date_log[1], date_log[2]),
+                                                        time_spent=timedelta(seconds=activity_log.time_spent))
         session.add(new_activity_log)
         await session.commit()
         await session.refresh(new_activity_log)

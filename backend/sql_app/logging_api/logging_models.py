@@ -13,5 +13,3 @@ class User(Base):
 
     activity = relationship("Activity", back_populates="user", cascade="all, delete-orphan")
     profile = relationship("Profile", back_populates="user", cascade="all, delete-orphan")
-
-

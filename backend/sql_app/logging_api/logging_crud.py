@@ -15,7 +15,7 @@ def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 
-async def get_user_by_email(db: AsyncSession, email: str):
+async def get_user_by_email(db: AsyncSession, email: str) -> logging_models.User:
     async with db as session:
         result = await session.execute(
             select(logging_models.User).filter(logging_models.User.email == email)
@@ -23,7 +23,7 @@ async def get_user_by_email(db: AsyncSession, email: str):
         return result.scalars().first()
 
 
-async def create_user_db(db: AsyncSession, user: logging_models.User):
+async def create_user_db(db: AsyncSession, user: logging_models.User) -> logging_models.User:
     password = hash_password(user.password)
     db_user = logging_models.User(login=user.login, email=user.email, password=password)
     async with db as session:
