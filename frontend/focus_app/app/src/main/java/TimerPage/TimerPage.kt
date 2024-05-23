@@ -3,9 +3,9 @@ package TimerPage
 import ApiRequest.CreateActivityLog
 import ApiRequest.GetPoints
 import ApiRequest.UpdatePoints
-import Data.activityName
 import Data.categoryName
 import Data.userEmail
+import StatisticCharts.PieChart
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -56,9 +56,6 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
             insets
         }
 
-
-
-
         val changeTimerPage=findViewById<ImageView>(R.id.changeTimer)
         seconds = findViewById(R.id.seconds) //to count seconds
         minutes=findViewById(R.id.minutes) //to count minutes
@@ -66,12 +63,12 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
         val selectCategoryView: TextView =findViewById(R.id.select_Tag)
         val userPoints:TextView=findViewById(R.id.points_timer)
 
-        drawerLayout=findViewById(R.id.toolbar_main)
+        drawerLayout=findViewById(R.id.toolbar_timer_main)
 
-        val navigationView=findViewById<NavigationView>(R.id.nav_view)
+        val navigationView=findViewById<NavigationView>(R.id.nav_view_timer)
         navigationView.setNavigationItemSelectedListener(this)
 
-        toolbar = findViewById(R.id.toolbar)
+        toolbar = findViewById(R.id.toolbar_timer)
         val toggle= ActionBarDrawerToggle(this,drawerLayout, toolbar ,R.string.open_nav,R.string.close_nav)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -264,7 +261,8 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
             }
 
             R.id.statistics_menu -> {
-                Toast.makeText(this, "static", Toast.LENGTH_SHORT).show()
+                var intent=Intent(this,PieChart::class.java)
+                startActivity(intent)
                 return true
             }
         }

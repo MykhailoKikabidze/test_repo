@@ -3,6 +3,7 @@ package LoginPage
 import ApiRequest.Authorization
 import ApiRequest.rightAutorization
 import SignUpPage.SignUpPage
+import StatisticCharts.PieChart
 import TimerPage.TimerPage
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -19,8 +20,6 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import com.example.focus_app.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
@@ -40,12 +39,12 @@ class LoginPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        drawerLayout=findViewById(R.id.toolbar_main)
+        drawerLayout=findViewById(R.id.toolbar_login_main)
 
         val navigationView=findViewById<NavigationView>(R.id.nav_view)
         navigationView.setNavigationItemSelectedListener(this)
 
-        toolbar = findViewById(R.id.toolbar)
+        toolbar = findViewById(R.id.toolbar_login)
         val toggle=ActionBarDrawerToggle(this,drawerLayout, toolbar ,R.string.open_nav,R.string.close_nav)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -98,7 +97,8 @@ class LoginPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
             }
 
             R.id.statistics_menu -> {
-                Toast.makeText(this, "static", Toast.LENGTH_SHORT).show()
+                var intent=Intent(this, PieChart::class.java)
+                startActivity(intent)
                 return true
             }
         }

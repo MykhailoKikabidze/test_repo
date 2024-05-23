@@ -2,20 +2,13 @@ package SignUpPage
 
 import ApiRequest.CreateUser
 import ApiRequest.rightAutorization
-import CheckUserData.isEmailValid
-import CheckUserData.isPasswordValid
-import CheckUserData.isUserNameValid
 import LoginPage.LoginPage
+import StatisticCharts.PieChart
 import TimerPage.TimerPage
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -27,9 +20,6 @@ import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.example.focus_app.MainActivity
 import com.example.focus_app.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
@@ -39,6 +29,7 @@ class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLi
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var toolbar: Toolbar
 
+    @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -71,7 +62,7 @@ class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLi
 //            {
                 CreateUser(user){ result ->
                     Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
-                    if(result!=rightAutorization){
+                    if(result==rightAutorization){
                         val intent = Intent(this, TimerPage::class.java)
                         startActivity(intent)
                     }
@@ -81,12 +72,12 @@ class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLi
 
 
 
-        drawerLayout=findViewById(R.id.toolbar_main)
+        drawerLayout=findViewById(R.id.toolbar_sign_up_main)
 
-        val navigationView=findViewById<NavigationView>(R.id.nav_view)
+        val navigationView=findViewById<NavigationView>(R.id.nav_view_sign_up)
         navigationView.setNavigationItemSelectedListener(this)
 
-        toolbar = findViewById(R.id.toolbar)
+        toolbar = findViewById(R.id.toolbar_sign_up)
         val toggle= ActionBarDrawerToggle(this,drawerLayout, toolbar ,R.string.open_nav,R.string.close_nav)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -110,7 +101,8 @@ class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLi
             }
 
             R.id.statistics_menu -> {
-                Toast.makeText(this, "static", Toast.LENGTH_SHORT).show()
+                var intent=Intent(this, PieChart::class.java)
+                startActivity(intent)
                 return true
             }
         }

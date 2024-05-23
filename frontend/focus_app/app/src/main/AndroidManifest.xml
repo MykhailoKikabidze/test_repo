@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Focus_app"
         tools:targetApi="31">
         <activity
+            android:name="ProfilePage.ProfilePage"
+            android:exported="true" />
+        <activity
+            android:name="StatisticCharts.Category"
+            android:exported="false" />
+        <activity
             android:name="StatisticCharts.PieChart"
             android:exported="true" />
         <activity

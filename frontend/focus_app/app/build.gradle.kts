@@ -49,6 +49,11 @@ dependencies {
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("de.hdodenhof:circleimageview:3.0.0")
 
+
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x")
+
+
+
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")

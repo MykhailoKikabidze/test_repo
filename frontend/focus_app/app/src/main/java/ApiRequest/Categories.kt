@@ -37,3 +37,28 @@ fun GetCategory(listView: ListView, callback: (String) -> Unit) {
         }
     })
 }
+
+fun GetCategoryCharts(listOfCategory: (MutableList<String>) -> Unit) {
+    RetrofitClient.instance.getCategories().enqueue(object : Callback<List<Category>> {
+        private val handler = Handler(Looper.getMainLooper())
+
+        override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
+            if (response.isSuccessful) {
+                val listCategories = response.body() ?: emptyList()
+                categoriesNames = listCategories.map { category -> category.name }
+
+                val list:MutableList<String> = mutableListOf()
+                for(i in categoriesNames.indices)
+                {
+                    list+= categoriesNames[i]
+                }
+
+                listOfCategory(list)
+            }
+        }
+
+        override fun onFailure(call: Call<List<Category>>, t: Throwable) {
+
+        }
+    })
+}

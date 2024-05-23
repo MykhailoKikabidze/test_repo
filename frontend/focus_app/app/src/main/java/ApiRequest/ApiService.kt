@@ -35,6 +35,12 @@
             @Query("user_email") user_email:String
         ): Call<List<Activity>>
 
+        @GET("/activities/")
+        fun getActivitiesStatic(
+            @Query("cat_name") cat_name:String,
+            @Query("user_email") user_email:String
+        ): Call<List<String>>
+
         @POST("/activity_log/")
         fun createActivityLog(
             @Query("cat_name") cat_name: String,
@@ -71,5 +77,116 @@
             @Query("points") points:Int,
             @Query("action")action:String
         ):Call<Any>
+
+
+        @GET("/statistics/activity/day/")
+        fun getStatisticsActivityDaily(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name")
+            catName: String,
+            @Query("activity_name") newActivityName: String
+        ): Call<Any>
+
+        @GET("/statistics/activity/weak/")
+        fun getStatisticsActivityWeakly(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String,
+            @Query("activity_name") newActivityName: String
+        ): Call<Any>
+
+        @GET("/statistics/activity/month/")
+        fun getStatisticsActivityMonthly(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String,
+            @Query("activity_name") newActivityName: String
+        ): Call<Any>
+
+        @GET("/statistics/activity/year/")
+        fun getStatisticsActivityYearly(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String,
+            @Query("activity_name") newActivityName: String
+        ): Call<Any>
+
+        @GET("/statistics/activity/all_time/")
+        fun getStatisticsActivityTotal(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String,
+            @Query("activity_name") newActivityName: String
+        ): Call<Any>
+
+        @GET("/statistics/category/day/")
+        fun getStatisticsCategoryDaily(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String
+        ): Call<Any>
+
+        @GET("/statistics/category/weak/")
+        fun getStatisticsCategoryWeakly(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String
+        ): Call<Any>
+
+        @GET("/statistics/category/month/")
+        fun getStatisticsCategoryMonthly(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String
+        ): Call<Any>
+
+        @GET("/statistics/category/year/")
+        fun getStatisticsCategoryYearly(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String
+        ): Call<Any>
+
+        @GET("/statistics/category/all_time/")
+        fun getStatisticsCategoryTotaly(
+            @Query("user_email") userEmail: String,
+            @Query("cat_name") catName: String
+        ): Call<Any>
+
+        @GET("/statistics/total/day/")
+        fun getStatisticsTotalDaily(
+            @Query("user_email") userEmail: String
+        ): Call<Any>
+
+        @GET("/statistics/total/weak/")
+        fun getStatisticsTotalWeakly(
+            @Query("user_email") userEmail: String
+        ): Call<Any>
+
+        @GET("/statistics/total/month/")
+        fun getStatisticsTotalMonthly(
+            @Query("user_email") userEmail: String
+        ): Call<Any>
+
+        @GET("/statistics/total/year/")
+        fun getStatisticsTotalYearly(
+            @Query("user_email") userEmail: String
+        ): Call<Any>
+
+        @GET("/statistics/total/all_time/")
+        fun getStatisticsTotalTotaly(
+            @Query("user_email") userEmail: String
+        ): Call<Any>
+
+
+        @PUT("/profile/login/")
+        fun updateUserLogin(
+            @Query("user_email") userEmail: String,
+            @Query("new_login") newLogin: String
+        ): Call<Any>
+
+        @PUT("/profile/email/")
+        fun updateUserEmail(
+            @Query("user_email") userEmail: String,
+            @Query("new_email") newEmail: String
+        ): Call<Any>
+
+        @PUT("/profile/password/")
+        fun updateUserPassword(
+            @Query("user_email") userEmail: String,
+            @Query("new_password") newPassword: String
+        ): Call<Any>
 
     }
