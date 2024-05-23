@@ -6,6 +6,7 @@ from .logging_api import logging_crud, logging_schemas
 from .categories import category_crud, category_schemas
 from .profile import profile_crud
 from .statistics import statistics_crud, statistics_schemas
+from .friends import friends_crud, friends_schemas
 from .database import AsyncSessionLocal
 from typing import Sequence, Union
 
@@ -284,3 +285,21 @@ async def get_statistics_total_for_all_time(user_email: str, db: AsyncSession = 
     return statistics_schemas.Statistics(data="total",
                                          period="all time",
                                          time=statistics_crud.formatting_interval(result))
+
+
+@app.post("/friendship/", tags=["friendship"], response_model=category_schemas.Status)
+async def add_friendship(user_email: str, friend_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await friends_crud.add_friend(db=db, user_email=user_email, friend_email=friend_email)
+    return category_schemas.Status(status=result["status"], message=result["message"])
+
+
+@app.delete("/friendship/", tags=["friendship"], response_model=category_schemas.Status)
+async def delete_friendship(user_email: str, friend_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await friends_crud.delete_friend(db=db, user_email=user_email, friend_email=friend_email)
+    return category_schemas.Status(status=result["status"], message=result["message"])
+
+
+@app.get("/friendship/", tags=["friendship"], response_model=list)
+async def show_friends(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await friends_crud.show_friends(db=db, user_email=user_email)
+    return result
