@@ -7,7 +7,7 @@ from .categories import category_crud, category_schemas
 from .profile import profile_crud
 from .statistics import statistics_crud, statistics_schemas
 from .database import AsyncSessionLocal
-from typing import List, Union
+from typing import Sequence, Union
 
 
 app = FastAPI()
@@ -41,7 +41,7 @@ async def create_user(user: logging_schemas.User, db: AsyncSession = Depends(get
     return await logging_crud.create_user_db(db=db, user=user)
 
 
-@app.get("/categories/", tags=["categories"], response_model=List[category_schemas.Category])
+@app.get("/categories/", tags=["categories"], response_model=Sequence[category_schemas.Category])
 async def show_categories(db: AsyncSession = Depends(get_db_session)):
     return await category_crud.get_categories(db=db)
 
@@ -77,7 +77,7 @@ async def add_activity_log(activity_log: category_schemas.ActivityLogs, cat_name
     return res_status
 
 
-@app.get("/activities/", tags=["categories"], response_model=Union[List[category_schemas.Activity], category_schemas.Status])
+@app.get("/activities/", tags=["categories"], response_model=Union[Sequence[category_schemas.Activity], category_schemas.Status])
 async def show_activities(cat_name: str, user_email: str, db: AsyncSession = Depends(get_db_session)):
     result = await category_crud.get_activities(db=db, cat_name=cat_name, user_email=user_email)
     if result is not None:
