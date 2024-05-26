@@ -4,9 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blaWhite">#90b8c8ff</color>
     <color name="text_clr_timer_page">#2264AF</color>
-    <color name="red">#FF0000</color>
-    <color name="red1">#651FFF</color>
-    <color name="red2">#FF3D00</color>
-    <color name="blue">#00B7FF</color>
-    <color name="yellow">#E6FF00</color>
+    <color name="red">#DF6161</color>
+    <color name="red1">#E1E657</color>
+    <color name="red2">#73E4C4</color>
+    <color name="blue">#D48EDC</color>
+    <color name="yellow">#51A36F</color>
 </resources>

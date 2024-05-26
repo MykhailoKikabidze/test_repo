@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Focus_app"
         tools:targetApi="31">
         <activity
+            android:name="Friends.Friends"
+            android:exported="true" />
+        <activity
             android:name="ProfilePage.ProfilePage"
             android:exported="true" />
         <activity

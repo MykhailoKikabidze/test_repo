@@ -189,4 +189,20 @@
             @Query("new_password") newPassword: String
         ): Call<Any>
 
+        @POST("/friendship/")
+        fun addFriend(
+            @Query("user_email")userEmail: String,
+            @Query("friend_email")friendEmail: String
+        ):Call<Any>
+
+        @DELETE("/friendship/")
+        fun deleteFriend(
+            @Query("user_email")userEmail: String,
+            @Query("friend_email")friendEmail: String
+        ):Call<Any>
+
+        @GET("friendship/")
+        fun getFriends(
+            @Query("user_email")userEmail: String
+        ):Call<List<String>>
     }

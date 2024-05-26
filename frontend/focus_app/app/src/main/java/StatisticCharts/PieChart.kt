@@ -3,10 +3,9 @@ package StatisticCharts
 import ApiRequest.*
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.CalendarView
@@ -16,12 +15,14 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.focus_app.R
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -32,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.Calendar
+import java.util.jar.Attributes.Name
 
 class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
@@ -41,6 +43,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private lateinit var pieChart:PieChart
     private lateinit var calendarView:CalendarView
     private lateinit var savedPeriod:String
+    private lateinit var NamesStaticList: MutableList<String>
     // var activityNamesStati= mutableListOf<String>()
     private  lateinit var categoryName:String
     var timeProcent: MutableList<Float> = mutableListOf()
@@ -92,33 +95,12 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
             categoryDisplayed.text=savedCategory
             categoryName=savedCategory?:"Total>"
         }
-//        periodToDisplay.setOnClickListener()
-//        {
-//            showFrequencyDialog(periodToDisplay)
-//            this.recreate()
-//          //  pieChart.invalidate()
-//        }
         categoryDisplayed.setOnClickListener() {
             ChooseCategoryDisplay(categoryDisplayed)
-            //  pieChart.invalidate()
         }
 
 
         DisplayChart()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         drawerLayout = findViewById(R.id.toolbar_chart_main)
@@ -170,7 +152,6 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
 
             categoryDisplayed.text = categoryName
-            var activityNamesStatic: MutableList<String> = mutableListOf()
             var activityNamesStaticToDisplay: MutableList<String> = mutableListOf()
             var timeActivityNamesStatic: MutableList<Int> = mutableListOf()
 
@@ -183,11 +164,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
                 if (periodToDisplay.text == "Daily>") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
-                        activityNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityDaily(categoryName, activityNamesStatic[i])
+                                    asyncActivityDaily(categoryName, NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -196,11 +177,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 } else if (periodToDisplay.text == "Weekly>") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
-                        activityNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityWeekly(categoryName, activityNamesStatic[i])
+                                    asyncActivityWeekly(categoryName, NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -209,11 +190,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 } else if (periodToDisplay.text == "Monthly>") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
-                        activityNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityDaily(categoryName, activityNamesStatic[i])
+                                    asyncActivityDaily(categoryName, NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -222,11 +203,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 } else if (periodToDisplay.text == "Yearly>") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
-                        activityNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityYearly(categoryName, activityNamesStatic[i])
+                                    asyncActivityYearly(categoryName, NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -235,11 +216,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 } else if (periodToDisplay.text == "Total>") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
-                        activityNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityTotally(categoryName, activityNamesStatic[i])
+                                    asyncActivityTotally(categoryName, NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -248,15 +229,14 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 }
             } else if (categoryDisplayed.text == "Total>") {
-                var categoryNamesStatic: MutableList<String> = mutableListOf()
 
                 if (periodToDisplay.text == "Daily>") {
                     GetCategoryCharts { result ->
-                        categoryNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryDaily(activityNamesStatic[i])
+                                    asyncCategoryDaily(NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -265,11 +245,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 } else if (periodToDisplay.text == "Weekly>") {
                     GetCategoryCharts { result ->
-                        categoryNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryWeekly(activityNamesStatic[i])
+                                    asyncCategoryWeekly(NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -278,11 +258,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 } else if (periodToDisplay.text == "Monthly>") {
                     GetCategoryCharts { result ->
-                        categoryNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryMonthly(activityNamesStatic[i])
+                                    asyncCategoryMonthly(NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -291,11 +271,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 } else if (periodToDisplay.text == "Yearly>") {
                     GetCategoryCharts() { result ->
-                        categoryNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryYearly(activityNamesStatic[i])
+                                    asyncCategoryYearly(NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -304,11 +284,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                     }
                 } else if (periodToDisplay.text == "Total>") {
                     GetCategoryCharts { result ->
-                        categoryNamesStatic = result
+                        NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
-                            for (i in activityNamesStatic.indices) {
+                            for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryTotally(activityNamesStatic[i])
+                                    asyncCategoryTotally(NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
@@ -420,19 +400,40 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
     private fun updatePieChart(pieChart: PieChart) {
 
-        val entries = timeProcent.map { PieEntry(it) }
-        val dataSet = PieDataSet(entries, "Activity Times")
+        val entries = mutableListOf<PieEntry>()
+        for(i in NamesStaticList.indices)
+        {
+            entries.add(PieEntry(timeProcent[i],NamesStaticList[i]))
+        }
+        val dataSet = PieDataSet(entries, "Activity ")
         dataSet.colors = listOf(
             getColor(R.color.yellow),
-            // getColor(R.color.blaWhite),
             getColor(R.color.blue),
             getColor(R.color.red1),
-            //  getColor(R.color.red2),
+            getColor(R.color.red2),
             getColor(R.color.red)
         )
+
+        val legend = pieChart.legend
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+        legend.orientation = Legend.LegendOrientation.VERTICAL
+        legend.setDrawInside(false)
+        legend.textSize = 20f // Set the text size for the legend
+        legend.textColor = ContextCompat.getColor(this, R.color.black) // Set the text color for the legend
+
+        legend.typeface = Typeface.DEFAULT_BOLD
+
+        legend.formSize=20f
+
+        // Customize the value text color and size
+        dataSet.valueTextColor = getColor(R.color.black) // Set this to your desired color for numbers
+        dataSet.valueTextSize = 15f
+
+        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD) // Set the value text to be bold
+
+
         val data = PieData(dataSet)
-        data.setValueTextSize(14f)
-        data.setValueTextColor(R.color.black)
         pieChart.data = data
         pieChart.invalidate()
     }

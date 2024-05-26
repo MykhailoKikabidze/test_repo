@@ -29,7 +29,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/timer_img"
+            android:backgroundTintMode="screen"
+            android:backgroundTint="#689ABBCA"
             tools:context="StatisticCharts.PieChart">
+
 
             <TextView
                 android:id="@+id/periodTime"
@@ -41,14 +44,14 @@
                 android:onClick="showFrequencyDialog"
                 android:text="Daily>"
                 android:textColor="#06376A"
-                android:textSize="30dp"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/pie_chart"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.937"
+                app:layout_constraintHorizontal_bias="0.859"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.081" />
+                app:layout_constraintVertical_bias="0.087" />
 
             <TextView
                 android:id="@+id/selectCategory"
@@ -60,26 +63,25 @@
                 android:onClick="ChooseCategoryDisplay"
                 android:text="Category>"
                 android:textColor="#06376A"
-                android:textSize="30dp"
+                android:textSize="25dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/pie_chart"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.598"
+                app:layout_constraintHorizontal_bias="0.323"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.082" />
-
+                app:layout_constraintVertical_bias="0.087" />
 
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/pie_chart"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="387dp"
+                android:layout_height="253dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.496"
+                app:layout_constraintHorizontal_bias="0.666"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.896" />
+                app:layout_constraintVertical_bias="0.928" />
 
             <LinearLayout
                 android:layout_width="360dp"

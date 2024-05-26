@@ -49,6 +49,8 @@ dependencies {
     implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("de.hdodenhof:circleimageview:3.0.0")
 
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+    implementation ("com.squareup.picasso:picasso:2.71828")
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x")
 
