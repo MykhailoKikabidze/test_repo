@@ -35,12 +35,6 @@
             @Query("user_email") user_email:String
         ): Call<List<Activity>>
 
-        @GET("/activities/")
-        fun getActivitiesStatic(
-            @Query("cat_name") cat_name:String,
-            @Query("user_email") user_email:String
-        ): Call<List<String>>
-
         @POST("/activity_log/")
         fun createActivityLog(
             @Query("cat_name") cat_name: String,

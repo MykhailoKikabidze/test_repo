@@ -8,7 +8,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun GetStatisticsActivityDaily(user_email:String, cat_name:String, activity_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsActivityDaily(user_email:String, cat_name:String, activity_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsActivityDaily(user_email, cat_name, activity_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -38,7 +38,7 @@ fun GetStatisticsActivityDaily(user_email:String, cat_name:String, activity_name
 
 }
 
-fun GetStatisticsActivityWeekly(user_email:String, cat_name:String, activity_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsActivityWeekly(user_email:String, cat_name:String, activity_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsActivityWeakly(user_email, cat_name, activity_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -68,7 +68,7 @@ fun GetStatisticsActivityWeekly(user_email:String, cat_name:String, activity_nam
 
 }
 
-fun GetStatisticsActivityMonthly(user_email:String, cat_name:String, activity_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsActivityMonthly(user_email:String, cat_name:String, activity_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsActivityMonthly(user_email, cat_name, activity_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -98,7 +98,7 @@ fun GetStatisticsActivityMonthly(user_email:String, cat_name:String, activity_na
 
 }
 
-fun GetStatisticsActivityYearly(user_email:String, cat_name:String, activity_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsActivityYearly(user_email:String, cat_name:String, activity_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsActivityYearly(user_email, cat_name, activity_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -128,7 +128,7 @@ fun GetStatisticsActivityYearly(user_email:String, cat_name:String, activity_nam
 
 }
 
-fun GetStatisticsAcrivityTotaly(user_email:String, cat_name:String, activity_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsAcrivityTotaly(user_email:String, cat_name:String, activity_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsActivityTotal(user_email, cat_name, activity_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -157,7 +157,7 @@ fun GetStatisticsAcrivityTotaly(user_email:String, cat_name:String, activity_nam
         })
 }
 
-fun GetStatisticsCategoryDaily(user_email:String, cat_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsCategoryDaily(user_email:String, cat_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsCategoryDaily(user_email, cat_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -186,7 +186,7 @@ fun GetStatisticsCategoryDaily(user_email:String, cat_name:String, timeSpend:(In
         })
 }
 
-fun GetStatisticsCategoryWeekly(user_email:String, cat_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsCategoryWeekly(user_email:String, cat_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsCategoryWeakly(user_email, cat_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -215,7 +215,7 @@ fun GetStatisticsCategoryWeekly(user_email:String, cat_name:String, timeSpend:(I
         })
 }
 
-fun GetStatisticsCategoryYearly(user_email:String, cat_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsCategoryYearly(user_email:String, cat_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsCategoryYearly(user_email, cat_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -245,7 +245,7 @@ fun GetStatisticsCategoryYearly(user_email:String, cat_name:String, timeSpend:(I
 }
 
 
-fun GetStatisticsCategoryMonthly(user_email:String, cat_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsCategoryMonthly(user_email:String, cat_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsCategoryMonthly(user_email, cat_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -263,21 +263,21 @@ fun GetStatisticsCategoryMonthly(user_email:String, cat_name:String, timeSpend:(
 
                 } else {
                     //callsomething("Unknown error")
-                    timeSpend(1)
+                    timeSpend(0f)
                 }
             }
 
             override fun onFailure(call: Call<Any>, t: Throwable) {
                 handler.post {
                     // callsomething("Failure: ${t.message}")
-                    timeSpend(1)
+                    timeSpend(0f)
 
                 }
             }
         })
 }
 
-fun GetStatisticsCategoryTotaly(user_email:String, cat_name:String, timeSpend:(Int)->Unit) {
+fun GetStatisticsCategoryTotaly(user_email:String, cat_name:String, timeSpend:(Float)->Unit) {
     RetrofitClient.instance.getStatisticsCategoryTotaly(user_email, cat_name)
         .enqueue(object : Callback<Any> {
             private val handler = Handler(Looper.getMainLooper())
@@ -308,13 +308,13 @@ fun GetStatisticsCategoryTotaly(user_email:String, cat_name:String, timeSpend:(I
 
 
 
-fun timeStringToSeconds(timeString: String): Int {
+fun timeStringToSeconds(timeString: String): Float {
     val timeString = timeString.trim('\"')
     val parts = timeString.split(":")
     val hours = parts[0].toInt()
     val minutes = parts[1].toInt()
     val seconds = parts[2].toInt()
 
-    return hours * 3600 + minutes * 60 + seconds
+    return hours + minutes / 60 + seconds/3600f
 
 }

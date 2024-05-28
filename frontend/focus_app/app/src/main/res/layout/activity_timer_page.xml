@@ -15,7 +15,7 @@
             android:id="@+id/toolbar_timer"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#00E3E3E3"
+            android:background="#567CA8"
             android:theme="@style/Theme.AppCompat.DayNight"
             app:popupTheme="@style/Theme.AppCompat.DayNight"
             app:title=" " />

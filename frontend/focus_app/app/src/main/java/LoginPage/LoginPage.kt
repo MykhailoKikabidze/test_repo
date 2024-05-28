@@ -2,6 +2,7 @@ package LoginPage
 
 import ApiRequest.Authorization
 import ApiRequest.rightAutorization
+import ProfilePage.ProfilePage
 import SignUpPage.SignUpPage
 import StatisticCharts.PieChart
 import TimerPage.TimerPage
@@ -87,7 +88,8 @@ class LoginPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.language_menu -> {
-                Toast.makeText(this, "wowo", Toast.LENGTH_SHORT).show()
+                val intent=Intent(this, ProfilePage::class.java)
+                startActivity(intent)
                 return true
             }
 
@@ -97,7 +99,7 @@ class LoginPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
             }
 
             R.id.statistics_menu -> {
-                var intent=Intent(this, PieChart::class.java)
+                val intent=Intent(this, PieChart::class.java)
                 startActivity(intent)
                 return true
             }

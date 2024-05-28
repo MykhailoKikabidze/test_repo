@@ -37,19 +37,16 @@ import java.util.jar.Attributes.Name
 
 class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedListener {
     private lateinit var drawerLayout: DrawerLayout
-    var isPeriodChanged=false
     private lateinit var toolbar: Toolbar
     private lateinit var categoryDisplayed:TextView
     private lateinit var pieChart:PieChart
     private lateinit var calendarView:CalendarView
     private lateinit var savedPeriod:String
     private lateinit var NamesStaticList: MutableList<String>
-    // var activityNamesStati= mutableListOf<String>()
     private  lateinit var categoryName:String
     var timeProcent: MutableList<Float> = mutableListOf()
     private lateinit var periodToDisplay:TextView
 
-    private var way = mutableListOf<PieEntry>()
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,9 +70,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
 
         savedPeriod = getSavedPeriod()?:"Daily>"
-        if (savedPeriod != null) {
-            periodToDisplay.text = savedPeriod
-        }
+        periodToDisplay.text = savedPeriod
         val savedCategory = getSavedCategory()
 
 
@@ -464,7 +459,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private suspend fun asyncActivityYearly(catName:String,activityName: String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsActivityYearly("test", catName, activityName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }
@@ -472,7 +467,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private suspend fun asyncActivityDaily(catName:String,activityName: String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsActivityDaily("test", catName, activityName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time, null)
             }
         }
     }
@@ -480,14 +475,14 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private suspend fun asyncActivityWeekly(catName:String,activityName: String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsActivityWeekly("test", catName, activityName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }
     private suspend fun asyncActivityTotally(catName:String, activityName: String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsAcrivityTotaly("test", catName, activityName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }
@@ -495,7 +490,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private suspend fun asyncActivityMonthly(catName:String,activityName: String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsActivityMonthly("test", catName, activityName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }
@@ -503,7 +498,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private suspend fun asyncCategoryDaily(catName:String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsCategoryDaily("test", catName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }
@@ -511,7 +506,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private suspend fun asyncCategoryWeekly(catName:String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsCategoryWeekly("test", catName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }
@@ -519,7 +514,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private suspend fun asyncCategoryMonthly(catName:String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsCategoryMonthly("test", catName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }
@@ -527,14 +522,14 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private suspend fun asyncCategoryYearly(catName:String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsCategoryYearly("test", catName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }
     private suspend fun asyncCategoryTotally(catName:String): Float {
         return suspendCancellableCoroutine { continuation ->
             GetStatisticsCategoryTotaly("test", catName) { time ->
-                continuation.resume(time * 10f, null)
+                continuation.resume(time , null)
             }
         }
     }

@@ -1,5 +1,7 @@
 package Data
 
+import android.content.Context
+
 var categoryName=""
 var activityName=""
 var userLogin=""

@@ -42,6 +42,7 @@ class ActivityView : AppCompatActivity() {
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val joj=intent.extras?.getString("category")?:""
 
 
         setupSwipeToDelete()
@@ -58,9 +59,9 @@ class ActivityView : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please enter a valid activity name.", Toast.LENGTH_SHORT).show()
             }
-            var intent=Intent(this,TimerPage::class.java)
+            val intent=Intent(this,TimerPage::class.java)
+            intent.putExtra("category",joj)
             startActivity(intent)
-            intent.putExtra("category", intent.extras?.getString("category"))
 
         }
 

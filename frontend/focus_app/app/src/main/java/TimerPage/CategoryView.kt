@@ -37,7 +37,6 @@ class CategoryView : Fragment() {
             intent.putExtra("category", selectedCategory)
             startActivity(intent)
         }
-
         return view
     }
 }

@@ -15,7 +15,7 @@
             android:id="@+id/toolbar_login"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="#00E3E3E3"
+            android:background="#0F1724"
             android:theme="@style/Theme.AppCompat.DayNight"
             app:popupTheme="@style/Theme.AppCompat.DayNight"
             app:title=" " />

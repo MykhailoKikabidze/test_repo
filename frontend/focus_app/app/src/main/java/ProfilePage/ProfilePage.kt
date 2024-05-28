@@ -2,22 +2,35 @@ package ProfilePage
 
 import ApiRequest.RetrofitClient
 import Data.userEmail
+import StatisticCharts.PieChart
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import com.example.focus_app.R
+import com.google.android.material.navigation.NavigationView
+
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProfilePage : AppCompatActivity() {
+
+class ProfilePage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var toolbar: Toolbar
+
     private lateinit var currentUsernameTextView: TextView
     private lateinit var currentUsername1TextView: TextView
     private lateinit var currentUserEmailTextView: TextView
@@ -37,6 +50,17 @@ class ProfilePage : AppCompatActivity() {
         currentUsername1TextView = findViewById(R.id.currentUsername1)
         currentUserEmailTextView = findViewById(R.id.currentUserEmail)
         currentPasswordTextView = findViewById(R.id.currentPassword)
+
+
+        drawerLayout=findViewById(R.id.toolbar_profile_main)
+
+        val navigationView=findViewById<NavigationView>(R.id.nav_view_profile)
+        navigationView.setNavigationItemSelectedListener(this)
+
+        toolbar = findViewById(R.id.toolbar_profile)
+        val toggle= ActionBarDrawerToggle(this,drawerLayout, toolbar ,R.string.open_nav,R.string.close_nav)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
         findViewById<TextView>(R.id.changeUsernameButton).setOnClickListener {
             showChangeDialog("Username")
@@ -158,5 +182,28 @@ class ProfilePage : AppCompatActivity() {
             putString(key, value)
             apply()
         }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.language_menu -> {
+                val intent=Intent(this, ProfilePage::class.java)
+                startActivity(intent)
+                return true
+            }
+
+            R.id.settings_menu -> {
+                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
+                return true
+            }
+
+            R.id.statistics_menu -> {
+                val intent=Intent(this, PieChart::class.java)
+                startActivity(intent)
+                return true
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
     }
 }
