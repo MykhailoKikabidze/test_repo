@@ -41,7 +41,6 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
     private lateinit var categoryName:String
 
 
-
     private var isRunning=false
     private var counterOfSeconds = 0
     private var counterOfMinutes=0

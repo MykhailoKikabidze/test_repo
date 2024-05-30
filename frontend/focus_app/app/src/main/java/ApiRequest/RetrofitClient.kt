@@ -6,7 +6,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 
 
 object RetrofitClient {
-    private const val BASE_URL = "https://9784-5-173-26-21.ngrok-free.app"
+    private const val BASE_URL = "https://03ef-5-173-188-44.ngrok-free.app"
 
     val instance: ApiService by lazy {
         val moshi = Moshi.Builder().build()

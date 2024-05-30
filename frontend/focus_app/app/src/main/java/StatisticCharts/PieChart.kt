@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.Calendar
+import StatiscticsFunction.*
 import java.util.jar.Attributes.Name
 
 class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedListener {
@@ -167,7 +168,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 } else if (periodToDisplay.text == "Weekly>") {
@@ -180,7 +181,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 } else if (periodToDisplay.text == "Monthly>") {
@@ -189,11 +190,11 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityDaily(categoryName, NamesStaticList[i])
+                                    asyncActivityMonthly(categoryName, NamesStaticList[i])
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 } else if (periodToDisplay.text == "Yearly>") {
@@ -206,7 +207,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 } else if (periodToDisplay.text == "Total>") {
@@ -219,7 +220,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 }
@@ -235,7 +236,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 } else if (periodToDisplay.text == "Weekly>") {
@@ -248,7 +249,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 } else if (periodToDisplay.text == "Monthly>") {
@@ -261,7 +262,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 } else if (periodToDisplay.text == "Yearly>") {
@@ -274,7 +275,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 } else if (periodToDisplay.text == "Total>") {
@@ -287,7 +288,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                                 }
                                 timeProcent.add(result)
                             }
-                            updatePieChart(pieChart)
+                            updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
                 }
@@ -393,45 +394,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
         dialog.show()
     }
 
-    private fun updatePieChart(pieChart: PieChart) {
 
-        val entries = mutableListOf<PieEntry>()
-        for(i in NamesStaticList.indices)
-        {
-            entries.add(PieEntry(timeProcent[i],NamesStaticList[i]))
-        }
-        val dataSet = PieDataSet(entries, "Activity ")
-        dataSet.colors = listOf(
-            getColor(R.color.yellow),
-            getColor(R.color.blue),
-            getColor(R.color.red1),
-            getColor(R.color.red2),
-            getColor(R.color.red)
-        )
-
-        val legend = pieChart.legend
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.CENTER
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        legend.orientation = Legend.LegendOrientation.VERTICAL
-        legend.setDrawInside(false)
-        legend.textSize = 20f // Set the text size for the legend
-        legend.textColor = ContextCompat.getColor(this, R.color.black) // Set the text color for the legend
-
-        legend.typeface = Typeface.DEFAULT_BOLD
-
-        legend.formSize=20f
-
-        // Customize the value text color and size
-        dataSet.valueTextColor = getColor(R.color.black) // Set this to your desired color for numbers
-        dataSet.valueTextSize = 15f
-
-        dataSet.setValueTypeface(Typeface.DEFAULT_BOLD) // Set the value text to be bold
-
-
-        val data = PieData(dataSet)
-        pieChart.data = data
-        pieChart.invalidate()
-    }
     private fun getSavedCategory(): String? {
         val sharedPreferences = getSharedPreferences("prefs", MODE_PRIVATE)
         return sharedPreferences.getString("selectedCategory", null)
@@ -453,85 +416,6 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
         val editor = sharedPreferences.edit()
         editor.putString("selectedPeriod", period)
         editor.apply()
-    }
-
-
-    private suspend fun asyncActivityYearly(catName:String,activityName: String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsActivityYearly("test", catName, activityName) { time ->
-                continuation.resume(time , null)
-            }
-        }
-    }
-
-    private suspend fun asyncActivityDaily(catName:String,activityName: String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsActivityDaily("test", catName, activityName) { time ->
-                continuation.resume(time, null)
-            }
-        }
-    }
-
-    private suspend fun asyncActivityWeekly(catName:String,activityName: String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsActivityWeekly("test", catName, activityName) { time ->
-                continuation.resume(time , null)
-            }
-        }
-    }
-    private suspend fun asyncActivityTotally(catName:String, activityName: String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsAcrivityTotaly("test", catName, activityName) { time ->
-                continuation.resume(time , null)
-            }
-        }
-    }
-
-    private suspend fun asyncActivityMonthly(catName:String,activityName: String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsActivityMonthly("test", catName, activityName) { time ->
-                continuation.resume(time , null)
-            }
-        }
-    }
-
-    private suspend fun asyncCategoryDaily(catName:String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsCategoryDaily("test", catName) { time ->
-                continuation.resume(time , null)
-            }
-        }
-    }
-
-    private suspend fun asyncCategoryWeekly(catName:String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsCategoryWeekly("test", catName) { time ->
-                continuation.resume(time , null)
-            }
-        }
-    }
-
-    private suspend fun asyncCategoryMonthly(catName:String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsCategoryMonthly("test", catName) { time ->
-                continuation.resume(time , null)
-            }
-        }
-    }
-
-    private suspend fun asyncCategoryYearly(catName:String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsCategoryYearly("test", catName) { time ->
-                continuation.resume(time , null)
-            }
-        }
-    }
-    private suspend fun asyncCategoryTotally(catName:String): Float {
-        return suspendCancellableCoroutine { continuation ->
-            GetStatisticsCategoryTotaly("test", catName) { time ->
-                continuation.resume(time , null)
-            }
-        }
     }
 
 }
