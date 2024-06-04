@@ -13,14 +13,14 @@ class User(Base):
 
     activity = relationship("Activity", back_populates="user", cascade="all, delete-orphan")
     profile = relationship("Profile", back_populates="user", cascade="all, delete-orphan")
-    friends1 = relationship("Friends", foreign_keys='Friends.id_user1', back_populates="user1",
+    friends1 = relationship("Friendship", foreign_keys='Friendship.id_user1', back_populates="user1",
                             cascade="all, delete-orphan")
-    friends2 = relationship("Friends", foreign_keys='Friends.id_user2', back_populates="user2",
+    friends2 = relationship("Friendship", foreign_keys='Friendship.id_user2', back_populates="user2",
                             cascade="all, delete-orphan")
 
 
-class Friends(Base):
-    __tablename__ = "friends"
+class Friendship(Base):
+    __tablename__ = "friendship"
 
     id_user1 = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
     id_user2 = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)

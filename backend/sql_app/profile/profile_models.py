@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, Date, REAL, ForeignKey
+from sqlalchemy import Column, Integer, Date, REAL, ForeignKey, Text
 from sqlalchemy.orm import relationship
 from backend.sql_app.database import Base
+
 
 class Profile(Base):
     __tablename__ = "profile"
@@ -9,5 +10,6 @@ class Profile(Base):
     last_log = Column(Date, index=True)
     bonus = Column(REAL, index=True)
     points = Column(Integer, index=True)
+    image = Column(Text, index=True)
 
     user = relationship("User", back_populates="profile")

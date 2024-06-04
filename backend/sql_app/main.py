@@ -6,6 +6,7 @@ from .logging_api import logging_crud, logging_schemas
 from .categories import category_crud, category_schemas
 from .profile import profile_crud
 from .statistics import statistics_crud, statistics_schemas
+from .friends import friends_crud
 from .database import AsyncSessionLocal
 from typing import Sequence, Union
 
@@ -39,6 +40,19 @@ async def create_user(user: logging_schemas.User, db: AsyncSession = Depends(get
     if db_user:
         return logging_schemas.LogError(num=400, description="Email already registered.")
     return await logging_crud.create_user_db(db=db, user=user)
+
+
+@app.delete("/users/", tags=["logging"], response_model=category_schemas.Status)
+async def delete_user(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await logging_crud.delete_user(db=db, user_email=user_email)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.get("/users/", tags=["logging"], response_model=list)
+async def show_users(db: AsyncSession = Depends(get_db_session)):
+    result = await logging_crud.get_users(db=db)
+    return result
 
 
 @app.get("/categories/", tags=["categories"], response_model=Sequence[category_schemas.Category])
@@ -85,6 +99,24 @@ async def show_activities(cat_name: str, user_email: str, db: AsyncSession = Dep
     return category_schemas.Status(status="error", message="Category or user is not found.")
 
 
+@app.get("/users/profile/", tags=["profile"], response_model=Union[dict, category_schemas.Status])
+async def get_user_profile(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    profile = await profile_crud.get_profile(db=db, email=user_email)
+    if profile is None:
+        return category_schemas.Status(status="error", message="User profile is not found.")
+
+    user = await logging_crud.get_user_by_email(db=db, email=user_email)
+
+    response = {
+        "login": user.login,
+        "email": user.email,
+        "last_log": profile.last_log,
+        "image": profile.image
+    }
+
+    return response
+
+
 @app.put("/profile/login/", tags=["profile"], response_model=category_schemas.Status)
 async def update_user_login(new_login: str, user_email: str, db: AsyncSession = Depends(get_db_session)):
     result = await profile_crud.change_login(db=db, email=user_email, new_login=new_login)
@@ -115,11 +147,19 @@ async def add_profile(user_email: str, last_log: str, db: AsyncSession = Depends
 
 @app.get("/profile/points/", tags=["profile"], response_model=Union[int, category_schemas.Status])
 async def get_profile_points(user_email: str, db: AsyncSession = Depends(get_db_session)):
-    result = await profile_crud.get_points(db=db, email=user_email)
-    if result is not None:
-        return result
+    profile = await profile_crud.get_profile(db=db, email=user_email)
+    if profile is not None:
+        return profile.points
     else:
         return category_schemas.Status(status="error", message="User profile is not found.")
+
+
+@app.get("/profile/image/", tags=["profile"], response_model=Union[str, category_schemas.Status])
+async def get_profile_image(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    profile = await profile_crud.get_profile(db=db, email=user_email)
+    if profile is not None:
+        return profile.image
+    return category_schemas.Status(status="error", message="User profile is not found.")
 
 
 @app.put("/profile/points/", tags=["profile"], response_model=category_schemas.Status)
@@ -132,6 +172,13 @@ async def update_profile_points(user_email: str, points: int, action: str, db: A
 @app.put("/profile/last_log/", tags=["profile"], response_model=category_schemas.Status)
 async def update_profile_last_log(user_email: str, new_date_log: str, db: AsyncSession = Depends(get_db_session)):
     result = await profile_crud.update_profile_last_log(db=db, email=user_email, new_date_log=new_date_log)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.put("/profile/image/", tags=["profile"], response_model=category_schemas.Status)
+async def update_profile_image(user_email: str, new_image: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.update_profile_image(db=db, email=user_email, new_image=new_image)
     res_status = category_schemas.Status(status=result["status"], message=result["message"])
     return res_status
 
@@ -284,3 +331,21 @@ async def get_statistics_total_for_all_time(user_email: str, db: AsyncSession = 
     return statistics_schemas.Statistics(data="total",
                                          period="all time",
                                          time=statistics_crud.formatting_interval(result))
+
+
+@app.post("/friendship/", tags=["friendship"], response_model=category_schemas.Status)
+async def add_friendship(user_email: str, friend_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await friends_crud.add_friend(db=db, user_email=user_email, friend_email=friend_email)
+    return category_schemas.Status(status=result["status"], message=result["message"])
+
+
+@app.delete("/friendship/", tags=["friendship"], response_model=category_schemas.Status)
+async def delete_friendship(user_email: str, friend_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await friends_crud.delete_friend(db=db, user_email=user_email, friend_email=friend_email)
+    return category_schemas.Status(status=result["status"], message=result["message"])
+
+
+@app.get("/friendship/", tags=["friendship"], response_model=list)
+async def show_friends(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await friends_crud.show_friends(db=db, user_email=user_email)
+    return result
