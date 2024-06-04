@@ -6,7 +6,7 @@ from .logging_api import logging_crud, logging_schemas
 from .categories import category_crud, category_schemas
 from .profile import profile_crud
 from .statistics import statistics_crud, statistics_schemas
-from .friends import friends_crud, friends_schemas
+from .friends import friends_crud
 from .database import AsyncSessionLocal
 from typing import Sequence, Union
 
@@ -97,6 +97,24 @@ async def show_activities(cat_name: str, user_email: str, db: AsyncSession = Dep
     if result is not None:
         return result
     return category_schemas.Status(status="error", message="Category or user is not found.")
+
+
+@app.get("/users/profile/", tags=["profile"], response_model=Union[dict, category_schemas.Status])
+async def get_user_profile(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    profile = await profile_crud.get_profile(db=db, email=user_email)
+    if profile is None:
+        return category_schemas.Status(status="error", message="User profile is not found.")
+
+    user = await logging_crud.get_user_by_email(db=db, email=user_email)
+
+    response = {
+        "login": user.login,
+        "email": user.email,
+        "last_log": profile.last_log,
+        "image": profile.image
+    }
+
+    return response
 
 
 @app.put("/profile/login/", tags=["profile"], response_model=category_schemas.Status)
