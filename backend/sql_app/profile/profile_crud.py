@@ -4,10 +4,11 @@ from backend.sql_app.logging_api import logging_models, logging_crud
 from sqlalchemy import select
 from datetime import date
 from datetime import datetime
+from typing import Optional
 import math
 
 
-async def change_login(db: AsyncSession, email: str, new_login: str):
+async def change_login(db: AsyncSession, email: str, new_login: str) -> dict:
     user = await logging_crud.get_user_by_email(db=db, email=email)
     if user is not None:
         async with db as session:
@@ -19,7 +20,7 @@ async def change_login(db: AsyncSession, email: str, new_login: str):
     return {"status": "error", "message": "User is not found."}
 
 
-async def change_email(db: AsyncSession, email: str, new_email: str):
+async def change_email(db: AsyncSession, email: str, new_email: str) -> dict:
     user = await logging_crud.get_user_by_email(db=db, email=email)
     check_user = await logging_crud.get_user_by_email(db=db, email=new_email)
 
@@ -36,7 +37,7 @@ async def change_email(db: AsyncSession, email: str, new_email: str):
     return {"status": "error", "message": "User is not found."}
 
 
-async def change_password(db: AsyncSession, email: str, new_password: str):
+async def change_password(db: AsyncSession, email: str, new_password: str) -> dict:
     user = await logging_crud.get_user_by_email(db=db, email=email)
     if user is not None:
         async with db as session:
@@ -48,7 +49,7 @@ async def change_password(db: AsyncSession, email: str, new_password: str):
     return {"status": "error", "message": "User is not found."}
 
 
-async def get_profile(db: AsyncSession, email: str):
+async def get_profile(db: AsyncSession, email: str) -> Optional[profile_models.Profile]:
     async with db as session:
         user = await logging_crud.get_user_by_email(db=db, email=email)
 
@@ -63,7 +64,7 @@ async def get_profile(db: AsyncSession, email: str):
         return None
 
 
-async def add_default_profile(db: AsyncSession, email: str, last_log: str):
+async def add_default_profile(db: AsyncSession, email: str, last_log: str) -> dict:
     user = await logging_crud.get_user_by_email(db=db, email=email)
     if user is not None:
 
@@ -90,7 +91,7 @@ async def add_default_profile(db: AsyncSession, email: str, last_log: str):
     return {"status": "error", "message": "User is not found."}
 
 
-async def update_profile_last_log(db: AsyncSession, email: str, new_date_log: str):
+async def update_profile_last_log(db: AsyncSession, email: str, new_date_log: str) -> dict:
     profile = await get_profile(db=db, email=email)
     if profile is not None:
 
@@ -131,7 +132,7 @@ async def update_profile_last_log(db: AsyncSession, email: str, new_date_log: st
     return {"status": "error", "message": "User profile is not found."}
 
 
-async def update_profile_points(db: AsyncSession, email: str, points: int, action: str):
+async def update_profile_points(db: AsyncSession, email: str, points: int, action: str) -> dict:
     profile = await get_profile(db=db, email=email)
     if profile is not None:
         if action == "add":
@@ -156,7 +157,7 @@ async def update_profile_points(db: AsyncSession, email: str, points: int, actio
     return {"status": "error", "message": "User profile is not found."}
 
 
-async def update_profile_image(db: AsyncSession, email: str, new_image: str):
+async def update_profile_image(db: AsyncSession, email: str, new_image: str) -> dict:
     profile = await get_profile(db=db, email=email)
 
     if profile is not None:
@@ -175,3 +176,4 @@ async def update_profile_image(db: AsyncSession, email: str, new_image: str):
         return {"status": "success", "message": "Profile image is changed successfully."}
 
     return {"status": "error", "message": "User profile is not found."}
+

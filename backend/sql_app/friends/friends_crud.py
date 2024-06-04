@@ -4,7 +4,7 @@ from backend.sql_app.logging_api import logging_models
 from sqlalchemy import select, or_, and_
 
 
-async def search_friendship(db: AsyncSession, user1_id: int, user2_id: int):
+async def search_friendship(db: AsyncSession, user1_id: int, user2_id: int) -> logging_models.Friendship:
     async with db as session:
         result = await session.execute(
             select(logging_models.Friendship).filter(
@@ -25,7 +25,7 @@ async def search_friendship(db: AsyncSession, user1_id: int, user2_id: int):
         return res
 
 
-async def add_friend(db: AsyncSession, user_email: str, friend_email: str):
+async def add_friend(db: AsyncSession, user_email: str, friend_email: str) -> dict:
     user_id = await category_crud.get_user_id(db=db, user_email=user_email)
     friend_id = await category_crud.get_user_id(db=db, user_email=friend_email)
 
@@ -49,7 +49,7 @@ async def add_friend(db: AsyncSession, user_email: str, friend_email: str):
         return {"status": "success", "message": "Friendship added successfully."}
 
 
-async def delete_friend(db: AsyncSession, user_email: str, friend_email: str):
+async def delete_friend(db: AsyncSession, user_email: str, friend_email: str) -> dict:
     user_id = await category_crud.get_user_id(db=db, user_email=user_email)
     friend_id = await category_crud.get_user_id(db=db, user_email=friend_email)
 
@@ -69,7 +69,7 @@ async def delete_friend(db: AsyncSession, user_email: str, friend_email: str):
     return {"status": "error", "message": "Friendship is not found."}
 
 
-async def show_friends(db: AsyncSession, user_email: str):
+async def show_friends(db: AsyncSession, user_email: str) -> list:
     user_id = await category_crud.get_user_id(db=db, user_email=user_email)
 
     async with db as session:

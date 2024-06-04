@@ -42,7 +42,14 @@ async def create_user(user: logging_schemas.User, db: AsyncSession = Depends(get
     return await logging_crud.create_user_db(db=db, user=user)
 
 
-@app.get("/users/", tags=["logging"], response_model=Sequence[str])
+@app.delete("/users/", tags=["logging"], response_model=category_schemas.Status)
+async def delete_user(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    result = await logging_crud.delete_user(db=db, user_email=user_email)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.get("/users/", tags=["logging"], response_model=list)
 async def show_users(db: AsyncSession = Depends(get_db_session)):
     result = await logging_crud.get_users(db=db)
     return result
