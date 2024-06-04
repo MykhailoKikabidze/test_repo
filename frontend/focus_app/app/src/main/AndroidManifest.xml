@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Focus_app"
         tools:targetApi="31">
         <activity
+            android:name="FriendsPage.FriendsPage"
+            android:exported="true" />
+        <activity
             android:name="FriendProfile.FriendProfile"
             android:exported="true" />
         <activity
@@ -27,7 +30,6 @@
         <activity
             android:name="StatisticCharts.PieChart"
             android:exported="true" />
-
         <activity
             android:name="TimerPage.ActivityView"
             android:exported="true" />

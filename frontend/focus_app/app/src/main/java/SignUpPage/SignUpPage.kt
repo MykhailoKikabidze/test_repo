@@ -1,7 +1,9 @@
 package SignUpPage
 
 import ApiRequest.CreateUser
+import ApiRequest.UpdateDailyPoints
 import ApiRequest.rightAutorization
+import Data.SaveUserEmail
 import LoginPage.LoginPage
 import StatisticCharts.PieChart
 import TimerPage.TimerPage
@@ -23,11 +25,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.focus_app.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
+import java.text.SimpleDateFormat
+import java.util.Date
 
 
-class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener{
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toolbar: Toolbar
+class SignUpPage : AppCompatActivity(){
+
 
     @SuppressLint("SuspiciousIndentation")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,6 +66,13 @@ class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLi
                 CreateUser(user){ result ->
                     Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
                     if(result==rightAutorization){
+                        SaveUserEmail(this,email.text.toString())
+                        val currentDate = Date()
+                        val dateFormat = SimpleDateFormat("yyyy/MM/dd")
+                        val date = dateFormat.format(currentDate)
+                        UpdateDailyPoints(email.text.toString(),date){ status->
+                            Toast.makeText(this, status, Toast.LENGTH_SHORT).show()
+                        }
                         val intent = Intent(this, TimerPage::class.java)
                         startActivity(intent)
                     }
@@ -72,15 +82,6 @@ class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLi
 
 
 
-        drawerLayout=findViewById(R.id.toolbar_sign_up_main)
-
-        val navigationView=findViewById<NavigationView>(R.id.nav_view_sign_up)
-        navigationView.setNavigationItemSelectedListener(this)
-
-        toolbar = findViewById(R.id.toolbar_sign_up)
-        val toggle= ActionBarDrawerToggle(this,drawerLayout, toolbar ,R.string.open_nav,R.string.close_nav)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
 
         changeToLogin.setOnClickListener{
             val intent= Intent(this,LoginPage::class.java)
@@ -88,35 +89,4 @@ class SignUpPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLi
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.language_menu -> {
-                Toast.makeText(this, "wowo", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            R.id.settings_menu -> {
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            R.id.statistics_menu -> {
-                var intent=Intent(this, PieChart::class.java)
-                startActivity(intent)
-                return true
-            }
-        }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-
-    override fun onBackPressed(){
-        super.onBackPressed()
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START)
-        }else{
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
 }

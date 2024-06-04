@@ -8,6 +8,7 @@ import ApiRequest.UpdateActivity
 import Data.activityName
 import android.content.Intent
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Button
@@ -19,7 +20,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.focus_app.R
-
+import java.util.Timer
 
 
 class ActivityView : AppCompatActivity() {
@@ -36,14 +37,12 @@ class ActivityView : AppCompatActivity() {
 
         val buttonAdd = findViewById<Button>(R.id.buttonAdd)
         val editTextActivityName = findViewById<EditText>(R.id.editTextActivityName)
-
-        recyclerView = findViewById(R.id.recyclerViewActivities)
-        adapter = ActivitiesAdapter(mutableListOf())
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(this)
-
         val joj=intent.extras?.getString("category")?:""
 
+        recyclerView = findViewById(R.id.recyclerViewActivities)
+        adapter = ActivitiesAdapter(mutableListOf(),joj)
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
         setupSwipeToDelete()
         setupLongClick()
@@ -59,9 +58,6 @@ class ActivityView : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Please enter a valid activity name.", Toast.LENGTH_SHORT).show()
             }
-            val intent=Intent(this,TimerPage::class.java)
-            intent.putExtra("category",joj)
-            startActivity(intent)
 
         }
 

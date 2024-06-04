@@ -6,7 +6,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun GetFrinds(user_email: String,friendsList:(List<String>)->Unit)
+fun GetFriends(user_email: String,friendsList:(List<String>)->Unit)
 {
     RetrofitClient.instance.getFriends(user_email)
         .enqueue(object: Callback<List<String>> {

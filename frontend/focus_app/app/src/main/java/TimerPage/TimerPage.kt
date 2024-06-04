@@ -3,7 +3,10 @@ package TimerPage
 import ApiRequest.CreateActivityLog
 import ApiRequest.GetPoints
 import ApiRequest.UpdatePoints
+import Data.SaveUserEmail
 import Data.userEmail
+import FriendProfile.FriendProfile
+import LoginPage.LoginPage
 import ProfilePage.ProfilePage
 import StatisticCharts.PieChart
 import android.content.Intent
@@ -63,7 +66,7 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
         val selectCategoryView: TextView =findViewById(R.id.select_Tag)
         val userPoints:TextView=findViewById(R.id.points_timer)
 
-        activityName=intent.extras?.getString("activity")?:"wow"
+        activityName=intent.extras?.getString("activity")?:""
 
         drawerLayout=findViewById(R.id.toolbar_timer_main)
 
@@ -124,8 +127,8 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
     private fun InitializeTimer() {
         if(activityName!="" ) //if activity name is not empty then timer will start
         {
-            if(categoryName!="")//if category name is not empty then timer will start
-            {
+//            if(categoryName!="")//if category name is not empty then timer will start
+//            {
                 if (timeSpend == 0)
                     minutes.text = "00"
                 else
@@ -271,13 +274,13 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
                     }
                 }
             }
-            else
-            {
-                Toast.makeText(this@TimerPage, "choose activity", Toast.LENGTH_SHORT).show()
-            }
-        }
+//            else
+//            {
+//                Toast.makeText(this@TimerPage, "choose activity", Toast.LENGTH_SHORT).show()
+//            }
+//        }
         else{
-            Toast.makeText(this@TimerPage, "choose category", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@TimerPage, "choose activity", Toast.LENGTH_SHORT).show()
         }
     }
     private fun updateButtonText()
@@ -288,21 +291,30 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.language_menu -> {
-                Toast.makeText(this, "wowo", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            R.id.settings_menu -> {
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
-                return true
-            }
 
             R.id.statistics_menu -> {
                 val intent=Intent(this,PieChart::class.java)
                 startActivity(intent)
                 return true
             }
+
+            R.id.friends->{
+                val intent=Intent(this,FriendProfile::class.java)
+                startActivity(intent)
+                return true
+            }
+
+            R.id.timer->{
+                val intent=Intent(this,TimerPage::class.java)
+                startActivity(intent)
+                return true
+            }
+            R.id.logout->{
+                SaveUserEmail(this,null)
+                intent=Intent(this, LoginPage::class.java)
+                startActivity(intent)
+            }
+
             R.id.profile -> {
                 val intent=Intent(this,ProfilePage::class.java)
                 startActivity(intent)

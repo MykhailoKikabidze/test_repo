@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.provider.ContactsContract.CommonDataKinds.Email
 import android.view.MenuItem
 import android.view.View
 import android.widget.CalendarView
@@ -35,79 +36,79 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.Calendar
- suspend fun asyncActivityYearly(catName:String,activityName: String): Float {
+ suspend fun asyncActivityYearly(catName:String,activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsActivityYearly("test", catName, activityName) { time ->
+        GetStatisticsActivityYearly(userEmail, catName, activityName) { time ->
             continuation.resume(time , null)
         }
     }
 }
 
- suspend fun asyncActivityDaily(catName:String,activityName: String): Float {
+ suspend fun asyncActivityDaily(catName:String,activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsActivityDaily("test", catName, activityName) { time ->
+        GetStatisticsActivityDaily(userEmail, catName, activityName) { time ->
             continuation.resume(time, null)
         }
     }
 }
 
- suspend fun asyncActivityWeekly(catName:String,activityName: String): Float {
+ suspend fun asyncActivityWeekly(catName:String,activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsActivityWeekly("test", catName, activityName) { time ->
+        GetStatisticsActivityWeekly(userEmail, catName, activityName) { time ->
             continuation.resume(time , null)
         }
     }
 }
- suspend fun asyncActivityTotally(catName:String, activityName: String): Float {
+ suspend fun asyncActivityTotally(catName:String, activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsAcrivityTotaly("test", catName, activityName) { time ->
-            continuation.resume(time , null)
-        }
-    }
-}
-
- suspend fun asyncActivityMonthly(catName:String,activityName: String): Float {
-    return suspendCancellableCoroutine { continuation ->
-        GetStatisticsActivityMonthly("test", catName, activityName) { time ->
+        GetStatisticsAcrivityTotaly(userEmail, catName, activityName) { time ->
             continuation.resume(time , null)
         }
     }
 }
 
- suspend fun asyncCategoryDaily(catName:String): Float {
+ suspend fun asyncActivityMonthly(catName:String,activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsCategoryDaily("test", catName) { time ->
+        GetStatisticsActivityMonthly(userEmail, catName, activityName) { time ->
             continuation.resume(time , null)
         }
     }
 }
 
- suspend fun asyncCategoryWeekly(catName:String): Float {
+ suspend fun asyncCategoryDaily(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsCategoryWeekly("test", catName) { time ->
+        GetStatisticsCategoryDaily(userEmail, catName) { time ->
             continuation.resume(time , null)
         }
     }
 }
 
- suspend fun asyncCategoryMonthly(catName:String): Float {
+ suspend fun asyncCategoryWeekly(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsCategoryMonthly("test", catName) { time ->
+        GetStatisticsCategoryWeekly(userEmail, catName) { time ->
             continuation.resume(time , null)
         }
     }
 }
 
- suspend fun asyncCategoryYearly(catName:String): Float {
+ suspend fun asyncCategoryMonthly(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsCategoryYearly("test", catName) { time ->
+        GetStatisticsCategoryMonthly(userEmail, catName) { time ->
             continuation.resume(time , null)
         }
     }
 }
- suspend fun asyncCategoryTotally(catName:String): Float {
+
+ suspend fun asyncCategoryYearly(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
-        GetStatisticsCategoryTotaly("test", catName) { time ->
+        GetStatisticsCategoryYearly(userEmail, catName) { time ->
+            continuation.resume(time , null)
+        }
+    }
+}
+ suspend fun asyncCategoryTotally(catName:String,userEmail: String): Float {
+    return suspendCancellableCoroutine { continuation ->
+        GetStatisticsCategoryTotaly(userEmail, catName) { time ->
             continuation.resume(time , null)
         }
     }

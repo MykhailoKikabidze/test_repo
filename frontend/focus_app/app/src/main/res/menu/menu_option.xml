@@ -9,23 +9,25 @@
             android:id="@+id/profile"
             android:title="Profile" />
         <item
-            android:id="@+id/language_menu"
-            android:title="Badgets" />
-        <item
             android:id="@+id/statistics_menu"
             android:title="Statistic"/>
+
         <item
-            android:id="@+id/task_menu"
-            android:title="Taks"/>
+            android:id="@+id/timer"
+            android:title="Timer"/>
         <item
-            android:id="@+id/settings_menu"
-            android:title="Settings" />
+            android:id="@+id/friends"
+            android:title="Friends"/>
+        <item
+            android:id="@+id/rankings"
+            android:title="Rankings"/>
+
     </group>
     <item
         android:title="">
         <menu>
             <item
-                android:id="@+id/nav_home"
+                android:id="@+id/logout"
                 android:title="Logout"/>
         </menu>
     </item>

@@ -1,6 +1,11 @@
 package StatisticCharts
 
 import ApiRequest.*
+import Data.SaveUserEmail
+import Data.getSavedUserEmail
+import FriendProfile.FriendProfile
+import LoginPage.LoginPage
+import ProfilePage.ProfilePage
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
@@ -34,6 +39,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.Calendar
 import StatiscticsFunction.*
+import TimerPage.TimerPage
 import java.util.jar.Attributes.Name
 
 class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedListener {
@@ -47,6 +53,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     private  lateinit var categoryName:String
     var timeProcent: MutableList<Float> = mutableListOf()
     private lateinit var periodToDisplay:TextView
+    private lateinit var userEmail:String
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +75,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
 
 
+        userEmail= getSavedUserEmail(this)?:""
 
 
         savedPeriod = getSavedPeriod()?:"Daily>"
@@ -164,7 +172,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityDaily(categoryName, NamesStaticList[i])
+                                    asyncActivityDaily(categoryName, NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -177,7 +185,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityWeekly(categoryName, NamesStaticList[i])
+                                    asyncActivityWeekly(categoryName, NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -190,7 +198,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityMonthly(categoryName, NamesStaticList[i])
+                                    asyncActivityMonthly(categoryName, NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -203,7 +211,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityYearly(categoryName, NamesStaticList[i])
+                                    asyncActivityYearly(categoryName, NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -216,7 +224,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncActivityTotally(categoryName, NamesStaticList[i])
+                                    asyncActivityTotally(categoryName, NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -232,7 +240,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryDaily(NamesStaticList[i])
+                                    asyncCategoryDaily(NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -245,7 +253,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryWeekly(NamesStaticList[i])
+                                    asyncCategoryWeekly(NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -258,7 +266,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryMonthly(NamesStaticList[i])
+                                    asyncCategoryMonthly(NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -271,7 +279,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryYearly(NamesStaticList[i])
+                                    asyncCategoryYearly(NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -284,7 +292,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         GlobalScope.launch(Dispatchers.Main) {
                             for (i in NamesStaticList.indices) {
                                 val result = withContext(Dispatchers.IO) {
-                                    asyncCategoryTotally(NamesStaticList[i])
+                                    asyncCategoryTotally(NamesStaticList[i],userEmail)
                                 }
                                 timeProcent.add(result)
                             }
@@ -299,20 +307,35 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.language_menu -> {
-                Toast.makeText(this, "wowo", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            R.id.settings_menu -> {
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
             R.id.statistics_menu -> {
-                Toast.makeText(this, "static", Toast.LENGTH_SHORT).show()
+                val intent=Intent(this, StatisticCharts.PieChart::class.java)
+                startActivity(intent)
                 return true
             }
+
+            R.id.friends->{
+                val intent=Intent(this, FriendProfile::class.java)
+                startActivity(intent)
+                return true
+            }
+
+            R.id.timer->{
+                val intent=Intent(this, TimerPage::class.java)
+                startActivity(intent)
+                return true
+            }
+            R.id.logout->{
+                SaveUserEmail(this,null)
+                intent=Intent(this, LoginPage::class.java)
+                startActivity(intent)
+            }
+
+            R.id.profile -> {
+                val intent=Intent(this, ProfilePage::class.java)
+                startActivity(intent)
+                return true
+            }
+
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true

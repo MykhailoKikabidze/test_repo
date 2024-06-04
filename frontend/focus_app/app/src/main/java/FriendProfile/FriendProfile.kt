@@ -2,6 +2,8 @@ package FriendProfile
 
 import ApiRequest.GetActivitiesForCharts
 import ApiRequest.GetCategoryCharts
+import Data.SaveUserEmail
+import LoginPage.LoginPage
 import ProfilePage.ProfilePage
 import StatiscticsFunction.asyncActivityDaily
 import StatiscticsFunction.asyncActivityMonthly
@@ -25,6 +27,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import StatiscticsFunction.*
+import TimerPage.TimerPage
 import android.app.AlertDialog
 import android.content.Intent
 import android.view.MenuItem
@@ -48,6 +51,7 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
     private lateinit var categoryName: String
     var timeProcent: MutableList<Float> = mutableListOf()
     private lateinit var periodToDisplay: TextView
+    private lateinit var userEmail:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,12 +65,14 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
 
         periodToDisplay=findViewById(R.id.periodTimeFriend)
 
+        val userTextView=findViewById<TextView>(R.id.userEmailFriend)
         pieChart=findViewById(R.id.pie_chart_friend)
         periodToDisplay.text=intent.extras?.getString("period")?:"Daily>"
 
-        categoryName = intent.extras?.getString("categoryName") ?: "hobby"
+      //  categoryName = intent.extras?.getString("categoryName") ?: "hobby"
 
-
+        userEmail=intent.extras?.getString("email")?:""
+        userTextView.text=userEmail
         DisplayChart()
 
 
@@ -96,7 +102,7 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                 GlobalScope.launch(Dispatchers.Main) {
                     for (i in NamesStaticList.indices) {
                         val result = withContext(Dispatchers.IO) {
-                            asyncCategoryDaily(NamesStaticList[i])
+                            asyncCategoryDaily(NamesStaticList[i],userEmail)
                         }
                         timeProcent.add(result)
                     }
@@ -115,7 +121,7 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                 GlobalScope.launch(Dispatchers.Main) {
                     for (i in NamesStaticList.indices) {
                         val result = withContext(Dispatchers.IO) {
-                            asyncCategoryWeekly(NamesStaticList[i])
+                            asyncCategoryWeekly(NamesStaticList[i],userEmail)
                         }
                         timeProcent.add(result)
                     }
@@ -134,7 +140,7 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                 GlobalScope.launch(Dispatchers.Main) {
                     for (i in NamesStaticList.indices) {
                         val result = withContext(Dispatchers.IO) {
-                            asyncCategoryMonthly(NamesStaticList[i])
+                            asyncCategoryMonthly(NamesStaticList[i],userEmail)
                         }
                         timeProcent.add(result)
                     }
@@ -153,7 +159,7 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                 GlobalScope.launch(Dispatchers.Main) {
                     for (i in NamesStaticList.indices) {
                         val result = withContext(Dispatchers.IO) {
-                            asyncCategoryYearly(NamesStaticList[i])
+                            asyncCategoryYearly(NamesStaticList[i],userEmail)
                         }
                         timeProcent.add(result)
                     }
@@ -172,7 +178,7 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                 GlobalScope.launch(Dispatchers.Main) {
                     for (i in NamesStaticList.indices) {
                         val result = withContext(Dispatchers.IO) {
-                            asyncCategoryTotally(NamesStaticList[i])
+                            asyncCategoryTotally(NamesStaticList[i],userEmail)
                         }
                         timeProcent.add(result)
                     }
@@ -190,26 +196,35 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.language_menu -> {
-                Toast.makeText(this, "wowo", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            R.id.settings_menu -> {
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
             R.id.statistics_menu -> {
-                val intent= Intent(this, StatisticCharts.PieChart::class.java)
+                val intent=Intent(this, StatisticCharts.PieChart::class.java)
                 startActivity(intent)
                 return true
             }
+
+            R.id.friends->{
+                val intent=Intent(this,FriendProfile::class.java)
+                startActivity(intent)
+                return true
+            }
+
+            R.id.timer->{
+                val intent=Intent(this, TimerPage::class.java)
+                startActivity(intent)
+                return true
+            }
+            R.id.logout->{
+                SaveUserEmail(this,null)
+                intent=Intent(this, LoginPage::class.java)
+                startActivity(intent)
+            }
+
             R.id.profile -> {
-                val intent= Intent(this, ProfilePage::class.java)
+                val intent=Intent(this,ProfilePage::class.java)
                 startActivity(intent)
                 return true
             }
+
 
         }
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -225,20 +240,25 @@ class FriendProfile : AppCompatActivity() ,NavigationView.OnNavigationItemSelect
                 0 -> {
                     view.findViewById<TextView>(R.id.periodTimeFriend)?.text = "Daily>"
                     intent.putExtra("period","Daily>")
+                    intent.putExtra("email",userEmail)
                 }
 
                 1 -> {
                     view.findViewById<TextView>(R.id.periodTimeFriend)?.text = "Weekly>"
                     intent.putExtra("period","Weekly>")
+                    intent.putExtra("email",userEmail)
                 }
 
                 2 -> {
                     periodToDisplay.text = "Yearly>"
                     intent.putExtra("period","Yearly>")
+                    intent.putExtra("email",userEmail)
+
                 }
                 3 -> {
                     view.findViewById<TextView>(R.id.periodTimeFriend)?.text="Total>"
                     intent.putExtra("period","Total>")
+                    intent.putExtra("email",userEmail)
                 }
             }
             startActivity(intent)

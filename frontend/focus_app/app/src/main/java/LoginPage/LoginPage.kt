@@ -2,6 +2,7 @@ package LoginPage
 
 import ApiRequest.Authorization
 import ApiRequest.rightAutorization
+import Data.SaveUserEmail
 import ProfilePage.ProfilePage
 import SignUpPage.SignUpPage
 import StatisticCharts.PieChart
@@ -25,10 +26,9 @@ import com.example.focus_app.R
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.textfield.TextInputEditText
 
-class LoginPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
+class LoginPage : AppCompatActivity(){
 
-    private lateinit var drawerLayout: DrawerLayout
-    private lateinit var toolbar: Toolbar
+
 
     @SuppressLint("SuspiciousIndentation", "MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,15 +40,6 @@ class LoginPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        drawerLayout=findViewById(R.id.toolbar_login_main)
-
-        val navigationView=findViewById<NavigationView>(R.id.nav_view)
-        navigationView.setNavigationItemSelectedListener(this)
-
-        toolbar = findViewById(R.id.toolbar_login)
-        val toggle=ActionBarDrawerToggle(this,drawerLayout, toolbar ,R.string.open_nav,R.string.close_nav)
-        drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
 
 
 
@@ -70,6 +61,7 @@ class LoginPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
                 Authorization(user) { result ->
                     Toast.makeText(this, result, Toast.LENGTH_SHORT).show()
                     if(result== rightAutorization) {
+                        SaveUserEmail(this,email.text.toString())
                         val intent = Intent(this, TimerPage::class.java)
                         startActivity(intent)
                     }
@@ -85,37 +77,6 @@ class LoginPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
         }
 
     }
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.language_menu -> {
-                val intent=Intent(this, ProfilePage::class.java)
-                startActivity(intent)
-                return true
-            }
 
-            R.id.settings_menu -> {
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            R.id.statistics_menu -> {
-                val intent=Intent(this, PieChart::class.java)
-                startActivity(intent)
-                return true
-            }
-        }
-        drawerLayout.closeDrawer(GravityCompat.START)
-        return true
-    }
-
-
-    override fun onBackPressed(){
-        super.onBackPressed()
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START)
-        }else{
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
 
 }

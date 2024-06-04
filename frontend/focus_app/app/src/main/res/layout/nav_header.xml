@@ -2,10 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_marginTop="16dp"
-    android:layout_marginStart="16dp"
     android:layout_marginRight="10dp"
 
-    android:layout_width="190dp"
+    android:layout_width="290dp"
     android:layout_height="100dp"
     android:background="#992384A1"
     android:theme="@style/Theme.AppCompat.DayNight">
