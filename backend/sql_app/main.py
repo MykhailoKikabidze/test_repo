@@ -42,6 +42,12 @@ async def create_user(user: logging_schemas.User, db: AsyncSession = Depends(get
     return await logging_crud.create_user_db(db=db, user=user)
 
 
+@app.get("/users/", tags=["logging"], response_model=Sequence[str])
+async def show_users(db: AsyncSession = Depends(get_db_session)):
+    result = await logging_crud.get_users(db=db)
+    return result
+
+
 @app.get("/categories/", tags=["categories"], response_model=Sequence[category_schemas.Category])
 async def show_categories(db: AsyncSession = Depends(get_db_session)):
     return await category_crud.get_categories(db=db)
@@ -116,11 +122,19 @@ async def add_profile(user_email: str, last_log: str, db: AsyncSession = Depends
 
 @app.get("/profile/points/", tags=["profile"], response_model=Union[int, category_schemas.Status])
 async def get_profile_points(user_email: str, db: AsyncSession = Depends(get_db_session)):
-    result = await profile_crud.get_points(db=db, email=user_email)
-    if result is not None:
-        return result
+    profile = await profile_crud.get_profile(db=db, email=user_email)
+    if profile is not None:
+        return profile.points
     else:
         return category_schemas.Status(status="error", message="User profile is not found.")
+
+
+@app.get("/profile/image/", tags=["profile"], response_model=Union[str, category_schemas.Status])
+async def get_profile_image(user_email: str, db: AsyncSession = Depends(get_db_session)):
+    profile = await profile_crud.get_profile(db=db, email=user_email)
+    if profile is not None:
+        return profile.image
+    return category_schemas.Status(status="error", message="User profile is not found.")
 
 
 @app.put("/profile/points/", tags=["profile"], response_model=category_schemas.Status)
@@ -133,6 +147,13 @@ async def update_profile_points(user_email: str, points: int, action: str, db: A
 @app.put("/profile/last_log/", tags=["profile"], response_model=category_schemas.Status)
 async def update_profile_last_log(user_email: str, new_date_log: str, db: AsyncSession = Depends(get_db_session)):
     result = await profile_crud.update_profile_last_log(db=db, email=user_email, new_date_log=new_date_log)
+    res_status = category_schemas.Status(status=result["status"], message=result["message"])
+    return res_status
+
+
+@app.put("/profile/image/", tags=["profile"], response_model=category_schemas.Status)
+async def update_profile_image(user_email: str, new_image: str, db: AsyncSession = Depends(get_db_session)):
+    result = await profile_crud.update_profile_image(db=db, email=user_email, new_image=new_image)
     res_status = category_schemas.Status(status=result["status"], message=result["message"])
     return res_status
 

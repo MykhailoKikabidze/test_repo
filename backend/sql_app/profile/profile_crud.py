@@ -72,9 +72,13 @@ async def add_default_profile(db: AsyncSession, email: str, last_log: str):
         if check_profile is None:
 
             date_last_log = list(map(int, last_log.split("/")))
-            profile = profile_models.Profile(id_user=user.id, bonus=1, points=0, last_log=date(date_last_log[0],
-                                                                                               date_last_log[1],
-                                                                                               date_last_log[2]))
+            profile = profile_models.Profile(id_user=user.id,
+                                             bonus=1,
+                                             points=0,
+                                             image="",
+                                             last_log=date(date_last_log[0],
+                                                           date_last_log[1],
+                                                           date_last_log[2]))
 
             async with db as session:
                 session.add(profile)
@@ -122,7 +126,7 @@ async def update_profile_last_log(db: AsyncSession, email: str, new_date_log: st
             await session.commit()
             await session.refresh(new_profile)
 
-        return {"status": "success", "message": "Profile last date are changed successfully."}
+        return {"status": "success", "message": "Profile last date is changed successfully."}
 
     return {"status": "error", "message": "User profile is not found."}
 
@@ -141,7 +145,6 @@ async def update_profile_points(db: AsyncSession, email: str, points: int, actio
         else:
             return {"status": "error", "message": f"Action [{action}] is undefined."}
 
-
         async with db as session:
             await session.delete(profile)
             session.add(new_profile)
@@ -153,8 +156,22 @@ async def update_profile_points(db: AsyncSession, email: str, points: int, actio
     return {"status": "error", "message": "User profile is not found."}
 
 
-async def get_points(db: AsyncSession, email: str):
+async def update_profile_image(db: AsyncSession, email: str, new_image: str):
     profile = await get_profile(db=db, email=email)
+
     if profile is not None:
-        return profile.points
-    return None
+        new_profile = profile_models.Profile(id_user=profile.id_user,
+                                             last_log=profile.last_log,
+                                             bonus=profile.bonus,
+                                             points=profile.points,
+                                             image=new_image)
+
+        async with db as session:
+            await session.delete(profile)
+            session.add(new_profile)
+            await session.commit()
+            await session.refresh(new_profile)
+
+        return {"status": "success", "message": "Profile image is changed successfully."}
+
+    return {"status": "error", "message": "User profile is not found."}

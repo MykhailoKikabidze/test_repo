@@ -23,6 +23,15 @@ async def get_user_by_email(db: AsyncSession, email: str) -> logging_models.User
         return result.scalars().first()
 
 
+async def get_users(db: AsyncSession):
+    async with db as session:
+        result = await session.execute(
+            select(logging_models.User.email)
+        )
+
+        return result.scalars().all()
+
+
 async def create_user_db(db: AsyncSession, user: logging_models.User) -> logging_models.User:
     password = hash_password(user.password)
     db_user = logging_models.User(login=user.login, email=user.email, password=password)
