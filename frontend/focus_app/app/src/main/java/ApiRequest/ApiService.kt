@@ -205,4 +205,20 @@ interface ApiService {
         @Query("user_email")userEmail: String,
         @Query("new_date_log")date:String
     ):Call<Any>
+
+    @GET("/users/")
+    fun getUsers(): Call<List<String>>
+
+    @DELETE("/users/")
+    fun deleteUser(
+        @Query("user_email") userEmail: String
+    ): Call<Any>
+
+    @GET("/users/profile/")
+    fun getUserProfile(
+        @Query("user_email") userEmail: String
+    ): Call<Any>
+
+
+
 }
