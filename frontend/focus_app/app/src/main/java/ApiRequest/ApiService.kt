@@ -164,12 +164,24 @@ interface ApiService {
         @Query("user_email") userEmail: String
     ): Call<Any>
 
+    @GET("/profile/image/")
+    fun getProfilePhoto(
+        @Query("user_email")userEmail: String
+    ):Call<String>
+
+    @PUT("/profile/image/")
+    fun updateProfileImage(
+        @Query("user_email") userEmail: String,
+        @Query("new_image") newImageData: String
+    ): Call<Any>
 
     @PUT("/profile/login/")
     fun updateUserLogin(
         @Query("user_email") userEmail: String,
         @Query("new_login") newLogin: String
     ): Call<Any>
+
+
 
     @PUT("/profile/email/")
     fun updateUserEmail(

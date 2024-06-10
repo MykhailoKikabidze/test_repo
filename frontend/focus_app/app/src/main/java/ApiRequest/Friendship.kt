@@ -6,33 +6,31 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-fun GetFriends(user_email: String,friendsList:(List<String>)->Unit)
-{
+fun GetFriends(user_email: String, friendsList: (List<String>) -> Unit) {
     RetrofitClient.instance.getFriends(user_email)
-        .enqueue(object: Callback<List<String>> {
-
-            override fun onResponse(call: Call<List<String>>,response: Response<List<String>>)
-            {
-                if(response.isSuccessful)
-                {
-                    val list= response.body()?: emptyList<String>()
-                    val users = list.map {it}
-                    friendsList(users)
+        .enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                if (response.isSuccessful) {
+                    val list = response.body() ?: emptyList()
+                    friendsList(list)
                 }
             }
-            override fun onFailure(call: retrofit2.Call<List<String>>, t: Throwable) {
 
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                // Handle failure
             }
         })
 }
-fun AddFriend(user_email: String,friend_email:String,callback:(String)->Unit){
-    RetrofitClient.instance.addFriend(user_email,friend_email).enqueue( object :Callback<Any>{
+
+fun AddFriend(user_email: String, friend_email: String, callback: (String) -> Unit) {
+    RetrofitClient.instance.addFriend(user_email, friend_email).enqueue(object : Callback<Any> {
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
-            if(response.isSuccessful) {
-                val gson=Gson()
-                val JsonObject = gson.toJson(response.body())
-                val JsonObj = gson.fromJson(JsonObject,JsonObject::class.java)
-                callback(JsonObj)
+            if (response.isSuccessful) {
+                val gson = Gson()
+                val jsonObject = gson.toJson(response.body())
+                callback("Success")
+            } else {
+                callback("Failed")
             }
         }
 
@@ -42,14 +40,15 @@ fun AddFriend(user_email: String,friend_email:String,callback:(String)->Unit){
     })
 }
 
-fun DeleteFriend(user_email: String,friend_email:String,callback:(String)->Unit){
-    RetrofitClient.instance.deleteFriend(user_email,friend_email).enqueue( object :Callback<Any>{
+fun DeleteFriend(user_email: String, friend_email: String, callback: (String) -> Unit) {
+    RetrofitClient.instance.deleteFriend(user_email, friend_email).enqueue(object : Callback<Any> {
         override fun onResponse(call: Call<Any>, response: Response<Any>) {
-            if(response.isSuccessful) {
-                val gson=Gson()
-                val JsonObject = gson.toJson(response.body())
-                val JsonObj = gson.fromJson(JsonObject,JsonObject::class.java)
-                callback(JsonObj)
+            if (response.isSuccessful) {
+                val gson = Gson()
+                val jsonObject = gson.toJson(response.body())
+                callback("Success")
+            } else {
+                callback("Failed")
             }
         }
 
@@ -77,6 +76,7 @@ fun GetUsers(callback: (String) -> Unit) {
         }
     })
 }
+
 
 fun DeleteUser(userEmail: String, callback: (String) -> Unit) {
     RetrofitClient.instance.deleteUser(userEmail).enqueue(object : Callback<Any> {

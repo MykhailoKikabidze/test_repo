@@ -6,6 +6,7 @@ import ApiRequest.UpdatePoints
 import Data.SaveUserEmail
 import Data.userEmail
 import FriendProfile.FriendProfile
+import FriendsPage.FriendsPage
 import LoginPage.LoginPage
 import ProfilePage.ProfilePage
 import StatisticCharts.PieChart
@@ -299,7 +300,7 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
             }
 
             R.id.friends->{
-                val intent=Intent(this,FriendProfile::class.java)
+                val intent=Intent(this,FriendsPage::class.java)
                 startActivity(intent)
                 return true
             }

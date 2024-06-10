@@ -186,17 +186,6 @@ class ProfilePage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedL
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.language_menu -> {
-                val intent=Intent(this, ProfilePage::class.java)
-                startActivity(intent)
-                return true
-            }
-
-            R.id.settings_menu -> {
-                Toast.makeText(this, "settings", Toast.LENGTH_SHORT).show()
-                return true
-            }
-
             R.id.statistics_menu -> {
                 val intent=Intent(this, PieChart::class.java)
                 startActivity(intent)
