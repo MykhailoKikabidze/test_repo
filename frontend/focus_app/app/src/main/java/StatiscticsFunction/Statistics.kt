@@ -36,7 +36,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import java.util.Calendar
- suspend fun asyncActivityYearly(catName:String,activityName: String,userEmail: String): Float {
+import kotlin.random.Random
+
+suspend fun asyncActivityYearly(catName:String,activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsActivityYearly(userEmail, catName, activityName) { time ->
             continuation.resume(time , null)
@@ -44,7 +46,7 @@ import java.util.Calendar
     }
 }
 
- suspend fun asyncActivityDaily(catName:String,activityName: String,userEmail: String): Float {
+suspend fun asyncActivityDaily(catName:String,activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsActivityDaily(userEmail, catName, activityName) { time ->
             continuation.resume(time, null)
@@ -52,14 +54,14 @@ import java.util.Calendar
     }
 }
 
- suspend fun asyncActivityWeekly(catName:String,activityName: String,userEmail: String): Float {
+suspend fun asyncActivityWeekly(catName:String,activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsActivityWeekly(userEmail, catName, activityName) { time ->
             continuation.resume(time , null)
         }
     }
 }
- suspend fun asyncActivityTotally(catName:String, activityName: String,userEmail: String): Float {
+suspend fun asyncActivityTotally(catName:String, activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsAcrivityTotaly(userEmail, catName, activityName) { time ->
             continuation.resume(time , null)
@@ -67,7 +69,7 @@ import java.util.Calendar
     }
 }
 
- suspend fun asyncActivityMonthly(catName:String,activityName: String,userEmail: String): Float {
+suspend fun asyncActivityMonthly(catName:String,activityName: String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsActivityMonthly(userEmail, catName, activityName) { time ->
             continuation.resume(time , null)
@@ -75,7 +77,7 @@ import java.util.Calendar
     }
 }
 
- suspend fun asyncCategoryDaily(catName:String,userEmail: String): Float {
+suspend fun asyncCategoryDaily(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsCategoryDaily(userEmail, catName) { time ->
             continuation.resume(time , null)
@@ -83,7 +85,7 @@ import java.util.Calendar
     }
 }
 
- suspend fun asyncCategoryWeekly(catName:String,userEmail: String): Float {
+suspend fun asyncCategoryWeekly(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsCategoryWeekly(userEmail, catName) { time ->
             continuation.resume(time , null)
@@ -91,7 +93,7 @@ import java.util.Calendar
     }
 }
 
- suspend fun asyncCategoryMonthly(catName:String,userEmail: String): Float {
+suspend fun asyncCategoryMonthly(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsCategoryMonthly(userEmail, catName) { time ->
             continuation.resume(time , null)
@@ -99,20 +101,58 @@ import java.util.Calendar
     }
 }
 
- suspend fun asyncCategoryYearly(catName:String,userEmail: String): Float {
+suspend fun asyncCategoryYearly(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsCategoryYearly(userEmail, catName) { time ->
             continuation.resume(time , null)
         }
     }
 }
- suspend fun asyncCategoryTotally(catName:String,userEmail: String): Float {
+suspend fun asyncCategoryTotally(catName:String,userEmail: String): Float {
     return suspendCancellableCoroutine { continuation ->
         GetStatisticsCategoryTotaly(userEmail, catName) { time ->
             continuation.resume(time , null)
         }
     }
 }
+suspend fun asyncTotallyDaily(userEmail: String): Float {
+    return suspendCancellableCoroutine { continuation ->
+        GetStatisticsTotalyDaily(userEmail) { time ->
+            continuation.resume(time , null)
+        }
+    }
+}
+suspend fun asyncTotallyWeekly(userEmail: String): Float {
+    return suspendCancellableCoroutine { continuation ->
+        GetStatisticsTotalyWeekly(userEmail) { time ->
+            continuation.resume(time , null)
+        }
+    }
+}
+suspend fun asyncTotallyMonthly(userEmail: String): Float {
+    return suspendCancellableCoroutine { continuation ->
+        GetStatisticsTotalyMonthly(userEmail) { time ->
+            continuation.resume(time , null)
+        }
+    }
+}
+suspend fun asyncTotallyYearly(userEmail: String): Float {
+    return suspendCancellableCoroutine { continuation ->
+        GetStatisticsTotalyYearly(userEmail) { time ->
+            continuation.resume(time , null)
+        }
+    }
+}
+suspend fun asyncTotallyTotal(userEmail: String): Float {
+    return suspendCancellableCoroutine { continuation ->
+        GetStatisticsTotalyTotal(userEmail) { time ->
+            continuation.resume(time , null)
+        }
+    }
+}
+
+
+
 fun updatePieChart(string: String,context: Context, pieChart: PieChart, timeProcent:MutableList<Float>, NamesStatisticList:MutableList<String>) {
 
     val entries = mutableListOf<PieEntry>()
@@ -121,6 +161,7 @@ fun updatePieChart(string: String,context: Context, pieChart: PieChart, timeProc
         entries.add(PieEntry(timeProcent[i],NamesStatisticList[i]))
     }
     val dataSet = PieDataSet(entries,  string)
+
     dataSet.colors = listOf(
         getColor(context,R.color.yellow),
         getColor(context,R.color.blue),
@@ -140,6 +181,7 @@ fun updatePieChart(string: String,context: Context, pieChart: PieChart, timeProc
     legend.typeface = Typeface.DEFAULT_BOLD
 
     legend.formSize=20f
+
 
     // Customize the value text color and size
     dataSet.valueTextColor =R.color.black // Set this to your desired color for numbers

@@ -1,6 +1,7 @@
-package StatisticCharts
+package Rankings
 
 import ApiRequest.GetCategory
+import Rankings.Rankings
 import TimerPage.ActivityView
 import android.content.Intent
 import android.os.Bundle
@@ -13,7 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.focus_app.R
 
-class Category : AppCompatActivity() {
+class CategoryRanking : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -31,8 +32,9 @@ class Category : AppCompatActivity() {
 
         listOfCategories.setOnItemClickListener { parent, view, position, id ->
             val selectedCategory = parent.getItemAtPosition(position) as String
-            val intent = Intent(this, PieChart::class.java)
-            intent.putExtra("categoryName", selectedCategory)
+            val intent = Intent(this, Rankings::class.java)
+            intent.putExtra("category", selectedCategory)
+
             startActivity(intent)
         }
     }

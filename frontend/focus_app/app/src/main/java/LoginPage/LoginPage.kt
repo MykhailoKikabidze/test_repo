@@ -41,10 +41,6 @@ class LoginPage : AppCompatActivity(){
             insets
         }
 
-
-
-
-
         val logInButton: Button=findViewById(R.id.btn_login)
         val email = findViewById<TextInputEditText>(R.id.et_email_login)
         val password = findViewById<TextInputEditText>(R.id.password_login)

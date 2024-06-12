@@ -71,4 +71,3 @@
         app:itemIconTint="#BAE1F1"
         app:itemTextColor="@color/black" />
 </androidx.drawerlayout.widget.DrawerLayout>
-

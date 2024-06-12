@@ -77,3 +77,27 @@ fun ConnectServer(callback: (String) -> Unit)
         }
     })
 }
+
+fun GetUserLogin(userEmail: String, callback: (String) -> Unit) {
+    RetrofitClient.instance.getUserProfile(userEmail).enqueue(object : Callback<Any> {
+        override fun onResponse(call: Call<Any>, response: Response<Any>) {
+            if (response.isSuccessful) {
+                val gson = Gson()
+                val jsonObject = gson.toJson(response.body())
+                val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
+
+                if (jsonObj.has("login"))
+                {
+                    callback(jsonObj.get("login").toString())
+                }
+            } else {
+                val errorMessage = response.errorBody()?.string() ?: "Unknown error"
+                callback("Error: $errorMessage")
+            }
+        }
+
+        override fun onFailure(call: Call<Any>, t: Throwable) {
+            callback("Failure: ${t.message}")
+        }
+    })
+}

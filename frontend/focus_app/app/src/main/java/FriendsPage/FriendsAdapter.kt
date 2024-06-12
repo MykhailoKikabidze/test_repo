@@ -1,64 +1,65 @@
 package FriendsPage
 
-import FriendProfile.FriendProfile
-import android.content.Intent
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.focus_app.R
 
-class FriendsAdapter(private val onRemoveClick: ((String) -> Unit)? = null) : ListAdapter<String, FriendsAdapter.FriendViewHolder>(FriendDiffCallback()) {
+class FriendsAdapter(
+    private val context: Context,
+    private val users: List<String>,
+    private val friends: List<String>,
+    private val onAdd: (String) -> Unit,
+    private val onDelete: (String) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FriendViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_friend, parent, false)
-        return FriendViewHolder(view, onRemoveClick)
+    private val TYPE_USER = 0
+    private val TYPE_FRIEND = 1
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position < users.size) TYPE_USER else TYPE_FRIEND
     }
 
-    override fun onBindViewHolder(holder: FriendViewHolder, position: Int) {
-        val friendEmail = getItem(position)
-        holder.bind(friendEmail)
-    }
-
-    class FriendViewHolder(itemView: View, private val onRemoveClick: ((String) -> Unit)?) : RecyclerView.ViewHolder(itemView) {
-        private val textViewFriendEmail: TextView = itemView.findViewById(R.id.textViewFriendEmail)
-
-
-        fun bind(friendEmail: String) {
-            textViewFriendEmail.text = friendEmail
-            itemView.setOnClickListener {
-                // Start the FriendProfile activity
-                val context = itemView.context
-                val intent = Intent(context, FriendProfile::class.java)
-                intent.putExtra("email", friendEmail)
-                context.startActivity(intent)
-            }
-
-            itemView.setOnLongClickListener {
-                onRemoveClick?.invoke(friendEmail)
-                true
-            }
-//
-//        fun bind(friendEmail: String) {
-//            textViewFriendEmail.text = friendEmail
-//            itemView.setOnClickListener {
-//                onRemoveClick?.invoke(friendEmail)
-//            }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val inflater = LayoutInflater.from(context)
+        return if (viewType == TYPE_USER) {
+            UserViewHolder(inflater.inflate(R.layout.item_user, parent, false))
+        } else {
+            FriendViewHolder(inflater.inflate(R.layout.item_friend, parent, false))
         }
     }
 
-
-
-    class FriendDiffCallback : DiffUtil.ItemCallback<String>() {
-        override fun areItemsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (getItemViewType(position) == TYPE_USER) {
+            (holder as UserViewHolder).bind(users[position])
+        } else {
+            (holder as FriendViewHolder).bind(friends[position - users.size])
         }
+    }
 
-        override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
+    override fun getItemCount(): Int = users.size + friends.size
+
+    inner class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val emailText: TextView = itemView.findViewById(R.id.emailText)
+        private val addButton: Button = itemView.findViewById(R.id.addButton)
+
+        fun bind(email: String) {
+            emailText.text = email
+            addButton.setOnClickListener { onAdd(email) }
+        }
+    }
+
+    inner class FriendViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val emailText: TextView = itemView.findViewById(R.id.emailText)
+        private val deleteButton: Button = itemView.findViewById(R.id.deleteButton)
+
+        fun bind(email: String) {
+            emailText.text = email
+            deleteButton.setOnClickListener { onDelete(email) }
         }
     }
 }

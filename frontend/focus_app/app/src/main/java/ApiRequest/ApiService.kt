@@ -145,7 +145,7 @@ interface ApiService {
     ): Call<Any>
 
     @GET("/statistics/total/weak/")
-    fun getStatisticsTotalWeakly(
+    fun getStatisticsTotalWeekly(
         @Query("user_email") userEmail: String
     ): Call<Any>
 
@@ -164,12 +164,24 @@ interface ApiService {
         @Query("user_email") userEmail: String
     ): Call<Any>
 
+    @GET("/profile/image/")
+    fun getProfilePhoto(
+        @Query("user_email")userEmail: String
+    ):Call<String>
+
+    @PUT("/profile/image/")
+    fun updateProfileImage(
+        @Query("user_email") userEmail: String,
+        @Query("new_image") newImageData: String
+    ): Call<Any>
 
     @PUT("/profile/login/")
     fun updateUserLogin(
         @Query("user_email") userEmail: String,
         @Query("new_login") newLogin: String
     ): Call<Any>
+
+
 
     @PUT("/profile/email/")
     fun updateUserEmail(
@@ -205,4 +217,20 @@ interface ApiService {
         @Query("user_email")userEmail: String,
         @Query("new_date_log")date:String
     ):Call<Any>
+
+    @GET("/users/")
+    fun getUsers(): Call<List<String>>
+
+    @DELETE("/users/")
+    fun deleteUser(
+        @Query("user_email") userEmail: String
+    ): Call<Any>
+
+    @GET("/users/profile/")
+    fun getUserProfile(
+        @Query("user_email") userEmail: String
+    ): Call<Any>
+
+
+
 }

@@ -4,8 +4,10 @@ import ApiRequest.*
 import Data.SaveUserEmail
 import Data.getSavedUserEmail
 import FriendProfile.FriendProfile
+import FriendsPage.FriendsPage
 import LoginPage.LoginPage
 import ProfilePage.ProfilePage
+import Rankings.Rankings
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
@@ -69,7 +71,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
         calendarView = findViewById<CalendarView>(R.id.calendar)
 
         periodToDisplay = findViewById<TextView>(R.id.periodTime)
-        periodToDisplay.text=intent.extras?.getString("period")?:"Daily>"
+        periodToDisplay.text=intent.extras?.getString("period")?:"Daily"
 
         categoryDisplayed = findViewById<TextView>(R.id.selectCategory)
 
@@ -78,7 +80,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
         userEmail= getSavedUserEmail(this)?:""
 
 
-        savedPeriod = getSavedPeriod()?:"Daily>"
+        savedPeriod = getSavedPeriod()?:"Daily"
         periodToDisplay.text = savedPeriod
         val savedCategory = getSavedCategory()
 
@@ -88,8 +90,8 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
 
 
-        categoryName = intent.extras?.getString("categoryName") ?:"Category>"
-        if(categoryName!=" " && categoryName!="Category>")
+        categoryName = intent.extras?.getString("categoryName") ?:"Category"
+        if(categoryName!=" " && categoryName!="Category")
         {
             categoryDisplayed.text=categoryName
             intent.removeExtra("categoryName")
@@ -97,7 +99,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
         }
         else{
             categoryDisplayed.text=savedCategory
-            categoryName=savedCategory?:"Total>"
+            categoryName=savedCategory?:"Total"
         }
         categoryDisplayed.setOnClickListener() {
             ChooseCategoryDisplay(categoryDisplayed)
@@ -131,20 +133,6 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
         calendarView.setDate(currentDate.timeInMillis)
 
 
-//        calendarView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
-//            override fun onGlobalLayout() {
-//                // Calculate 70% of the screen width
-//                val screenWidth = resources.displayMetrics.widthPixels
-//                val calendarWidth = (screenWidth * 0.7).toInt()
-//
-//                // Set the width of the CalendarView to 70% of the screen width
-//                calendarView.layoutParams.width = calendarWidth
-//
-//                // Remove the layout listener to avoid multiple calls
-//                calendarView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-//            }
-//        })
-
 
 
     }
@@ -152,7 +140,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
     fun DisplayChart()
     {
-        if (categoryName != "Category>" && categoryName != "") {
+        if (categoryName != "Category" && categoryName != "") {
 
 
             categoryDisplayed.text = categoryName
@@ -161,12 +149,12 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
 
             var timeInProcentCategory: Int
 
-            if (categoryName != "Total>") {
+            if (categoryName != "Total") {
                 var categoryTime = 1
                 var catSomName = ""
                 val name = ""
 
-                if (periodToDisplay.text == "Daily>") {
+                if (periodToDisplay.text == "Daily") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -179,7 +167,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                             updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
-                } else if (periodToDisplay.text == "Weekly>") {
+                } else if (periodToDisplay.text == "Weekly") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -192,7 +180,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                             updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
-                } else if (periodToDisplay.text == "Monthly>") {
+                } else if (periodToDisplay.text == "Monthly") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -205,7 +193,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                             updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
-                } else if (periodToDisplay.text == "Yearly>") {
+                } else if (periodToDisplay.text == "Yearly") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -218,7 +206,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                             updatePieChart("Activities",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
-                } else if (periodToDisplay.text == "Total>") {
+                } else if (periodToDisplay.text == "Total") {
                     GetActivitiesForCharts(categoryName, "test") { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -232,9 +220,9 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                         }
                     }
                 }
-            } else if (categoryDisplayed.text == "Total>") {
+            } else if (categoryDisplayed.text == "Total") {
 
-                if (periodToDisplay.text == "Daily>") {
+                if (periodToDisplay.text == "Daily") {
                     GetCategoryCharts { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -247,7 +235,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                             updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
-                } else if (periodToDisplay.text == "Weekly>") {
+                } else if (periodToDisplay.text == "Weekly") {
                     GetCategoryCharts { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -260,7 +248,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                             updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
-                } else if (periodToDisplay.text == "Monthly>") {
+                } else if (periodToDisplay.text == "Monthly") {
                     GetCategoryCharts { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -273,7 +261,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                             updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
-                } else if (periodToDisplay.text == "Yearly>") {
+                } else if (periodToDisplay.text == "Yearly") {
                     GetCategoryCharts() { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -286,7 +274,7 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
                             updatePieChart("Categories",this@PieChart,pieChart,timeProcent,NamesStaticList)
                         }
                     }
-                } else if (periodToDisplay.text == "Total>") {
+                } else if (periodToDisplay.text == "Total") {
                     GetCategoryCharts { result ->
                         NamesStaticList = result
                         GlobalScope.launch(Dispatchers.Main) {
@@ -308,15 +296,21 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.statistics_menu -> {
-                val intent=Intent(this, StatisticCharts.PieChart::class.java)
+                val intent = Intent(this, StatisticCharts.PieChart::class.java)
                 startActivity(intent)
                 return true
             }
 
-            R.id.friends->{
-                val intent=Intent(this, FriendProfile::class.java)
+            R.id.friends -> {
+                val intent = Intent(this, FriendsPage::class.java)
                 startActivity(intent)
                 return true
+            }
+
+            R.id.rankings ->
+            {
+                val intent=Intent(this,Rankings::class.java)
+                startActivity(intent)
             }
 
             R.id.timer->{
@@ -352,35 +346,42 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     }
 
     fun showFrequencyDialog(view: View) {
-        val options = arrayOf("Daily", "Weekly", "Yearly","Total")
+        val options = arrayOf("Daily", "Weekly","Monthly", "Yearly","Total")
         val builder = AlertDialog.Builder(view.context)
         builder.setTitle("Choose Frequency")
         builder.setSingleChoiceItems(options, -1) { dialog, which ->
             when (which) {
                 0 -> {
-                    view.findViewById<TextView>(R.id.periodTime)?.text = "Daily>"
-                    savePeriod("Daily>")
+                    view.findViewById<TextView>(R.id.periodTime)?.text = "Daily"
+                    savePeriod("Daily")
                     this.recreate()
 
                 }
 
                 1 -> {
-                    view.findViewById<TextView>(R.id.periodTime)?.text = "Weekly>"
-                    savePeriod("Weekly>")
+                    view.findViewById<TextView>(R.id.periodTime)?.text = "Weekly"
+                    savePeriod("Weekly")
                     this.recreate()
 
                 }
-
                 2 -> {
-                    periodToDisplay.text = "Yearly>"
-                    savePeriod("Yearly>")
+                    periodToDisplay.text = "Monthly"
+                    savePeriod("Monthly")
                     this.recreate()
 
 
                 }
+
                 3 -> {
-                    view.findViewById<TextView>(R.id.periodTime)?.text="Total>"
-                    savePeriod("Total>")
+                    periodToDisplay.text = "Yearly"
+                    savePeriod("Yearly")
+                    this.recreate()
+
+
+                }
+                4 -> {
+                    view.findViewById<TextView>(R.id.periodTime)?.text="Total"
+                    savePeriod("Total")
                     this.recreate()
 
                 }
@@ -394,18 +395,17 @@ class PieChart : AppCompatActivity() ,NavigationView.OnNavigationItemSelectedLis
     fun ChooseCategoryDisplay(view: View) {
         val options = arrayOf("Total", "Category")
         val builder = AlertDialog.Builder(view.context)
-        builder.setTitle("Category>")
+        builder.setTitle("Select category")
         builder.setSingleChoiceItems(options, -1) { dialog, which ->
             when (which) {
                 0 -> {
-                    view.findViewById<TextView>(R.id.selectCategory)?.text = "Total>"
-                    saveCategory("Total>")
+                    view.findViewById<TextView>(R.id.selectCategory)?.text = "Total"
+                    saveCategory("Total")
                     this.recreate()
                 }
 
                 1 -> {
-                    var intent = Intent(this, Category::class.java)
-                    intent.putExtra("period", periodToDisplay.text)
+                    val intent = Intent(this, Category::class.java)
                     startActivity(intent)
 
                     view.findViewById<TextView>(R.id.selectCategory)?.text = "categoryName"

@@ -306,15 +306,158 @@ fun GetStatisticsCategoryTotaly(user_email:String, cat_name:String, timeSpend:(F
         })
 }
 
+fun GetStatisticsTotalyDaily(user_email:String, timeSpend:(Float)->Unit) {
+    RetrofitClient.instance.getStatisticsTotalDaily(user_email)
+        .enqueue(object : Callback<Any> {
+            private val handler = Handler(Looper.getMainLooper())
+
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                if (response.isSuccessful) {
+                    val gson = Gson()
+                    val jsonObject = gson.toJson(response.body())
+                    val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
+                    if (jsonObj.has("time")) {
+                        val totalTime=timeStringToSeconds(jsonObj.get("time").toString())
+                        timeSpend(totalTime)
+                    }
+
+
+                } else {
+                    //callsomething("Unknown error")
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                handler.post {
+                    // callsomething("Failure: ${t.message}")
+                }
+            }
+        })
+}
+
+fun GetStatisticsTotalyWeekly(user_email:String, timeSpend:(Float)->Unit) {
+    RetrofitClient.instance.getStatisticsTotalWeekly(user_email)
+        .enqueue(object : Callback<Any> {
+            private val handler = Handler(Looper.getMainLooper())
+
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                if (response.isSuccessful) {
+                    val gson = Gson()
+                    val jsonObject = gson.toJson(response.body())
+                    val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
+                    if (jsonObj.has("time")) {
+                        val totalTime=timeStringToSeconds(jsonObj.get("time").toString())
+                        timeSpend(totalTime)
+                    }
+
+
+                } else {
+                    //callsomething("Unknown error")
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                handler.post {
+                    // callsomething("Failure: ${t.message}")
+                }
+            }
+        })
+}
+
+fun GetStatisticsTotalyMonthly(user_email:String, timeSpend:(Float)->Unit) {
+    RetrofitClient.instance.getStatisticsTotalMonthly(user_email)
+        .enqueue(object : Callback<Any> {
+            private val handler = Handler(Looper.getMainLooper())
+
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                if (response.isSuccessful) {
+                    val gson = Gson()
+                    val jsonObject = gson.toJson(response.body())
+                    val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
+                    if (jsonObj.has("time")) {
+                        val totalTime=timeStringToSeconds(jsonObj.get("time").toString())
+                        timeSpend(totalTime)
+                    }
+
+
+                } else {
+                    //callsomething("Unknown error")
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                handler.post {
+                    // callsomething("Failure: ${t.message}")
+                }
+            }
+        })
+}
+
+fun GetStatisticsTotalyYearly(user_email:String, timeSpend:(Float)->Unit) {
+    RetrofitClient.instance.getStatisticsTotalYearly(user_email)
+        .enqueue(object : Callback<Any> {
+            private val handler = Handler(Looper.getMainLooper())
+
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                if (response.isSuccessful) {
+                    val gson = Gson()
+                    val jsonObject = gson.toJson(response.body())
+                    val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
+                    if (jsonObj.has("time")) {
+                        val totalTime=timeStringToSeconds(jsonObj.get("time").toString())
+                        timeSpend(totalTime)
+                    }
+
+
+                } else {
+                    //callsomething("Unknown error")
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                handler.post {
+                    // callsomething("Failure: ${t.message}")
+                }
+            }
+        })
+}
+fun GetStatisticsTotalyTotal(user_email:String, timeSpend:(Float)->Unit) {
+    RetrofitClient.instance.getStatisticsTotalTotaly(user_email)
+        .enqueue(object : Callback<Any> {
+            private val handler = Handler(Looper.getMainLooper())
+
+            override fun onResponse(call: Call<Any>, response: Response<Any>) {
+                if (response.isSuccessful) {
+                    val gson = Gson()
+                    val jsonObject = gson.toJson(response.body())
+                    val jsonObj = gson.fromJson(jsonObject, JsonObject::class.java)
+                    if (jsonObj.has("time")) {
+                        val totalTime=timeStringToSeconds(jsonObj.get("time").toString())
+                        timeSpend(totalTime)
+                    }
+
+
+                } else {
+                    //callsomething("Unknown error")
+                }
+            }
+
+            override fun onFailure(call: Call<Any>, t: Throwable) {
+                handler.post {
+                    // callsomething("Failure: ${t.message}")
+                }
+            }
+        })
+}
 
 
 fun timeStringToSeconds(timeString: String): Float {
     val timeString = timeString.trim('\"')
     val parts = timeString.split(":")
-    val hours = parts[0].toInt()
-    val minutes = parts[1].toInt()
-    val seconds = parts[2].toInt()
+    val hours = parts[0].toFloat()
+    val minutes = parts[1].toFloat()
+    val seconds = parts[2].toFloat()
 
-    return hours + minutes / 60 + seconds/3600f
+    return hours + (minutes / 60f) + (seconds/3600f)
 
 }
