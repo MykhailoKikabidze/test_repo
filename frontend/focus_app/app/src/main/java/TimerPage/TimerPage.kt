@@ -354,11 +354,7 @@ class TimerPage : AppCompatActivity(),NavigationView.OnNavigationItemSelectedLis
             }
 
             R.id.friends->{
-<<<<<<< HEAD
                 val intent=Intent(this, FriendsPage::class.java)
-=======
-                val intent=Intent(this,FriendsPage::class.java)
->>>>>>> 25d975ba681365dec8919e6bf6ce42bb9d75bf6a
                 startActivity(intent)
                 return true
             }

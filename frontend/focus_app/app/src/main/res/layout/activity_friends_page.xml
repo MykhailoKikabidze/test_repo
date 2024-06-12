@@ -36,7 +36,6 @@
             android:layout_weight="1"
             android:layout_margin="16dp" />
     </LinearLayout>
-<<<<<<< HEAD
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="200dp"
@@ -48,6 +47,3 @@
         app:itemIconTint="#BAE1F1"
         app:itemTextColor="@color/black" />
 </androidx.drawerlayout.widget.DrawerLayout>
-=======
-</androidx.drawerlayout.widget.DrawerLayout>
->>>>>>> 25d975ba681365dec8919e6bf6ce42bb9d75bf6a
