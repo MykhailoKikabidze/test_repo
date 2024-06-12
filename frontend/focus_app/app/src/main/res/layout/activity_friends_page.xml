@@ -12,54 +12,31 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <FrameLayout
+        <TextView
+            android:id="@+id/textViewFriends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Friends"
+            android:textSize="42sp"
+            android:textStyle="bold"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp" />
+
+        <SearchView
+            android:id="@+id/searchViewFriends"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:queryHint="Search and add friends"
+            android:layout_margin="16dp" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/main_friends"
-                tools:context=".FriendsPage">
-
-                <TextView
-                    android:id="@+id/textViewFriends"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Friends"
-                    android:textSize="42sp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <SearchView
-                    android:id="@+id/searchViewFriends"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:queryHint="Enter email to search or add friends"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textViewFriends" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerViewFriends"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginBottom="16dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/searchViewFriends" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFriends"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="16dp" />
     </LinearLayout>
+<<<<<<< HEAD
 
     <com.google.android.material.navigation.NavigationView
         android:layout_width="200dp"
@@ -71,3 +48,6 @@
         app:itemIconTint="#BAE1F1"
         app:itemTextColor="@color/black" />
 </androidx.drawerlayout.widget.DrawerLayout>
+=======
+</androidx.drawerlayout.widget.DrawerLayout>
+>>>>>>> 25d975ba681365dec8919e6bf6ce42bb9d75bf6a
