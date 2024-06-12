@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/main_category_timer"
+    android:layout_height="match_parent"
+    android:background="#AE2474A5">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="4dp"
+
+        android:layout_marginBottom="220dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/category_view"
+            android:layout_width="290dp"
+            android:layout_height="270dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/category_view_timer" />
+
+
+        <ImageView
+            android:id="@+id/starPoint1"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/star_category_timer"
+            android:layout_marginTop="22dp"
+            android:scaleType="centerCrop"
+            app:tint="@color/red" />
+
+        <ImageView
+            android:id="@+id/starPoint2"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/star_category_timer"
+            android:layout_marginTop="92dp"
+            android:scaleType="centerCrop"
+            app:tint="@color/red1" />
+        <ImageView
+            android:id="@+id/starPoint3"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/star_category_timer"
+            android:layout_marginTop="152dp"
+            android:scaleType="centerCrop"
+            app:tint="#73E4C4" />
+        <ImageView
+            android:id="@+id/starPoint4"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/star_category_timer"
+            android:tintMode="src_atop"
+            android:layout_marginTop="212dp"
+            android:scaleType="centerCrop"
+            app:tint="@color/blue" />
+        <ListView
+            android:layout_width="270dp"
+            android:layout_height="270dp"
+            android:layout_marginLeft="25dp"
+            android:scrollbars="none"
+            android:id="@+id/list_of_category"
+            />
+
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -45,4 +45,24 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("de.hdodenhof:circleimageview:3.0.0")
+
+    implementation ("androidx.recyclerview:recyclerview:1.2.1")
+    implementation ("com.squareup.picasso:picasso:2.71828")
+
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:x.x.x")
+
+
+
+    implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.9.0")
+    implementation("com.google.code.gson:gson:2.8.9")
+
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
 }

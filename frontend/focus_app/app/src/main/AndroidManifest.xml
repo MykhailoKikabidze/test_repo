@@ -2,6 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<<<<<<< HEAD
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+=======
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+>>>>>>> 25d975ba681365dec8919e6bf6ce42bb9d75bf6a
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +23,39 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Focus_app"
         tools:targetApi="31">
+        <activity
+            android:name="Rankings.CategoryRanking"
+            android:exported="false" />
+        <activity
+            android:name="Rankings.Rankings"
+            android:exported="false" />
+        <activity
+            android:name="FriendsPage.FriendsPage"
+            android:exported="true" />
+        <activity
+            android:name="FriendProfile.FriendProfile"
+            android:exported="true" />
+        <activity
+            android:name="ProfilePage.ProfilePage"
+            android:exported="true" />
+        <activity
+            android:name="StatisticCharts.Category"
+            android:exported="false" />
+        <activity
+            android:name="StatisticCharts.PieChart"
+            android:exported="true" />
+        <activity
+            android:name="TimerPage.ActivityView"
+            android:exported="true" />
+        <activity
+            android:name="TimerPage.TimerPage"
+            android:exported="true" />
+        <activity
+            android:name="SignUpPage.SignUpPage"
+            android:exported="true" />
+        <activity
+            android:name="LoginPage.LoginPage"
+            android:exported="true" />
         <activity
             android:name=".MainActivity"
             android:exported="true">
